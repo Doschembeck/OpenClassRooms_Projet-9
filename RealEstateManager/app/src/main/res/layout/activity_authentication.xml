@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/background_authentication"
+    tools:context=".controller.AuthenticationActivity">
+
+    <EditText
+        android:id="@+id/activity_authentication_edittext_real_estate_agent_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:hint="Enter your User Agent Name"
+        android:textColorHint="#B4FFFFFF"
+        android:textColor="#ffff"
+        android:autofillHints=""
+        android:textAlignment="center"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/activity_authentication_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:text="Continuer"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/realestate"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/manager"/>
+
+</LinearLayout>

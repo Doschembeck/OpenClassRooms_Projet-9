@@ -112,5 +112,9 @@ public class Utils {
                 * nbOfMonthlyPayment;
     }
 
+    public static String formatEditTextWithDevise(double amountLoan, String devise){
+        return String.format("%s %s", NumberFormat.getInstance().format(amountLoan), devise);
+    }
+
     //endregion
 }

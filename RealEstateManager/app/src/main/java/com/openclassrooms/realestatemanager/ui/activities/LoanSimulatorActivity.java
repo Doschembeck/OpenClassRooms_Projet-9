@@ -1,14 +1,12 @@
-package com.openclassrooms.realestatemanager.controller;
+package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.utils.Utils;
 
@@ -17,6 +15,7 @@ import java.text.NumberFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoanSimulatorActivity extends AppCompatActivity {
 
@@ -30,24 +29,23 @@ public class LoanSimulatorActivity extends AppCompatActivity {
     @BindView(R.id.activity_loan_simulator_textview_monthly_payment_bank) TextView mTextViewMonthlyPaymentBank;
     @BindView(R.id.activity_loan_simulator_seekbar_amount) SeekBar mSeekBarAmount;
     @BindView(R.id.activity_loan_simulator_seekbar_during) SeekBar mSeekBarDuring;
-
     @BindView(R.id.activity_loan_simulator_edittext_amount_Contribution) EditText mEditTextAmountContribution;
     @BindView(R.id.activity_loan_simulator_edittext_cost_property) EditText mEditTextCostProperty;
     @BindView(R.id.activity_loan_simulator_seekbar_cost_property) SeekBar mSeekBarCostProperty;
     @BindView(R.id.activity_loan_simulator_seekbar_amount_Contribution) SeekBar mSeekBarAmountContribution;
     @BindView(R.id.activity_loan_simulator_textview_cost_total_interest_and_insurance) TextView mTextViewCostTotalIinterestAndInsurance;
-
     @BindView(R.id.activity_loan_simulator_textview_cost_total_interest) TextView mTextViewCostTotalInterest;
     @BindView(R.id.activity_loan_simulator_textview_cost_total_insurance) TextView mTextViewCostTotalInsurance;
 
-    String devise = "€";
+    private final int INTERVAL_SEEKBAR = 1000;
 
-    int costProperty = 10000;
+    String devise = "€";
+    int costProperty = 210000;
     int amountContribution = 0;
     int amountLoan = 0;
-    int duringInMonth = 60;
-    double interestRate = 2.96;
-    double insuranceRate = 0.84;
+    int duringInMonth = 240;
+    double interestRate = 1.25;
+    double insuranceRate = 0.36;
     double monthlyPaymentTotal  = 0;
     double monthlyPaymentInterest = 0;
     double monthlyPaymentInsurance = 0;
@@ -62,12 +60,14 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loan_simulator);
         ButterKnife.bind(this);
 
+        setMaxSeekbar();
+
         updateSimulator();
 
         mSeekBarAmount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                costProperty = mSeekBarAmount.getProgress() + amountContribution;
+                costProperty = seekBar.getProgress() * INTERVAL_SEEKBAR + amountContribution;
                 updateSimulator();
             }
 
@@ -84,7 +84,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         mSeekBarDuring.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                duringInMonth = mSeekBarDuring.getProgress();
+                duringInMonth = seekBar.getProgress();
                 updateSimulator();
             }
 
@@ -101,7 +101,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         mSeekBarAmountContribution.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                amountContribution = mSeekBarAmountContribution.getProgress();
+                amountContribution = seekBar.getProgress() * INTERVAL_SEEKBAR;
                 updateSimulator();
             }
 
@@ -118,7 +118,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         mSeekBarCostProperty.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                costProperty = mSeekBarCostProperty.getProgress();
+                costProperty = mSeekBarCostProperty.getProgress() * INTERVAL_SEEKBAR;
                 updateSimulator();
             }
 
@@ -210,6 +210,16 @@ public class LoanSimulatorActivity extends AppCompatActivity {
 
     }
 
+    @OnClick(R.id.activity_loan_simulator_floatingactionbutton_back) public void onClickFloatingActionButtonBack(){
+        onBackPressed();
+    }
+
+    private void setMaxSeekbar(){
+        mSeekBarCostProperty.setMax(600000 / INTERVAL_SEEKBAR);
+        mSeekBarAmount.setMax(600000 / INTERVAL_SEEKBAR);
+        mSeekBarAmountContribution.setMax(200000 / INTERVAL_SEEKBAR);
+    }
+
     private void updateSimulator(){
         updateData();
         updateUI();
@@ -248,10 +258,10 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         mTextViewCostTotalIinterestAndInsurance.setText(Utils.formatEditTextWithDevise(costTotalInterestAndInsurance, devise));
         mTextViewCostTotal.setText(Utils.formatEditTextWithDevise(costTotal, devise));
 
-        mSeekBarCostProperty.setProgress(costProperty);
-        mSeekBarAmountContribution.setProgress(amountContribution);
-        mSeekBarAmount.setProgress(amountLoan);
-        mSeekBarDuring.setProgress(this.duringInMonth);
+        mSeekBarCostProperty.setProgress(costProperty / INTERVAL_SEEKBAR);
+        mSeekBarAmountContribution.setProgress(amountContribution / INTERVAL_SEEKBAR);
+        mSeekBarAmount.setProgress(amountLoan / INTERVAL_SEEKBAR);
+        mSeekBarDuring.setProgress(duringInMonth);
     }
 
 }

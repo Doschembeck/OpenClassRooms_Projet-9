@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.openclassrooms.realestatemanager">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
@@ -11,20 +12,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".controller.SettingsActivity" />
-        <activity android:name=".controller.EditPropertyActivity" />
-        <activity android:name=".controller.LoanSimulatorActivity" />
-        <activity android:name=".controller.DetailsActivity" />
+        android:theme="@style/REMTheme">
         <activity
-            android:name=".controller.AuthenticationActivity"
+            android:name=".ui.activities.DetailsActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/REMTheme.NoActionBar"></activity>
+        <activity android:name=".ui.activities.SettingsActivity" />
+        <activity android:name=".ui.activities.EditPropertyActivity" />
+        <activity android:name=".ui.activities.LoanSimulatorActivity" />
+        <activity
+            android:name=".ui.activities.AuthenticationActivity"
             android:label="RealEstateManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.MainActivity"/>
+        <activity android:name=".ui.activities.MainActivity" />
     </application>
 
 </manifest>

@@ -1,58 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.openclassrooms.realestatemanager.controller.MainActivity"
+    tools:context=".ui.activities.MainActivity"
     android:gravity="center">
 
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:background="#DC3131" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Add Filter"
-        android:textColor="#ffff"
-        android:textSize="18sp"/>
-
-
-    <LinearLayout
+    <!-- MainActivity RootView -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- FilterBar  -->
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:background="@color/redGoogle"
+            android:elevation="2dp"
+            android:contentDescription="TODO" />
 
         <TextView
-            android:id="@+id/activity_main_activity_text_view_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Voici la valeur d'un bien : "/>
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="Add Filter"
+            android:textColor="#ffff"
+            android:elevation="3dp"/>
 
-        <TextView
-            android:id="@+id/activity_main_activity_text_view_quantity"
+        <FrameLayout
+            android:id="@+id/activity_main_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/activity_main_floatingactionbutton_hamburger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="32dp"
+            android:clickable="true"
+            app:backgroundTint="#ffff"
+            android:src="@drawable/ic_baseline_dehaze_24"
+            app:layout_anchor="@id/activity_main_frame_layout"
+            app:layout_anchorGravity="bottom|left|end"/>
 
-        <Button
-            android:id="@+id/activity_main_button_simulator"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/activity_main_floatingactionbutton_switch_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Simulateur"/>
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
+            android:clickable="true"
+            app:backgroundTint="#ffff"
+            android:src="@drawable/ic_baseline_map_24"
+            app:layout_anchor="@id/activity_main_frame_layout"
+            app:layout_anchorGravity="bottom|right|end"/>
 
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <!-- NavigationView -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/activity_main_nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/activity_main_nav_header"
+        app:menu="@menu/activity_main_menu_drawer" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

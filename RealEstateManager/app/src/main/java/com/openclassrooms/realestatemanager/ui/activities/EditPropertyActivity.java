@@ -1,15 +1,15 @@
-package com.openclassrooms.realestatemanager.controller;
+package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.openclassrooms.realestatemanager.R;
 
-public class DetailsActivity extends AppCompatActivity {
+public class EditPropertyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_edit_property);
     }
 }

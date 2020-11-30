@@ -5,12 +5,13 @@ import java.util.List;
 public class Property {
 
     private int propertyTypeId; // appartement, loft, manoir, etc
-    private float price; // in dollars
+    private Double price; // in dollars
     private float area; // La surface du bien (en m2)
     private int nbOfRooms;
+    private int nbOfBedRooms;
     private String description; // The full description of the property;
     private List<Photo> photoList;
-    private String address;
+    private Address address;
     private List<String> nearbyPOI; // Nearby points of interest (school, shops, park, etc.);
     private boolean isSold; // The status of the property (still available or sold);
     private String dateOfEntry; // The date of entry of the property on the market;
@@ -19,11 +20,12 @@ public class Property {
     private String createdAt;
     private String updatedAt;
 
-    public Property(int propertyTypeId, float price, float area, int nbOfRooms, String description, List<Photo> photoList, String address, List<String> nearbyPOI, boolean isSold, String dateOfEntry, String realEstateAgent, String createdAt, String updatedAt) {
+    public Property(int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, List<Photo> photoList, Address address, List<String> nearbyPOI, boolean isSold, String dateOfEntry, String realEstateAgent, String createdAt, String updatedAt) {
         this.propertyTypeId = propertyTypeId;
         this.price = price;
         this.area = area;
         this.nbOfRooms = nbOfRooms;
+        this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
         this.photoList = photoList;
         this.address = address;
@@ -43,11 +45,11 @@ public class Property {
         this.propertyTypeId = propertyTypeId;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -83,11 +85,11 @@ public class Property {
         this.photoList = photoList;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -145,5 +147,13 @@ public class Property {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public int getNbOfBedRooms() {
+        return nbOfBedRooms;
+    }
+
+    public void setNbOfBedRooms(int nbOfBedRooms) {
+        this.nbOfBedRooms = nbOfBedRooms;
     }
 }

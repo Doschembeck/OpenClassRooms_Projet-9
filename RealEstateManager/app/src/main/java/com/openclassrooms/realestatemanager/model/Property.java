@@ -1,34 +1,44 @@
 package com.openclassrooms.realestatemanager.model;
 
+import androidx.annotation.Nullable;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity(foreignKeys = @ForeignKey(entity = Address.class, parentColumns = "id", childColumns = "address"))
 public class Property {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private int propertyTypeId; // appartement, loft, manoir, etc
     private Double price; // in dollars
     private float area; // La surface du bien (en m2)
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
-    private List<Photo> photoList;
-    private Address address;
+    private List<Long> photoIdList;
+    private long addressId;
     private List<String> nearbyPOI; // Nearby points of interest (school, shops, park, etc.);
     private boolean isSold; // The status of the property (still available or sold);
     private String dateOfEntry; // The date of entry of the property on the market;
     private String realEstateAgent; // The real estate agent in charge of this property.
+    @Nullable
     private String dateOfSale; // The date of sale of the property, if it has been sold;
     private String createdAt;
     private String updatedAt;
 
-    public Property(int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, List<Photo> photoList, Address address, List<String> nearbyPOI, boolean isSold, String dateOfEntry, String realEstateAgent, String createdAt, String updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, List<Long> photoIdList, long addressId, List<String> nearbyPOI, boolean isSold, String dateOfEntry, String realEstateAgent, String createdAt, String updatedAt) {
+        this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
         this.area = area;
         this.nbOfRooms = nbOfRooms;
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
-        this.photoList = photoList;
-        this.address = address;
+        this.photoIdList = photoIdList;
+        this.addressId = addressId;
         this.nearbyPOI = nearbyPOI;
         this.isSold = isSold;
         this.dateOfEntry = dateOfEntry;
@@ -77,20 +87,20 @@ public class Property {
         this.description = description;
     }
 
-    public List<Photo> getPhotoList() {
-        return photoList;
+    public List<Long> getPhotoIdList() {
+        return photoIdList;
     }
 
-    public void setPhotoList(List<Photo> photoList) {
-        this.photoList = photoList;
+    public void setPhotoIdList(List<Long> photoIdList) {
+        this.photoIdList = photoIdList;
     }
 
-    public Address getAddress() {
-        return address;
+    public long getAddressId() {
+        return addressId;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddressId(long addressId) {
+        this.addressId = addressId;
     }
 
     public List<String> getNearbyPOI() {
@@ -155,5 +165,9 @@ public class Property {
 
     public void setNbOfBedRooms(int nbOfBedRooms) {
         this.nbOfBedRooms = nbOfBedRooms;
+    }
+
+    public long getId() {
+        return id;
     }
 }

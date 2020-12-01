@@ -14,13 +14,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.model.Address;
-import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
-import com.openclassrooms.realestatemanager.ui.ListViewViewModel;
+import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import com.openclassrooms.realestatemanager.ui.fragments.MapViewFragment;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.activity_main_drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.activity_main_nav_view) NavigationView navigationView;
 
-    private ListViewViewModel mViewModel;
+    private PropertyViewModel mViewModel;
 
     private int currentFragment = 1;
     private final int ID_FRAGMENT_LIST = 1;
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ListViewViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -71,15 +69,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void generateFakeProperty(){
         // todo à remplacer par une recherche dans la BDD
 
-        List<Photo> listPhoto = Arrays.asList(new Photo("https://d1qfj231ug7wdu.cloudfront.net/pictures/estate/3414/3413354/19651742155dd3194dd4f208.85103143_1920.jpg", "Description phoo"));
+        List<Long> listPhoto = Arrays.asList(1l,2l,3l);
         List<String> listNearbyPOI = Arrays.asList("restaurant", "ecole", "gare");
-        Address address1 = new Address(69, "rue de l'eglise", "Parcieux", "01600", "France");
+        long addressId = 1;
+        Address address1 = new Address(addressId, 69, "rue de l'eglise", "Parcieux", "01600", "France");
 
-        Property property1 = new Property(1, 220000d, 290,
-                5, 2, "description", listPhoto, address1,
+        Property property1 = new Property(1, 1, 220000d, 290,
+                5, 2, "description", listPhoto, addressId,
                 listNearbyPOI, false, "22/11/2020", "Thomas", "22/11/2020", "22/11/2020");
-        Property property2 = new Property(2, 386000d, 309,
-                5, 3, "description", listPhoto, address1,
+        Property property2 = new Property(2, 2, 386000d, 309,
+                5, 3, "description", listPhoto, addressId,
                 listNearbyPOI, true, "22/11/2020", "Thomas", "22/11/2020", "22/11/2020");
 
         List<Property> listTest = Arrays.asList(property1, property1, property2, property1);

@@ -55,12 +55,12 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
 
         //todo: erreur ne charge pas l'image en ligne
         Glide.with(mContext)
-                .load(property.getPhotoList().get(0).getPhoto())
+                .load(property.getPhotoIdList().get(0).getPhoto())
                 .centerCrop()
                 .placeholder(R.drawable.test_property)
                 .into(mImageViewPhoto);
 
-        mTextViewCity.setText(property.getAddress().getCity());
+        mTextViewCity.setText(property.getAddressId().getCity());
         mTextViewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
         mTextViewRooms.setText(property.getNbOfRooms() + " Pièces");
         mTextViewBedRooms.setText(property.getNbOfBedRooms() + " Chambres");

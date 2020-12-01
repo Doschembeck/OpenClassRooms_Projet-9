@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.realestatemanager.R;
-import com.openclassrooms.realestatemanager.ui.ListViewViewModel;
+import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,13 +28,13 @@ public class FilterFragment extends Fragment {
     //FOR DATA
     private List<String> mListFilterProperty;
     private FilterPropertyAdapter mAdapter;
-    private ListViewViewModel mViewModel;
+    private PropertyViewModel mViewModel;
 
     public FilterFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(requireActivity()).get(ListViewViewModel.class);
+        mViewModel = ViewModelProviders.of(requireActivity()).get(PropertyViewModel.class);
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
         ButterKnife.bind(this, view);
 

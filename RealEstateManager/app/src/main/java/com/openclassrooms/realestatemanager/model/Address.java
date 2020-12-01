@@ -1,14 +1,21 @@
 package com.openclassrooms.realestatemanager.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Address {
 
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private int streetNumber;
     private String streetName;
     private String city;
     private String zipCode;
     private String country;
 
-    public Address(int streetNumber, String streetName, String city, String zipCode, String country) {
+    public Address(long id, int streetNumber, String streetName, String city, String zipCode, String country) {
+        this.id = id;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
         this.city = city;
@@ -56,4 +63,7 @@ public class Address {
         this.country = country;
     }
 
+    public long getId() {
+        return id;
+    }
 }

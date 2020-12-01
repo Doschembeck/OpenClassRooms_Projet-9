@@ -6,21 +6,23 @@
     android:orientation="horizontal"
     android:elevation="5dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/redGoogle"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:text="Add Filter"
-        android:textColor="#ffff"
-        android:elevation="3dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/redGoogle"
+            android:background="@drawable/background_textview_filter"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="Add Filter"
+            android:textColor="#ffff"
+            android:elevation="3dp"/>
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_Filter"
-        android:name="com.openclassrooms.realestatemanager.ui.fragments.Filter.FilterFragment"/>
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment_Filter"
+            android:name="com.openclassrooms.realestatemanager.ui.fragments.Filter.FilterFragment"/>
 
 </LinearLayout>

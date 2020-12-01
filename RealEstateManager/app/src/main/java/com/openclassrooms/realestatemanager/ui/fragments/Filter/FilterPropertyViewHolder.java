@@ -28,7 +28,7 @@ public class FilterPropertyViewHolder extends RecyclerView.ViewHolder {
     }
 
     @OnClick(R.id.fragment_filter_item_imageview_close) public void onClickImageViewClose(){
-        
+        //todo: supprimer le filtre
     }
 
     public void updateWithFilterProperty(String filterproperty){

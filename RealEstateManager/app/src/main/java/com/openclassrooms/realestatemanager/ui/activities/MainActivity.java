@@ -20,6 +20,7 @@ import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragme
 import com.openclassrooms.realestatemanager.ui.ListViewViewModel;
 import com.openclassrooms.realestatemanager.ui.fragments.MapViewFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        generateFakeFilterProperty();
         generateFakeProperty();
 
         showListFragment();
@@ -56,6 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Configuration
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private void generateFakeFilterProperty(){
+        // todo à supprimer
+        List<String> listTest = Arrays.asList("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"
+                , "Item 7", "Item 8", "Item 9", "Item 10", "Item 11", "Item 12");
+
+        mViewModel.mListFilterPropertyMutableLiveData.setValue(listTest);
     }
 
     private void generateFakeProperty(){

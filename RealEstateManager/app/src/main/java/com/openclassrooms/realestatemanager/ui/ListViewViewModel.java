@@ -10,5 +10,7 @@ import java.util.List;
 public class ListViewViewModel extends ViewModel {
 
     public MutableLiveData<List<Property>> mListPropertyMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<String>> mListFilterPropertyMutableLiveData = new MutableLiveData<>();
+
 }
 

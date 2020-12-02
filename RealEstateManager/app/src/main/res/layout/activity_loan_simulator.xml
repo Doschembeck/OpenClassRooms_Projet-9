@@ -10,14 +10,25 @@
 
 
 <!--    todo: reparer probleme https://material.io/develop/android/components/app-bars-bottom -->
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/activity_loan_simulator_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        app:navigationIcon="@drawable/ic_baseline_add_24"
-        app:menu="@menu/menu_toolbar"/>
+        android:background="@color/blueFacebook"
+        app:title=" "
+        app:navigationIcon="@drawable/ic_baseline_dehaze_24"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        app:layout_anchorGravity="center"
+        app:layout_anchor="@id/activity_loan_simulator_toolbar"
+        android:src="@drawable/ic_baseline_add_24"
+        android:backgroundTint="@color/redGoogle"
+        app:tint="@android:color/white" />
 
     <ScrollView
             android:layout_width="match_parent"

@@ -6,17 +6,9 @@
     <!--    Todo: a faire fonctionner   -->
 
     <item
-        android:id="@+id/action_back"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_baseline_arrow_back_24"
-        android:iconTint="#ffff"
-        android:title="back"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/menu_drawer"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_baseline_dehaze_24"
+        android:icon="@drawable/ic_baseline_map_24"
         android:iconTint="#ffff"
         android:title="menu_drawer"
         app:showAsAction="always" />

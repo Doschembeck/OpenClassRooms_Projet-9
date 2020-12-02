@@ -100,8 +100,7 @@ public class EditPropertyActivity extends AppCompatActivity {
 
     // 2 - Configuring ViewModel
     private void configureViewModel(){
-        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
-        this.mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+        this.mViewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(this)).get(PropertyViewModel.class);
     }
 
     private void createProperty(Property property){

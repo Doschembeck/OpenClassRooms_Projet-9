@@ -64,19 +64,6 @@ public class ListViewFragment extends Fragment {
         this.mViewModel.getAllProperty().observe(getViewLifecycleOwner(), this::updateUI);
     }
 
-    private void deleteAllProperty(){
-        this.mViewModel.getAllProperty().observe(getViewLifecycleOwner(), properties -> {
-            for(Property p : properties){
-                deleteProperty(p);
-            }
-        });
-    }
-
-    private void deleteProperty(Property property){
-        this.mViewModel.deleteProperty(property);
-    }
-
-
     // -----------------
     // CONFIGURATION
     // -----------------

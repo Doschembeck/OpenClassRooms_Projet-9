@@ -42,6 +42,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
     @BindView(R.id.activity_loan_simulator_textview_cost_total_interest_and_insurance) TextView mTextViewCostTotalIinterestAndInsurance;
     @BindView(R.id.activity_loan_simulator_textview_cost_total_interest) TextView mTextViewCostTotalInterest;
     @BindView(R.id.activity_loan_simulator_textview_cost_total_insurance) TextView mTextViewCostTotalInsurance;
+    @BindView(R.id.activity_loan_simulator_toolbar) Toolbar mToolbar;
 
     private final int INTERVAL_SEEKBAR = 1000;
 
@@ -65,9 +66,9 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loan_simulator);
         ButterKnife.bind(this);
-//        setSupportActionBar(mToolbar);
+        setSupportActionBar(mToolbar);
 
-        configureBottomAppBar();
+//        configureBottomAppBar();
 
         setMaxSeekbar();
 
@@ -219,44 +220,18 @@ public class LoanSimulatorActivity extends AppCompatActivity {
 
     }
 
-    private void configureBottomAppBar(){
-        BottomAppBar bottomAppBar = findViewById(R.id.activity_loan_simulator_toolbar);
-
-        bottomAppBar.setNavigationOnClickListener(view -> {
-            // Handle navigation icon press
-
-        }); {
-        }
-
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            switch(item.getItemId()){
-                case R.id.menu_drawer:
-                    // todo: ouvrir le menu
-
-                    return true;
-                case R.id.action_back:
-                    onBackPressed();
-                    return true;
-            }
-            return false;
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //2 - Inflate the menu and add it to the Toolbar
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        //2 - Inflate the menu and add it to the Toolbar
-//        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        onBackPressed();
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
 
     private void setMaxSeekbar(){
         mSeekBarCostProperty.setMax(600000 / INTERVAL_SEEKBAR);

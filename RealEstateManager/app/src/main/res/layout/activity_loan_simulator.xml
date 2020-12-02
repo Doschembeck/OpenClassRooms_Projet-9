@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".ui.activities.LoanSimulatorActivity">
 
+
+<!--    todo: reparer probleme https://material.io/develop/android/components/app-bars-bottom -->
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/activity_loan_simulator_toolbar"
         android:layout_width="match_parent"

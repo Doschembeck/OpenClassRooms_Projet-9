@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.openclassrooms.realestatemanager.R;
@@ -15,18 +16,27 @@ import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class EditPropertyActivity extends AppCompatActivity {
 
-    private PropertyViewModel mViewModel;
+    @BindView(R.id.activity_edit_property_edittext_area) EditText mEditTextArea;
+    @BindView(R.id.activity_edit_property_edittext_price) EditText mEditTextPrice;
+    @BindView(R.id.activity_edit_property_edittext_nbofrooms) EditText mEditTextNbOfRooms;
+    @BindView(R.id.activity_edit_property_edittext_nbofbedrooms) EditText mEditTextNbOfBedRooms;
+    @BindView(R.id.activity_edit_property_edittext_description) EditText mEditTextDescription;
+    @BindView(R.id.activity_edit_property_edittext_dateofsold) EditText mEditTextDateOfSold;
+    @BindView(R.id.activity_edit_property_edittext_dateofentry) EditText mEditTextDateOfEntry;
+    @BindView(R.id.activity_edit_property_edittext_realestateagent) EditText mEditTextRealEstateAgent;
 
-    private Spinner spinnerPropertyType;
-    private Spinner spinnerIsSold;
+    @BindView(R.id.activity_edit_property_spinner_propertytype) Spinner mSpinnerPropertyType;
+    @BindView(R.id.activity_edit_property_spinner_issold) Spinner mSpinnerIsSold;
+
+    private PropertyViewModel mViewModel;
     private static final String[]paths = {"Maison", "Appartement"};
-    private int mPropertyType = 0;
-    private boolean isSold = false;
+    private static final String[]disponnibilities = {"Disponnible", "Vendu"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,55 +52,50 @@ public class EditPropertyActivity extends AppCompatActivity {
 
     @OnClick(R.id.activity_edit_property_addproperty)
     public void onClickButtonAddProperty(){
-        Property property1 = new Property(0, 1, 240600d, 290,
-                5, 2, "description", 1, false,
-                "22/11/2020", "Thomas", "22/11/2020", "22/11/2020");
-
-        createProperty(property1);
+        createProperty(getPropertyWithUI());
         finish();
     }
 
+    private Property getPropertyWithUI(){
+        //todo: faire une creation complete
+
+        boolean isSold = false;
+        switch ((int) mSpinnerIsSold.getSelectedItemId()){
+            case 0:
+                isSold = false;
+                break;
+            case 1:
+                isSold = true;
+                break;
+        }
+
+        int propertyType = (int) mSpinnerPropertyType.getSelectedItemId();
+        double price = Double.parseDouble(mEditTextPrice.getText().toString());
+        float area = Float.parseFloat(mEditTextArea.getText().toString());
+        int nbOfRooms = Integer.parseInt(mEditTextNbOfRooms.getText().toString());
+        int nbOfBedRooms = Integer.parseInt(mEditTextNbOfBedRooms.getText().toString());
+        String description = mEditTextDescription.getText().toString();
+        long addressId = 1;
+        String dateOfEntry = mEditTextDateOfEntry.getText().toString();
+        String dateOfSold = mEditTextDateOfSold.getText().toString();
+        String realEstateAgent = mEditTextRealEstateAgent.getText().toString();
+        String createdAt = "02-12-2020";
+        String updatedAt = "02-12-2020";
+
+        return new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,addressId,
+                isSold,dateOfEntry,realEstateAgent ,createdAt, updatedAt);
+    }
+
     private void configureSpinnerPropertyType(){
-        spinnerPropertyType = (Spinner)findViewById(R.id.activity_edit_property_spinner_propertytype);
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,paths);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerPropertyType.setAdapter(adapter);
-        spinnerPropertyType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mPropertyType = i;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        mSpinnerPropertyType.setAdapter(adapter);
     }
 
     private void configureSpinnerIsSold(){
-        spinnerIsSold = (Spinner)findViewById(R.id.activity_edit_property_spinner_issold);
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,paths);
+        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,disponnibilities);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerIsSold.setAdapter(adapter);
-        spinnerIsSold.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (i == 0){
-                    isSold = false;
-                } else if (i == 1){
-                    isSold = true;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        mSpinnerIsSold.setAdapter(adapter);
     }
 
     // 2 - Configuring ViewModel

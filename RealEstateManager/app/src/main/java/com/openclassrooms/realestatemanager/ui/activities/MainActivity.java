@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.injections.Injection;
+import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
@@ -44,18 +46,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(PropertyViewModel.class);
+
+        configureViewModel();
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         generateFakeFilterProperty();
-        generateFakeProperty();
 
         showListFragment();
 
         // Configuration
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    // 2 - Configuring ViewModel
+    private void configureViewModel(){
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
+        this.mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
     }
 
     private void generateFakeFilterProperty(){
@@ -66,24 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewModel.mListFilterPropertyMutableLiveData.setValue(listTest);
     }
 
-    private void generateFakeProperty(){
-        // todo à remplacer par une recherche dans la BDD
-
-        List<Long> listPhoto = Arrays.asList(1l,2l,3l);
-        List<String> listNearbyPOI = Arrays.asList("restaurant", "ecole", "gare");
-        long addressId = 1;
-        Address address1 = new Address(addressId, 69, "rue de l'eglise", "Parcieux", "01600", "France");
-
-        Property property1 = new Property(1, 1, 220000d, 290,
-                5, 2, "description", listPhoto, addressId,
-                listNearbyPOI, false, "22/11/2020", "Thomas", "22/11/2020", "22/11/2020");
-        Property property2 = new Property(2, 2, 386000d, 309,
-                5, 3, "description", listPhoto, addressId,
-                listNearbyPOI, true, "22/11/2020", "Thomas", "22/11/2020", "22/11/2020");
-
-        List<Property> listTest = Arrays.asList(property1, property1, property2, property1);
-
-        mViewModel.mListPropertyMutableLiveData.setValue(listTest);
+    @OnClick(R.id.activity_main_floatingactionbutton_addproperty)
+    public void onClickFabAddProperty(){
+        startActivity(new Intent(this, EditPropertyActivity.class));
     }
 
     @OnClick(R.id.activity_main_floatingactionbutton_hamburger) public void onClickFloatingActionButtonHamburger(){

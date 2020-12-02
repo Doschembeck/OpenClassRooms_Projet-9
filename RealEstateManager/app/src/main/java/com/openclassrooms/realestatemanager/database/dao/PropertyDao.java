@@ -21,6 +21,9 @@ public interface PropertyDao {
     @Update
     int updateProperty(Property property);
 
+    @Delete
+    int deleteProperty(Property property);
+
     @Query("SELECT * FROM Property WHERE id = :propertyId")
     LiveData<Property> getProperty(long propertyId);
 

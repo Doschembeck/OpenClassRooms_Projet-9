@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.ui.fragments.ListView;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.injections.Injection;
+import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
@@ -30,6 +33,7 @@ public class ListViewFragment extends Fragment {
     private List<Property> mListProperty;
     private PropertyAdapter mAdapter;
     private PropertyViewModel mViewModel;
+    private Context mContext;
 
     public ListViewFragment() { }
 
@@ -39,18 +43,39 @@ public class ListViewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewModel = ViewModelProviders.of(requireActivity()).get(PropertyViewModel.class);
+        configureViewModel();
         View view = inflater.inflate(R.layout.fragment_listview, container, false);
         ButterKnife.bind(this, view);
+        mContext = view.getContext();
 
         this.configureRecyclerView();
-
-        mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(),mListProperty -> {
-           updateUI(mListProperty);
-        } );
+        getAllProperty();
 
         return view;
     }
+
+    // 2 - Configuring ViewModel
+    private void configureViewModel(){
+        ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(mContext);
+        this.mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
+    }
+
+    private void getAllProperty(){
+        this.mViewModel.getAllProperty().observe(getViewLifecycleOwner(), this::updateUI);
+    }
+
+    private void deleteAllProperty(){
+        this.mViewModel.getAllProperty().observe(getViewLifecycleOwner(), properties -> {
+            for(Property p : properties){
+                deleteProperty(p);
+            }
+        });
+    }
+
+    private void deleteProperty(Property property){
+        this.mViewModel.deleteProperty(property);
+    }
+
 
     // -----------------
     // CONFIGURATION
@@ -74,6 +99,7 @@ public class ListViewFragment extends Fragment {
     // -------------------
 
     private void updateUI(List<Property> users){
+        mListProperty.clear();
         mListProperty.addAll(users);
         mAdapter.notifyDataSetChanged();
     }

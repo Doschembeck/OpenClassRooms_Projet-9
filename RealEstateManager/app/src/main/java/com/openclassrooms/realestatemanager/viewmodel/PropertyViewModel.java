@@ -48,12 +48,22 @@ public class PropertyViewModel extends ViewModel {
 
     // CREATE PROPERTY
     public void createProperty(Property property){
-        this.propertyDataRepository.createProperty(property);
+        executor.execute(() -> {
+            this.propertyDataRepository.createProperty(property);
+        });
     }
 
     // UPDATE PROPERTY
     public void updateProperty(Property property){
-         this.propertyDataRepository.updateProperty(property);
+        executor.execute(() -> {
+            this.propertyDataRepository.updateProperty(property);
+        });
+    }
+
+    public void deleteProperty(Property property){
+        executor.execute(() -> {
+            this.propertyDataRepository.deleteProperty(property);
+        });
     }
 
     // ---------------
@@ -67,15 +77,16 @@ public class PropertyViewModel extends ViewModel {
 
     // CREATE ADDRESS
     public void createAddress(Address address){
-        this.addressDataRepository.createAddress(address);
+        executor.execute(() -> {
+            this.addressDataRepository.createAddress(address);
+        });
     }
 
     // UPDATE ADDRESS
     public void updateAddress(Address address){
-        this.addressDataRepository.updateAddress(address);
+        executor.execute(() -> {
+            this.addressDataRepository.updateAddress(address);
+        });
     }
-
-
-
 }
 

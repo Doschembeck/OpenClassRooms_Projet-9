@@ -1,7 +1,11 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -36,6 +40,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
     @BindView(R.id.activity_loan_simulator_textview_cost_total_interest_and_insurance) TextView mTextViewCostTotalIinterestAndInsurance;
     @BindView(R.id.activity_loan_simulator_textview_cost_total_interest) TextView mTextViewCostTotalInterest;
     @BindView(R.id.activity_loan_simulator_textview_cost_total_insurance) TextView mTextViewCostTotalInsurance;
+    @BindView(R.id.activity_loan_simulator_toolbar) Toolbar mToolbar;
 
     private final int INTERVAL_SEEKBAR = 1000;
 
@@ -59,6 +64,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loan_simulator);
         ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
 
         setMaxSeekbar();
 
@@ -210,8 +216,19 @@ public class LoanSimulatorActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.activity_loan_simulator_floatingactionbutton_back) public void onClickFloatingActionButtonBack(){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //2 - Inflate the menu and add it to the Toolbar
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
         onBackPressed();
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setMaxSeekbar(){

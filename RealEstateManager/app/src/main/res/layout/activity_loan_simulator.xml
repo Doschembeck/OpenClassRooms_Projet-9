@@ -9,438 +9,434 @@
     tools:context=".ui.activities.LoanSimulatorActivity">
 
     <LinearLayout
-        android:id="@+id/activity_loan_simulator_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activity_loan_simulator_toolbar"
+            android:minHeight="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:layout_marginVertical="10dp"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:text="Simulateur de pret immobilier"/>
+            app:title="Simulateur de pret"
+            app:titleTextColor="#ffff"
+            android:background="@color/colorPrimary"/>
 
-        <!--    Réglages    -->
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Prix du bien     -->
             <LinearLayout
+                android:id="@+id/activity_loan_simulator_linearlayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Prix du bien :"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/activity_loan_simulator_edittext_cost_property"
+                <!--    Réglages    -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:inputType="number"
-                    android:textColor="#2196F3"
-                    android:textSize="22sp"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <SeekBar
-                android:id="@+id/activity_loan_simulator_seekbar_cost_property"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#03A9F4"
-                android:min="1" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
 
-            <!--    Montant de l'apport     -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Montant de l'apport :"/>
+                    <!--    Prix du bien     -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Prix du bien :"/>
 
-                <EditText
-                    android:id="@+id/activity_loan_simulator_edittext_amount_Contribution"
+                        <EditText
+                            android:id="@+id/activity_loan_simulator_edittext_cost_property"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:textColor="#2196F3"
+                            android:textSize="22sp"/>
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/activity_loan_simulator_seekbar_cost_property"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="#2196F3"
+                        android:progressTint="#03A9F4"
+                        android:min="1" />
+
+                    <!--    Montant de l'apport     -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Montant de l'apport :"/>
+
+                        <EditText
+                            android:id="@+id/activity_loan_simulator_edittext_amount_Contribution"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:textColor="#2196F3"
+                            android:textSize="22sp" />
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/activity_loan_simulator_seekbar_amount_Contribution"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="#2196F3"
+                        android:progressTint="#03A9F4"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Montant du pret     -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Montant de l'emprunt :"/>
+
+                        <EditText
+                            android:id="@+id/activity_loan_simulator_edittext_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:textColor="#2196F3"
+                            android:textSize="22sp" />
+                    </LinearLayout>
+
+                    <SeekBar
+                        android:id="@+id/activity_loan_simulator_seekbar_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="#2196F3"
+                        android:progressTint="#03A9F4"
+                        android:min="1" />
+
+                    <!--    Durée du pret       -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Durée du Pret :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_during"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textSize="22sp"
+                            android:textColor="#2196F3"
+                            />
+
+                    </LinearLayout>
+                    <SeekBar
+                        android:id="@+id/activity_loan_simulator_seekbar_during"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:thumbTint="#2196F3"
+                        android:progressTint="#03A9F4"
+                        android:min="1"
+                        android:max="360"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Taux d'interet      -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Taux d'interet :"/>
+
+                        <EditText
+                            android:id="@+id/activity_loan_simulator_edittext_interest_rate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:textColor="#2196F3"/>
+
+                    </LinearLayout>
+
+                    <!--    Taux d'asurance     -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Taux d'assurance :"/>
+
+                        <EditText
+                            android:id="@+id/activity_loan_simulator_edittext_insurance_rate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:textColor="#2196F3" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
+                </LinearLayout>
+
+
+                <!--    Resultats   -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:inputType="number"
-                    android:textColor="#2196F3"
-                    android:textSize="22sp" />
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Mensualité  Total   -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Mensualité :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_editext_monthly_payment_total"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textSize="22sp"
+                            android:textColor="#E64A19"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Mensualité interet banque    -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#7E818181"
+                            android:text="dont interet banque :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_monthly_payment_bank"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#7EE64A19"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Mensualité assurance    -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#7E818181"
+                            android:text="dont assurance :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_monthly_payment_insurance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#7EE64A19"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Cout  Total   -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:text="Coût total du crédit :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_cost_total"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textSize="22sp"
+                            android:textColor="#E64A19"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Cout total interet + assurance    -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#7E818181"
+                            android:text="dont interet banque \n    + assurance :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_cost_total_interest_and_insurance"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textColor="#7EE64A19"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Mensualité assurance    -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#7E818181"
+                            android:text="interet banque :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_cost_total_interest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#7EE64A19"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <!--    Mensualité assurance    -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#7E818181"
+                            android:text="assurance :"/>
+
+                        <TextView
+                            android:id="@+id/activity_loan_simulator_textview_cost_total_insurance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="#7EE64A19"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="?android:attr/listDivider" />
+
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
 
-            <SeekBar
-                android:id="@+id/activity_loan_simulator_seekbar_amount_Contribution"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#03A9F4"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Montant du pret     -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Montant de l'emprunt :"/>
-
-                <EditText
-                    android:id="@+id/activity_loan_simulator_edittext_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:textColor="#2196F3"
-                    android:textSize="22sp" />
-            </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/activity_loan_simulator_seekbar_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#03A9F4"
-                android:min="1" />
-
-            <!--    Durée du pret       -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Durée du Pret :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_during"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="22sp"
-                    android:textColor="#2196F3"
-                    />
-
-            </LinearLayout>
-            <SeekBar
-                android:id="@+id/activity_loan_simulator_seekbar_during"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#03A9F4"
-                android:min="1"
-                android:max="360"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Taux d'interet      -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Taux d'interet :"/>
-
-                <EditText
-                    android:id="@+id/activity_loan_simulator_edittext_interest_rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:inputType="numberDecimal"
-                    android:textColor="#2196F3"/>
-
-            </LinearLayout>
-
-            <!--    Taux d'asurance     -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Taux d'assurance :"/>
-
-                <EditText
-                    android:id="@+id/activity_loan_simulator_edittext_insurance_rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:inputType="numberDecimal"
-                    android:textColor="#2196F3" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-        </LinearLayout>
-
-
-        <!--    Resultats   -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Mensualité  Total   -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Mensualité :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_editext_monthly_payment_total"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="22sp"
-                    android:textColor="#E64A19"
-                    android:textStyle="bold"/>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Mensualité interet banque    -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#7E818181"
-                    android:text="dont interet banque :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_monthly_payment_bank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#7EE64A19"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Mensualité assurance    -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#7E818181"
-                    android:text="dont assurance :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_monthly_payment_insurance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#7EE64A19"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Cout  Total   -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Coût total du crédit :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_cost_total"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="22sp"
-                    android:textColor="#E64A19"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Cout total interet + assurance    -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#7E818181"
-                    android:text="dont interet banque \n    + assurance :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_cost_total_interest_and_insurance"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textColor="#7EE64A19"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Mensualité assurance    -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#7E818181"
-                    android:text="interet banque :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_cost_total_interest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#7EE64A19"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <!--    Mensualité assurance    -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#7E818181"
-                    android:text="assurance :"/>
-
-                <TextView
-                    android:id="@+id/activity_loan_simulator_textview_cost_total_insurance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="#7EE64A19"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:background="?android:attr/listDivider" />
-
-        </LinearLayout>
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/activity_loan_simulator_floatingactionbutton_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:backgroundTint="#ffff"
-        android:src="@drawable/ic_baseline_arrow_back_24"
-        app:layout_anchor="@id/activity_loan_simulator_linearlayout"
-        app:layout_anchorGravity="top|left|start" />
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

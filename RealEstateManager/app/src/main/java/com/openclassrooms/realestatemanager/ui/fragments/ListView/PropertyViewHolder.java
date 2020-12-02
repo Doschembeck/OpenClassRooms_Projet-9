@@ -54,13 +54,13 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         }
 
         //todo: erreur ne charge pas l'image en ligne
-        Glide.with(mContext)
-                .load(property.getPhotoIdList().get(0).getPhoto())
-                .centerCrop()
-                .placeholder(R.drawable.test_property)
-                .into(mImageViewPhoto);
+//        Glide.with(mContext)
+//                .load(property.getPhotoIdList().get(0).getPhoto())
+//                .centerCrop()
+//                .placeholder(R.drawable.test_property)
+//                .into(mImageViewPhoto);
 
-        mTextViewCity.setText(property.getAddressId().getCity());
+//        mTextViewCity.setText(property.getAddressId().getCity());
         mTextViewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
         mTextViewRooms.setText(property.getNbOfRooms() + " Pièces");
         mTextViewBedRooms.setText(property.getNbOfBedRooms() + " Chambres");

@@ -35,4 +35,9 @@ public class PropertyDataRepository {
         this.propertyDao.updateProperty(property);
     }
 
+    // DELETE
+    public void deleteProperty(Property property){
+        this.propertyDao.deleteProperty(property);
+    }
+
 }

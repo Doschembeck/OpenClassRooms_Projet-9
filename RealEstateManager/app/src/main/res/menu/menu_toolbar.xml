@@ -13,4 +13,12 @@
         android:title="back"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_drawer"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_dehaze_24"
+        android:iconTint="#ffff"
+        android:title="menu_drawer"
+        app:showAsAction="always" />
+
 </menu>

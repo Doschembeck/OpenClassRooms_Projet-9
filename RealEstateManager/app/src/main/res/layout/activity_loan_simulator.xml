@@ -8,21 +8,16 @@
     android:orientation="vertical"
     tools:context=".ui.activities.LoanSimulatorActivity">
 
-    <LinearLayout
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/activity_loan_simulator_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        app:navigationIcon="@drawable/ic_baseline_add_24"
+        app:menu="@menu/menu_toolbar"/>
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/activity_loan_simulator_toolbar"
-            android:minHeight="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="Simulateur de pret"
-            app:titleTextColor="#ffff"
-            android:background="@color/colorPrimary"/>
-
-        <ScrollView
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -437,6 +432,5 @@
             </LinearLayout>
         </ScrollView>
 
-    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

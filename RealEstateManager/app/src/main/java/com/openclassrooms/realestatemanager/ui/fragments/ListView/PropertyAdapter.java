@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBinding;
 import com.openclassrooms.realestatemanager.model.Property;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 public class PropertyAdapter extends RecyclerView.Adapter<PropertyViewHolder> {
 
@@ -27,9 +29,10 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyViewHolder> {
         // CREATE VIEW HOLDER AND INFLATING ITS XML LAYOUT
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.fragment_listview_item, parent, false);
+//        View view = inflater.inflate(R.layout.fragment_listview_item, parent, false);
+        FragmentListviewItemBinding binding = FragmentListviewItemBinding.inflate(inflater, parent, false);
 
-        return new PropertyViewHolder(view);
+        return new PropertyViewHolder(binding);
     }
 
     // UPDATE VIEW HOLDER

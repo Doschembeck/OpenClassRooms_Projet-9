@@ -113,7 +113,7 @@ public class Utils {
     }
 
     public static String formatEditTextWithDevise(double amountLoan, String devise){
-        return String.format("%s %s", NumberFormat.getInstance().format(amountLoan), devise);
+        return String.format("%s %s", NumberFormat.getInstance().format((double) Math.round(amountLoan * 100) / 100), devise);
     }
 
     //endregion

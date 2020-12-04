@@ -4,16 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
-import android.widget.Button;
-
-import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.databinding.ActivitySettingsBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -21,19 +15,20 @@ public class SettingsActivity extends AppCompatActivity {
     //  - gerer intervale seekbar
     //  - Max valeurs seekbar
 
+    ActivitySettingsBinding binding;
+
     private PropertyViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureViewModel();
+        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        setContentView(R.layout.activity_settings);
-        ButterKnife.bind(this);
-    }
+        binding.activitySettingsToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
+        binding.activitySettingsButtonReset.setOnClickListener(v -> deleteAllProperty());
 
-    @OnClick(R.id.activity_settings_button_reset) public void onClickButtonReset(){
-        deleteAllProperty();
     }
 
     private void deleteAllProperty(){
@@ -46,11 +41,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void deleteProperty(Property property){
         this.mViewModel.deleteProperty(property);
-    }
-
-
-    @OnClick(R.id.activity_settings_floatingactionbutton_back) public void onClickFloatingActionButtonBack(){
-        onBackPressed();
     }
 
     // 2 - Configuring ViewModel

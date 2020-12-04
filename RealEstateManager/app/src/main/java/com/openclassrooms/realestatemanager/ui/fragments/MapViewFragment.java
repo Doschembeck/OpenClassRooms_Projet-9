@@ -5,21 +5,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.DrawableRes;
-import androidx.fragment.app.Fragment;
-
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -28,10 +23,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.openclassrooms.realestatemanager.R;
-import com.openclassrooms.realestatemanager.ui.activities.MainActivity;
+import com.openclassrooms.realestatemanager.databinding.FragmentMapViewBinding;
 
-import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
@@ -39,12 +32,9 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MapViewFragment extends Fragment {
 
-//    @BindView(R.id.fragment_map_view_map) MapView myOpenMapView;
+    FragmentMapViewBinding binding;
 
     MapView map = null;
     Context mContext;
@@ -60,8 +50,8 @@ public class MapViewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map_view, container, false);
-        ButterKnife.bind(this,view);
+        binding = FragmentMapViewBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
 
 
         //handle permissions first, before map is created. not depicted here
@@ -97,6 +87,12 @@ public class MapViewFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     private void checkPermissions(){

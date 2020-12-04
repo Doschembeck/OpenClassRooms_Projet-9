@@ -7,7 +7,10 @@ import androidx.room.PrimaryKey;
 
 import java.util.List;
 
-@Entity()
+@Entity(foreignKeys = @ForeignKey(entity = Address.class,
+        parentColumns = "id",
+        childColumns = "addressId",
+        onDelete = ForeignKey.CASCADE))
 public class Property {
 
     @PrimaryKey(autoGenerate = true)

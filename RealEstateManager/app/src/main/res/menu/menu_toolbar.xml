@@ -6,7 +6,7 @@
     <!--    Todo: a faire fonctionner   -->
 
     <item
-        android:id="@+id/menu_drawer"
+        android:id="@+id/menu_toolbar_item_switchview"
         android:orderInCategory="100"
         android:icon="@drawable/ic_baseline_map_24"
         android:iconTint="#ffff"

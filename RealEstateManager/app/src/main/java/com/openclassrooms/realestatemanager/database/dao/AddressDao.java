@@ -22,4 +22,6 @@ public interface AddressDao {
     @Update
     int updateAddress(Address address);
 
+    // 'SELECT id FROM Address WHERE id = LAST_INSERT_ID()'
+
 }

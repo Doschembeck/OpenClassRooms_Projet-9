@@ -21,7 +21,7 @@ public class PropertyViewModel extends ViewModel {
 
     // REPOSITORY
     private final PropertyDataRepository propertyDataRepository;
-    private final AddressDataRepository addressDataRepository;
+    public final AddressDataRepository addressDataRepository; //todo: remettre en priver si pas utiliser ailleur
     private final Executor executor;
 
     // --- CONSTRUCTOR ---

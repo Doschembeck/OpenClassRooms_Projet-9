@@ -3,15 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <item android:id="@+id/activity_main_drawer_add_property"
+        android:icon="@drawable/ic_baseline_add_24"
+        android:title="Ajouter un bien" />
+
+    <group android:id="@+id/group_menu1">
+        <item android:id="@+id/activity_main_drawer_search_property"
+            android:icon="@drawable/ic_baseline_search_24"
+            android:title="Chercher un bien" />
+
+        <item android:id="@+id/activity_main_drawer_favorite"
+            android:icon="@drawable/ic_baseline_favorite_border_24"
+            android:title="Favoris" />
+    </group>
+
+    <group android:id="@+id/group_menu2">
+        <item
+            android:id="@+id/activity_main_drawer_comparator"
+            android:icon="@drawable/ic_baseline_compare_arrows_24"
+            android:title="Comparateur" />
         <item
             android:id="@+id/activity_main_drawer_loan_simulator"
             android:icon="@drawable/ic_baseline_calculate_24"
             android:title="Simulateur de prêt" />
-        <item
-            android:id="@+id/activity_main_drawer_settings"
-            android:icon="@drawable/ic_baseline_settings_24"
-            android:title="Paramètres" />
     </group>
 
+    <item
+        android:id="@+id/activity_main_drawer_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Paramètres" />
 </menu>

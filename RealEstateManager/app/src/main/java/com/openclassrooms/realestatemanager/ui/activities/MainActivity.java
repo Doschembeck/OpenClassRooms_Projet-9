@@ -1,42 +1,33 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.material.navigation.NavigationView;
 import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
-import com.openclassrooms.realestatemanager.model.Address;
-import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
-import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import com.openclassrooms.realestatemanager.ui.fragments.MapViewFragment;
+import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    @BindView(R.id.activity_main_floatingactionbutton_hamburger) FloatingActionButton mFloatingActionButtonAdd;
-    @BindView(R.id.activity_main_floatingactionbutton_switch_view) FloatingActionButton mFloatingActionButtonSwitchView;
-    @BindView(R.id.activity_main_drawer_layout) DrawerLayout drawerLayout;
-    @BindView(R.id.activity_main_nav_view) NavigationView navigationView;
-
     private PropertyViewModel mViewModel;
+    private ActivityMainBinding binding;
 
+    private static final String[]paths = {"Massieux", "- 120 000€"};
     private int currentFragment = 1;
     private final int ID_FRAGMENT_LIST = 1;
     private final int ID_FRAGMENT_MAP = 2;
@@ -46,19 +37,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         configureViewModel();
 
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        configureSpinnerToolbar();
+
+        binding.activityMainToolbar.setNavigationOnClickListener(view -> {
+            if (binding.activityMainDrawerLayout.isDrawerOpen(GravityCompat.START)){
+                binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START);
+            }else {
+                binding.activityMainDrawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+        binding.activityMainToolbar.setOnMenuItemClickListener(item -> {
+            switch (currentFragment){
+                case ID_FRAGMENT_LIST:
+                    showMapFragment();
+                    break;
+                case ID_FRAGMENT_MAP:
+                    showListFragment();
+                    break;
+                default:
+                    break;
+            }
+            return false;
+        });
 
         generateFakeFilterProperty();
 
         showListFragment();
 
         // Configuration
-        navigationView.setNavigationItemSelectedListener(this);
+        binding.activityMainNavView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private void configureSpinnerToolbar(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,paths);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.activityMainToolbarSpinner.setAdapter(adapter);
     }
 
     // 2 - Configuring ViewModel
@@ -75,41 +95,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewModel.mListFilterPropertyMutableLiveData.setValue(listTest);
     }
 
-    @OnClick(R.id.activity_main_floatingactionbutton_addproperty)
-    public void onClickFabAddProperty(){
-        startActivity(new Intent(this, EditPropertyActivity.class));
-    }
-
-    @OnClick(R.id.activity_main_floatingactionbutton_hamburger) public void onClickFloatingActionButtonHamburger(){
-        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)){
-            this.drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
-            this.drawerLayout.openDrawer(GravityCompat.START);
-        }
-    }
-
-    @OnClick(R.id.activity_main_floatingactionbutton_switch_view) public void onClickFloatingActionButtonSwitchView(){
-
-        switch (currentFragment){
-            case ID_FRAGMENT_LIST:
-                showMapFragment();
-                break;
-            case ID_FRAGMENT_MAP:
-                showListFragment();
-                break;
-            default:
-                break;
-        }
-    }
-
-
     // 4 - Create each fragment page and show it
 
     private void showMapFragment(){
         if (this.fragmentMap == null) this.fragmentMap = MapViewFragment.newInstance();
         this.startTransactionFragment(this.fragmentMap);
 
-        mFloatingActionButtonSwitchView.setImageResource(R.drawable.ic_baseline_list_24);
+        binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_list_24);
         currentFragment = ID_FRAGMENT_MAP;
     }
 
@@ -117,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (this.fragmentList == null) this.fragmentList = ListViewFragment.newInstance();
         this.startTransactionFragment(this.fragmentList);
 
-        mFloatingActionButtonSwitchView.setImageResource(R.drawable.ic_baseline_map_24);
+        binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_map_24);
         currentFragment = ID_FRAGMENT_LIST;
     }
 
@@ -133,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         // 5 - Handle back click to close menu
-        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.drawerLayout.closeDrawer(GravityCompat.START);
+        if (binding.activityMainDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -147,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         switch (id){
+            case R.id.activity_main_drawer_add_property:
+                startActivity(new Intent(this, EditPropertyActivity.class));
+                break;
             case R.id.activity_main_drawer_loan_simulator:
                 startActivity(new Intent(this, LoanSimulatorActivity.class));
                 break;
@@ -157,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        this.drawerLayout.closeDrawer(GravityCompat.START);
+        this.binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
     }

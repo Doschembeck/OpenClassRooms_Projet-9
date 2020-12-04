@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.openclassrooms.realestatemanager.R;
+import com.openclassrooms.realestatemanager.databinding.FragmentListviewBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Property;
@@ -21,15 +19,10 @@ import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class ListViewFragment extends Fragment {
 
-    // FOR DESIGN
-    @BindView(R.id.fragment_listview_recycler_view) RecyclerView mRecyclerView;
+    private FragmentListviewBinding binding;
 
-    //FOR DATA
     private List<Property> mListProperty;
     private PropertyAdapter mAdapter;
     private PropertyViewModel mViewModel;
@@ -44,8 +37,10 @@ public class ListViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         configureViewModel();
-        View view = inflater.inflate(R.layout.fragment_listview, container, false);
-        ButterKnife.bind(this, view);
+
+        binding = FragmentListviewBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+
         mContext = view.getContext();
 
         this.configureRecyclerView();
@@ -76,9 +71,9 @@ public class ListViewFragment extends Fragment {
         // 3.2 - Create mAdapter passing the list of users
         this.mAdapter = new PropertyAdapter(this.mListProperty);
         // 3.3 - Attach the mAdapter to the recyclerview to populate items
-        this.mRecyclerView.setAdapter(this.mAdapter);
+        binding.fragmentListviewRecyclerView.setAdapter(this.mAdapter);
         // 3.4 - Set layout manager to position the items
-        this.mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        binding.fragmentListviewRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
     }
 
     // -------------------

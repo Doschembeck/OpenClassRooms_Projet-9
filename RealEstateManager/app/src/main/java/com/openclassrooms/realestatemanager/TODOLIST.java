@@ -1,8 +1,13 @@
+
+
 //todo: améliorer les MODELS
+//todo: enregistrer les date avec Date et un DateConverter
+//todo: utiliser enumeration bdd type
 
-//todo: améliorer les UI de toutes les activity
+//todo: recuperer l'id apres avoir créer l'address
 
-//todo: ToolBar gerer les clicks, enelever la transparance et transformer toutes les activity en fragment
+//todo: regler la vue Map
 
-//todo: remplacer les 2 floating button par une BottomAppBar
+//todo: utiliser DataBinding
+
 

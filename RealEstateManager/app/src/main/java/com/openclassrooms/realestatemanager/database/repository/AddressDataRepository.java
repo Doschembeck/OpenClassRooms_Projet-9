@@ -19,8 +19,8 @@ public class AddressDataRepository {
     }
 
     // CREATE
-    public void createAddress(Address address){
-        this.addressDao.createAddress(address);
+    public long createAddress(Address address){
+        return this.addressDao.createAddress(address);
     }
 
     // UPDATE

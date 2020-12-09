@@ -26,18 +26,18 @@ public class PropertyDataRepository {
     }
 
     // CREATE
-    public void createProperty(Property property){
-        this.propertyDao.createProperty(property);
+    public long createProperty(Property property){
+        return this.propertyDao.createProperty(property);
     }
 
     // UPDATE
-    public void updateProperty(Property property){
-        this.propertyDao.updateProperty(property);
+    public long updateProperty(Property property){
+        return this.propertyDao.updateProperty(property);
     }
 
     // DELETE
-    public void deleteProperty(Property property){
-        this.propertyDao.deleteProperty(property);
+    public long deleteProperty(Property property){
+        return this.propertyDao.deleteProperty(property);
     }
 
 }

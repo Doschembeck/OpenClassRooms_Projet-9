@@ -1,10 +1,13 @@
 
 
 //todo: améliorer les MODELS
+//todo: doit recuperer l'id de la Property créer (probleme executor ne fait pas les retour)
+
 //todo: enregistrer les date avec Date et un DateConverter
+
 //todo: utiliser enumeration bdd type
 
-//todo: recuperer l'id apres avoir créer l'address
+//todo: Gérer les liveData avec la devise
 
 //todo: regler la vue Map
 

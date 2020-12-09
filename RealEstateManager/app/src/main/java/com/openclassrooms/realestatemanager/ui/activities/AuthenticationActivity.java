@@ -23,9 +23,18 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         binding.activityAuthenticationButton.setOnClickListener(v -> onClickButtonContinue());
 
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
+        initSharedPreferences();
 
         getRealEstateAgentSaved();
+
+    }
+
+    private void initSharedPreferences(){
+        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
+
+        if(Constants.PREF_DEFVALUE_TEST.equals(mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, Constants.PREF_DEFVALUE_TEST))){
+            mSharedPreferences.edit().putString(Constants.PREF_CURRENCY_KEY, "$").apply();
+        }
 
     }
 

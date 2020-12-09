@@ -47,11 +47,9 @@ public class EditPropertyActivity extends AppCompatActivity {
     private Property getPropertyWithUI(){
         //todo: faire une creation complete
 
-        //todo: JEN SUIS LA !!!
+        //todo: Recuperer l'id au lieu d'en faire un aleatoire
         Address address = new Address(new Random().nextInt(999999) , 69, "rue de la rouete", "Massieux", "01600", "France");
-        createAddress(address);
-
-        mViewModel.addressDataRepository.
+//        createAddress()
 
         boolean isSold = false;
         switch ((int) binding.activityEditPropertySpinnerIssold.getSelectedItemId()){
@@ -101,8 +99,8 @@ public class EditPropertyActivity extends AppCompatActivity {
         this.mViewModel.createProperty(property);
     }
 
-    private void createAddress(Address address){
-        this.mViewModel.createAddress(address);
+    private long createAddress(Address address){
+        return this.mViewModel.createAddress(address);
     }
 
 }

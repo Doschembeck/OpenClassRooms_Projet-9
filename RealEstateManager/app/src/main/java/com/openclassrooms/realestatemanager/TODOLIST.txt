@@ -1,7 +1,6 @@
 
 
 //todo: améliorer les MODELS
-//todo: doit recuperer l'id de la Property créer (probleme executor ne fait pas les retour)
 
 //todo: enregistrer les date avec Date et un DateConverter
 
@@ -12,5 +11,7 @@
 //todo: regler la vue Map
 
 //todo: utiliser DataBinding
+
+//todo: Utiliser geocoder pour création d'address
 
 

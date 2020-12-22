@@ -77,10 +77,8 @@ public class PropertyViewModel extends ViewModel {
 
     // CREATE ADDRESS
     //todo: lancer de maniére asynchrone et recuperer le retour de la methode
-    public void createAddress(Address address){
-        executor.execute(() -> {
-           this.addressDataRepository.createAddress(address);
-        });
+    public long createAddress(Address address){
+          return this.addressDataRepository.createAddress(address);
     }
 
     // UPDATE ADDRESS

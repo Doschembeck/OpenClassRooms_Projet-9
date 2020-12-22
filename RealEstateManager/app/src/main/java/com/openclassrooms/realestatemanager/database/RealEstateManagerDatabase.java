@@ -37,6 +37,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     RealEstateManagerDatabase.class, "REMDatabase2.db") //todo: supprimer "REMDatabase.db" puis le remettre
                             .addCallback(prepopulateDatabase())
+                            .allowMainThreadQueries()
                             .build();
                 }
             }

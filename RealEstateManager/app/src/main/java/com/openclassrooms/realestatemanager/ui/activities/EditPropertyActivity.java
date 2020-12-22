@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
@@ -37,6 +38,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         configureSpinnerPropertyType();
         configureSpinnerIsSold();
 
+
     }
 
     private void onClickButtonAddProperty(){
@@ -48,8 +50,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         //todo: faire une creation complete
 
         //todo: Recuperer l'id au lieu d'en faire un aleatoire
-        Address address = new Address(new Random().nextInt(999999) , 69, "rue de la rouete", "Massieux", "01600", "France");
-//        createAddress()
+        long addressId = createAddress(new Address(0, 69, "rue de la rouete", "Massieux", "01600", "France"));
 
         boolean isSold = false;
         switch ((int) binding.activityEditPropertySpinnerIssold.getSelectedItemId()){
@@ -67,7 +68,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         int nbOfRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofrooms.getText().toString());
         int nbOfBedRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofbedrooms.getText().toString());
         String description = binding.activityEditPropertyEdittextDescription.getText().toString();
-        long addressId = address.getId(); //todo: a voir
+//        long addressId = address.getId(); //todo: a voir
         String dateOfEntry = binding.activityEditPropertyEdittextDateofentry.getText().toString();
         String dateOfSold = binding.activityEditPropertyEdittextDateofsold.getText().toString();
         String realEstateAgent = binding.activityEditPropertyEdittextRealestateagent.getText().toString();
@@ -100,7 +101,7 @@ public class EditPropertyActivity extends AppCompatActivity {
     }
 
     private long createAddress(Address address){
-        return this.mViewModel.createAddress(address);
+        return this.mViewModel.createAddress(address); //todo: need return long
     }
 
 }

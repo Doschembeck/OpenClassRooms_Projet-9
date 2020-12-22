@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Address {
 
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long id; //todo: enlerver l'id du constructor
     private int streetNumber;
     private String streetName;
     private String city;

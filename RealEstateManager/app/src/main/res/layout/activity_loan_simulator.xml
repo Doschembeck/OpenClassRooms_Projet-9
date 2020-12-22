@@ -34,26 +34,18 @@
                         android:background="?android:attr/listDivider" />
 
                     <!--    Prix du bien     -->
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:text="Prix du bien :"/>
+                        android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/activity_loan_simulator_edittext_cost_property"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:textAlignment="center"
                             android:inputType="number"
-                            android:textColor="#2196F3"
-                            android:textSize="22sp"/>
-                    </LinearLayout>
+                            android:hint="Prix du bien :" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <SeekBar
                         android:id="@+id/activity_loan_simulator_seekbar_cost_property"
@@ -64,26 +56,18 @@
                         android:min="1" />
 
                     <!--    Montant de l'apport     -->
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:text="Montant de l'apport :"/>
+                        android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/activity_loan_simulator_edittext_amount_Contribution"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:inputType="number"
-                            android:textColor="#2196F3"
-                            android:textSize="22sp" />
-                    </LinearLayout>
+                            android:textAlignment="center"
+                            android:hint="Montant de l'apport :" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <SeekBar
                         android:id="@+id/activity_loan_simulator_seekbar_amount_Contribution"
@@ -98,26 +82,18 @@
                         android:background="?android:attr/listDivider" />
 
                     <!--    Montant du pret     -->
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:text="Montant de l'emprunt :"/>
+                        android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/activity_loan_simulator_edittext_amount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:inputType="number"
-                            android:textColor="#2196F3"
-                            android:textSize="22sp" />
-                    </LinearLayout>
+                            android:textAlignment="center"
+                            android:hint="Montant de l'emprunt :" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <SeekBar
                         android:id="@+id/activity_loan_simulator_seekbar_amount"
@@ -164,48 +140,32 @@
                         android:background="?android:attr/listDivider" />
 
                     <!--    Taux d'interet      -->
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:text="Taux d'interet :"/>
+                        android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/activity_loan_simulator_edittext_interest_rate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:inputType="numberDecimal"
-                            android:textColor="#2196F3"/>
-
-                    </LinearLayout>
+                            android:inputType="number"
+                            android:textAlignment="center"
+                            android:hint="Taux d'interet :" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <!--    Taux d'asurance     -->
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="20dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:text="Taux d'assurance :"/>
+                        android:layout_height="wrap_content">
 
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/activity_loan_simulator_edittext_insurance_rate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:inputType="numberDecimal"
-                            android:textColor="#2196F3" />
-
-                    </LinearLayout>
+                            android:inputType="number"
+                            android:textAlignment="center"
+                            android:hint="Taux d'assurance :" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <View
                         android:layout_width="match_parent"

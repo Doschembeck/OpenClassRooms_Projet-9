@@ -3,12 +3,14 @@ package com.openclassrooms.realestatemanager.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.database.repository.AddressDataRepository;
 import com.openclassrooms.realestatemanager.database.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Property;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -39,6 +41,11 @@ public class PropertyViewModel extends ViewModel {
     // GET ALL PROPERTY
     public LiveData<List<Property>> getAllProperty(){
         return this.propertyDataRepository.getAllProperty();
+    }
+
+    // GET FILTRED PROPERTIES
+    public LiveData<List<Property>> searchProperties(SupportSQLiteQuery query){
+        return this.propertyDataRepository.searchProperties(query);
     }
 
     // GET PROPERTY

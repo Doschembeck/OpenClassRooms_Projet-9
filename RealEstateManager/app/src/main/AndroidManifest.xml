@@ -15,10 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/REMTheme">
+        <activity android:name=".ui.activities.ParameterActivity"></activity>
         <activity
             android:name=".ui.activities.DetailsActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/REMTheme.NoActionBar"></activity>
+            android:theme="@style/REMTheme.NoActionBar" />
         <activity android:name=".ui.activities.SettingsActivity" />
         <activity android:name=".ui.activities.EditPropertyActivity" />
         <activity android:name=".ui.activities.LoanSimulatorActivity" />

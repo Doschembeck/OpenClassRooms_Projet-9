@@ -3,14 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.openclassrooms.realestatemanager.ui.activities.DetailsActivity">
 
-    <!--    Todo: a faire fonctionner   -->
-
     <item
         android:id="@+id/menu_toolbar_item_switchview"
         android:orderInCategory="100"
         android:icon="@drawable/ic_baseline_map_24"
         android:iconTint="#ffff"
         android:title="menu_drawer"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_toolbar_item_filter"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_filter_alt_24"
+        android:iconTint="#ffff"
+        android:title=""
         app:showAsAction="always" />
 
 </menu>

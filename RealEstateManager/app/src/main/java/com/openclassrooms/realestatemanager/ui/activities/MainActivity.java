@@ -1,13 +1,19 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.navigation.NavigationView;
@@ -15,6 +21,8 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
+import com.openclassrooms.realestatemanager.model.Parameter;
+import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
 import com.openclassrooms.realestatemanager.ui.fragments.MapViewFragment;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -26,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private PropertyViewModel mViewModel;
     private ActivityMainBinding binding;
+    private final int LAUNCH_PARAMETER_ACTIVITY = 932;
 
     private static final String[]paths = {"Massieux", "- 120 000€"};
     private int currentFragment = 1;
@@ -53,16 +62,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         binding.activityMainToolbar.setOnMenuItemClickListener(item -> {
-            switch (currentFragment){
-                case ID_FRAGMENT_LIST:
-                    showMapFragment();
+
+            switch (item.getItemId()){
+
+                case R.id.menu_toolbar_item_switchview:
+                    switch (currentFragment){
+                        case ID_FRAGMENT_LIST:
+                            showMapFragment();
+                            break;
+                        case ID_FRAGMENT_MAP:
+                            showListFragment();
+                            break;
+                        default:
+                            break;
+                    }
                     break;
-                case ID_FRAGMENT_MAP:
-                    showListFragment();
+
+                case R.id.menu_toolbar_item_filter:
+
+                    startActivityForResult(new Intent(this, ParameterActivity.class), LAUNCH_PARAMETER_ACTIVITY);
+
                     break;
                 default:
                     break;
             }
+
             return false;
         });
 
@@ -72,6 +96,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Configuration
         binding.activityMainNavView.setNavigationItemSelectedListener(this);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_PARAMETER_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+
+                Parameter parameter = data.getParcelableExtra("result");
+
+                this.mViewModel.searchProperties(parameter.getParamsFormatted()).observe(this, properties -> {
+                    mViewModel.mListPropertyMutableLiveData.setValue(properties);
+                });
+
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
 
     }
 

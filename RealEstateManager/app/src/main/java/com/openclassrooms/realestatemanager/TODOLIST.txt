@@ -14,4 +14,8 @@
 
 //todo: Utiliser geocoder pour création d'address
 
+//todo: faire le moteur de recherche
+    - Gérer le tri avec OrderBy
+    - Stocker les parametres de filtres dans le ViewModel
 
+//todo: Gerer la vue detaillé

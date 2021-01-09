@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.database.repository;
 
 import androidx.lifecycle.LiveData;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao;
 import com.openclassrooms.realestatemanager.model.Property;
@@ -18,6 +19,11 @@ public class PropertyDataRepository {
     // GET ALL PROPERTY
     public LiveData<List<Property>> getAllProperty(){
         return this.propertyDao.getAllProperty();
+    }
+
+    // GET PROPERTIES WITH FILTERS
+    public LiveData<List<Property>> searchProperties(SupportSQLiteQuery query){
+        return this.propertyDao.searchProperties(query);
     }
 
     // GET PROPERTY

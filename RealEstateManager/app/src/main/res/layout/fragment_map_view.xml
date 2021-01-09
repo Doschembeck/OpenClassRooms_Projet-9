@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.MapViewFragment">
 
-    <org.osmdroid.views.MapView
-        android:id="@+id/fragment_map_view_map"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content">
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/fragment_map_view_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </FrameLayout>

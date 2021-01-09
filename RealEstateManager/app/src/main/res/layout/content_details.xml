@@ -32,6 +32,7 @@
                     android:text="Maison et Villa"/>
 
                 <TextView
+                    android:id="@+id/content_detail_textview_nbofrooms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"

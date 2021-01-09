@@ -23,6 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class PropertyViewHolder extends RecyclerView.ViewHolder {
 
     private FragmentListviewItemBinding itemBinding;
+    long propertyId;
     SharedPreferences mSharedPreferences;
     private Context mContext;
 
@@ -41,14 +42,19 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void onClickCardView(){
-        mContext.startActivity(new Intent(mContext, DetailsActivity.class));
+        mContext.startActivity(new Intent(mContext, DetailsActivity.class).putExtra("property_id", propertyId));
     }
 
     public void updateWithProperty(Property property){
 
+        propertyId = property.getId();
+
         if (property.isSold()){
             itemBinding.fragmentListviewItemImageviewSold.setVisibility(View.VISIBLE);
             itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.VISIBLE);
+        } else {
+            itemBinding.fragmentListviewItemImageviewSold.setVisibility(View.GONE);
+            itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.GONE);
         }
 
         //todo: erreur ne charge pas l'image en ligne "property.getPhotoIdList().get(0).getPhoto()"

@@ -3,20 +3,30 @@ package com.openclassrooms.realestatemanager.ui.fragments.ListView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBinding;
+import com.openclassrooms.realestatemanager.injections.Injection;
+import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
+import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
+import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -45,7 +55,14 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         mContext.startActivity(new Intent(mContext, DetailsActivity.class).putExtra("property_id", propertyId));
     }
 
+    public void updateWithAddress(Address address){
+        itemBinding.fragmentListviewItemTextviewCity.setText(address.getCity());
+    }
+
     public void updateWithProperty(Property property){
+
+        //todo: Recuperer l'address et la passer en parametre de "updateWithAddress()"
+//        mViewModel.getAddress(property.getAddressId()).observe(, this::updateWithAddress);
 
         propertyId = property.getId();
 
@@ -57,17 +74,29 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
             itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.GONE);
         }
 
-        //todo: erreur ne charge pas l'image en ligne "property.getPhotoIdList().get(0).getPhoto()"
-        Glide.with(mContext)
-                .load(R.drawable.test_property)
-                .centerCrop()
-                .into(itemBinding.fragmentListviewItemImageviewPhoto);
+        //todo: Gérer maintenant la recuperation du premiere element de la liste "property.getPhotoIdList().get(0).getPhoto()"
+        if (property.getPhotoUrlList() != null){
+            Glide.with(mContext)
+                    .load(property.getPhotoUrlList())
+                    .error(R.drawable.image_not_found_scaled)
+                    .centerCrop()
+                    .into(itemBinding.fragmentListviewItemImageviewPhoto);
+        }else {
+            Glide.with(mContext)
+                    .load(R.drawable.image_not_found)
+                    .centerCrop()
+                    .into(itemBinding.fragmentListviewItemImageviewPhoto);
+        }
+
 
 //        mTextViewCity.setText(property.getAddressId().getCity());
         itemBinding.fragmentListviewItemTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
         itemBinding.fragmentListviewItemTextviewRooms.setText(property.getNbOfRooms() + " Pièces");
         itemBinding.fragmentListviewItemTextviewBedrooms.setText(property.getNbOfBedRooms() + " Chambres");
         itemBinding.fragmentListviewItemTextviewArea.setText(property.getArea() + "m²");
+
+        //todo: a supprimer
+        itemBinding.fragmentListviewItemTextviewCity.setText("%VILLE_NAME%");
 
     }
 }

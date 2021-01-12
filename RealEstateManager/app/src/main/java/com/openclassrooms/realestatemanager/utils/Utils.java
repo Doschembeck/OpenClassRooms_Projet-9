@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.openclassrooms.realestatemanager.model.Devise;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +14,9 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.TreeMap;
 
 /**
  * Created by Philippe on 21/02/2018.
@@ -21,18 +26,82 @@ public class Utils {
 
     private final static String  TAG = "TAG1";
 
-    /**
-     * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
-     * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
-     * @param dollars
-     * @return
-     */
-    public static int convertDollarToEuro(int dollars){
-        return (int) Math.round(dollars * 0.84228);
+    public static double convertDollarToDevise(double amountInDollars, String deviseAfterConvert){
+
+        switch (deviseAfterConvert){
+
+            case Constants.DEVISE_EUR_ISO:
+                return amountInDollars * Constants.DEVISE_EUR_RATE_CHANGE_FROM_USD;
+
+            case Constants.DEVISE_GBP_ISO:
+                return amountInDollars * Constants.DEVISE_GBP_RATE_CHANGE_FROM_USD;
+
+            case Constants.DEVISE_JPY_ISO:
+                return amountInDollars * Constants.DEVISE_JPY_RATE_CHANGE_FROM_USD;
+
+            case Constants.DEVISE_KRW_ISO:
+                return amountInDollars * Constants.DEVISE_KRW_RATE_CHANGE_FROM_USD;
+
+            case Constants.DEVISE_CHF_ISO:
+                return amountInDollars * Constants.DEVISE_CHF_RATE_CHANGE_FROM_USD;
+
+            default:
+                return amountInDollars;
+        }
     }
 
-    public static int convertEuroToDollar(int euro){
-        return (int) Math.round(euro * 1.187);
+    public static double convertDeviseToDollar(double amountInDevise, String deviseBeforeConvert){
+
+        switch (deviseBeforeConvert){
+
+            case Constants.DEVISE_EUR_ISO:
+                return (int) (amountInDevise / Constants.DEVISE_EUR_RATE_CHANGE_FROM_USD);
+
+            case Constants.DEVISE_GBP_ISO:
+                return (int) (amountInDevise / Constants.DEVISE_GBP_RATE_CHANGE_FROM_USD);
+
+            case Constants.DEVISE_JPY_ISO:
+                return (int) (amountInDevise / Constants.DEVISE_JPY_RATE_CHANGE_FROM_USD);
+
+            case Constants.DEVISE_KRW_ISO:
+                return (int) (amountInDevise / Constants.DEVISE_KRW_RATE_CHANGE_FROM_USD);
+
+            case Constants.DEVISE_CHF_ISO:
+                return (int) (amountInDevise / Constants.DEVISE_CHF_RATE_CHANGE_FROM_USD);
+
+            default:
+                return (int) (amountInDevise);
+        }
+    }
+
+    private static String getSymbolDevise(String deviseISO){
+
+        switch (deviseISO){
+
+            case Constants.DEVISE_EUR_ISO:
+                return Constants.DEVISE_EUR_SYMBOL;
+
+            case Constants.DEVISE_GBP_ISO:
+                return Constants.DEVISE_GBP_SYMBOL;
+
+            case Constants.DEVISE_JPY_ISO:
+                return Constants.DEVISE_JPY_SYMBOL;
+
+            case Constants.DEVISE_KRW_ISO:
+                return Constants.DEVISE_KRW_SYMBOL;
+
+            case Constants.DEVISE_CHF_ISO:
+                return Constants.DEVISE_CHF_SYMBOL;
+
+            default:
+                return Constants.DEVISE_USD_SYMBOL;
+        }
+    }
+
+    public static String formatEditTextWithDevise(double amountInDollars, String deviseISO){
+        double amountInDevise = convertDollarToDevise(amountInDollars, deviseISO);
+
+        return String.format("%s %s", NumberFormat.getInstance(Locale.FRANCE).format((long) amountInDevise), getSymbolDevise(deviseISO));
     }
 
     /**
@@ -110,10 +179,6 @@ public class Utils {
         return (calculateMonthlyPaymentInterestBankOnly(amountLoan, annualRateBank, nbOfMonthlyPayment)
                 + calculateMonthlyPaymentInsuranceOnly(amountLoan, annualRateInsurance))
                 * nbOfMonthlyPayment;
-    }
-
-    public static String formatEditTextWithDevise(double amountLoan, String devise){
-        return String.format("%s %s", NumberFormat.getInstance().format((double) Math.round(amountLoan * 100) / 100), devise);
     }
 
     //endregion

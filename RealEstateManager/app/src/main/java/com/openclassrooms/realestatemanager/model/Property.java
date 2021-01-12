@@ -1,10 +1,10 @@
 package com.openclassrooms.realestatemanager.model;
 
-import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity(foreignKeys = @ForeignKey(entity = Address.class,
@@ -21,17 +21,16 @@ public class Property {
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
-//    private List<Long> photoIdList;
+    private List<String> NearbyPOI;
+    private String photoUrlList; // todo; créer un objet special une description dois etre associé
     private long addressId;
-//    private List<String> nearbyPOI; // Nearby points of interest (school, shops, park, etc.);
-    private boolean isSold; // The status of the property (still available or sold);
-    private String dateOfEntry; // The date of entry of the property on the market;
     private String realEstateAgent; // The real estate agent in charge of this property.
-    private String createdAt;
-    private String updatedAt;
-    private String dateOfSale; // The date of sale of the property, if it has been sold;
+    private Boolean isSold;
+    private Date dateOfSale; // The date of sale of the property, if it has been sold;
+    private Date createdAt;
+    private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, boolean isSold, String dateOfEntry, String realEstateAgent, String createdAt, String updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, List<String> nearbyPOI, String photoUrlList, long addressId, String realEstateAgent, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -39,10 +38,12 @@ public class Property {
         this.nbOfRooms = nbOfRooms;
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
+        NearbyPOI = nearbyPOI;
+        this.photoUrlList = photoUrlList;
         this.addressId = addressId;
-        this.isSold = isSold;
-        this.dateOfEntry = dateOfEntry;
         this.realEstateAgent = realEstateAgent;
+        this.isSold = dateOfSale != null;
+        this.dateOfSale = dateOfSale;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -95,22 +96,6 @@ public class Property {
         this.addressId = addressId;
     }
 
-    public boolean isSold() {
-        return isSold;
-    }
-
-    public void setSold(boolean sold) {
-        this.isSold = sold;
-    }
-
-    public String getDateOfEntry() {
-        return dateOfEntry;
-    }
-
-    public void setDateOfEntry(String dateOfEntry) {
-        this.dateOfEntry = dateOfEntry;
-    }
-
     public String getRealEstateAgent() {
         return realEstateAgent;
     }
@@ -119,27 +104,19 @@ public class Property {
         this.realEstateAgent = realEstateAgent;
     }
 
-    public String getDateOfSale() {
-        return dateOfSale;
-    }
-
-    public void setDateOfSale(String dateOfSale) {
-        this.dateOfSale = dateOfSale;
-    }
-
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -157,5 +134,37 @@ public class Property {
 
     public long getId() {
         return id;
+    }
+
+    public String getPhotoUrlList() {
+        return photoUrlList;
+    }
+
+    public void setPhotoUrlList(String photoUrlList) {
+        this.photoUrlList = photoUrlList;
+    }
+
+    public Date getDateOfSale() {
+        return dateOfSale;
+    }
+
+    public void setDateOfSale(Date dateOfSale) {
+        this.dateOfSale = dateOfSale;
+    }
+
+    public Boolean isSold(){
+        return this.isSold;
+    }
+
+    public void setSold(Boolean sold) {
+        isSold = sold;
+    }
+
+    public List<String> getNearbyPOI() {
+        return NearbyPOI;
+    }
+
+    public void setNearbyPOI(List<String> nearbyPOI) {
+        NearbyPOI = nearbyPOI;
     }
 }

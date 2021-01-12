@@ -56,7 +56,6 @@ public class ListViewFragment extends Fragment {
         return view;
     }
 
-    // 2 - Configuring ViewModel
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(mContext);
         this.mViewModel = ViewModelProviders.of(requireActivity(), mViewModelFactory).get(PropertyViewModel.class);

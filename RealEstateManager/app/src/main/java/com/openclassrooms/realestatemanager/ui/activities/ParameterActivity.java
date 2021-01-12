@@ -41,10 +41,12 @@ public class ParameterActivity extends AppCompatActivity {
         parameter.setNbOfBedRoomsMax(Integer.parseInt(mBinding.activityParameterEdittextNbOfBedRoomsmax.getText().toString()));
         parameter.setRealEstateAgent(mBinding.activityParameterEdittextRealEstateAgent.getText().toString());
 
-        if(mBinding.activityParameterRadiobuttonSold.isChecked()){
-            parameter.setSold((byte) 1);
-        }else if(mBinding.activityParameterRadiobuttonAvailable.isChecked()){
+        if(mBinding.activityParameterRadiobuttonAvailable.isChecked()){
             parameter.setSold((byte) 0);
+        }else if(mBinding.activityParameterRadiobuttonSold.isChecked()){
+            parameter.setSold((byte) 1);
+        } else if(mBinding.activityParameterRadiobuttonAll.isChecked()){
+            parameter.setSold((byte) 2);
         }
 
         setResult(Activity.RESULT_OK, new Intent().putExtra("result", parameter));

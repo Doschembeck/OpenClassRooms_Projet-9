@@ -8,11 +8,13 @@ import androidx.room.Database;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.openclassrooms.realestatemanager.database.dao.AddressDao;
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.DateConverter;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 
@@ -20,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Database(entities = {Property.class, Address.class}, version = 1, exportSchema = false)
+@TypeConverters({DateConverter.class})
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
     // SINGLETON
@@ -35,7 +38,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             synchronized (RealEstateManagerDatabase.class){
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    RealEstateManagerDatabase.class, "REMDatabase2.db") //todo: supprimer "REMDatabase.db" puis le remettre
+                    RealEstateManagerDatabase.class, "REMDatabase3.db") //todo: supprimer "REMDatabase.db" / "REMDatabase2.db" puis le remettre
                             .addCallback(prepopulateDatabase())
                             .allowMainThreadQueries()
                             .build();

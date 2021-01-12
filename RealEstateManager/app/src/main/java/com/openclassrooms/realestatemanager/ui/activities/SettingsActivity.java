@@ -10,10 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.bumptech.glide.util.Util;
 import com.openclassrooms.realestatemanager.databinding.ActivitySettingsBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -26,7 +29,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private PropertyViewModel mViewModel;
     private SharedPreferences mSharedPreferences;
-    private static final String[]paths = {"$", "€", "£", "¥", "₩", "CHF"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +47,14 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void configureSpinnerCurrency(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,paths);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.LIST_OF_DEVISES_NAME);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.activitySettingsSpinnerCurrency.setAdapter(adapter);
 
         binding.activitySettingsSpinnerCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSharedPreferences.edit().putString(Constants.PREF_CURRENCY_KEY, paths[position]).apply(); //todo: doit gerer les liveDate (Observables)
+                mSharedPreferences.edit().putString(Constants.PREF_CURRENCY_KEY, Constants.LIST_OF_DEVISES_ISO[position]).apply(); //todo: doit gerer les liveDate (Observables)
             }
 
             @Override

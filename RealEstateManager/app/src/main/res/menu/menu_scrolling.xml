@@ -4,7 +4,6 @@
     tools:context="com.openclassrooms.realestatemanager.ui.activities.DetailsActivity">
 
 <!--    Todo: a faire fonctionner   -->
-
     <item
         android:id="@+id/action_back"
         android:orderInCategory="100"

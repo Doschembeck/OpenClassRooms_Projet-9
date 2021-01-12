@@ -19,17 +19,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:text="Type de propriété :"/>
                 <Spinner
@@ -38,20 +37,35 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_edit_property_edittext_price"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textAlignment="center"
-                    android:hint="Prix :"
-                    android:text="134000"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="1"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:hint="Prix en dollars"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/activity_edit_property_spinner_devise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,8 +84,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:textAlignment="center"
-                        android:hint="Surface en m² :"
-                        android:text="112"/>
+                        android:hint="Surface en m²"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -85,8 +98,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:textAlignment="center"
-                        android:hint="Nombres de pièces :"
-                        android:text="5"/>
+                        android:hint="Nombres de pièces"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -100,11 +112,9 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:textAlignment="center"
-                        android:hint="Nombres de chambres :"
-                        android:text="3"/>
+                        android:hint="Nombres de chambres"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -115,71 +125,10 @@
                     android:id="@+id/activity_edit_property_edittext_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:textAlignment="center"
-                    android:hint="Description :"
+                    android:hint="Description"
                     android:text="Maison sans vis a vis, bien située..."/>
             </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:text="Disponnibilité :"/>
-                <Spinner
-                    android:id="@+id/activity_edit_property_spinner_issold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:text="Date de vente :"/>
-
-                <EditText
-                    android:id="@+id/activity_edit_property_edittext_dateofsold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="02-12-2020"
-                    android:textSize="22sp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:text="Date d'entrée :"/>
-
-                <EditText
-                    android:id="@+id/activity_edit_property_edittext_dateofentry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="02-12-2020"
-                    android:textSize="22sp"/>
-            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -192,9 +141,225 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:textAlignment="center"
-                    android:hint="Agent immobilier :"
-                    android:text="Thomas"/>
+                    android:hint="Agent immobilier"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Points d'interet a proximité"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="22sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/activity_edit_property_edittext_nearbypoi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/activity_edit_property_button_addnearbypoi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ajouter"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/activity_edit_property_listview_nearbypoi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- region Address -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Adresse"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="22sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/activity_edit_property_button_actualposition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Position actuel"/>
+
+                <Button
+                    android:id="@+id/activity_edit_property_button_geocoding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="GeoCoder"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_streetnumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:inputType="number"
+                        android:hint="Numero de rue"
+                        android:text="69"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_streetname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:inputType="textPostalAddress"
+                        android:hint="Nom de la rue"
+                        android:text="rue de la Rouette"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_zipcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:inputType="number"
+                        android:hint="Code postal"
+                        android:text="01600"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:inputType="textPostalAddress"
+                        android:hint="Ville"
+                        android:text="Massieux"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_country"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:inputType="textPostalAddress"
+                        android:hint="Pays"
+                        android:text="France"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <!--endregion-->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:text="Vendu :"/>
+
+                <Switch
+                    android:id="@+id/activity_edit_property_switch_issold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/activity_edit_property_linearlayout_dateofsale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Date de vente :"/>
+
+                <EditText
+                    android:id="@+id/activity_edit_property_edittext_dateofsold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/activity_edit_property_imageview_dateofsale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_date_range_24"/>
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/activity_edit_property_addproperty"

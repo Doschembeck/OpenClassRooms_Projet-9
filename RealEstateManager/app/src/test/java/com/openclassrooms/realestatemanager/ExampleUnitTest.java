@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager;
 
+import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
 
 import org.junit.Test;
@@ -63,16 +64,16 @@ public class ExampleUnitTest {
 
     @Test
     public void convertDollarToEuroTest() throws Exception {
-        int expected = 543;
-        int actual = Utils.convertDollarToEuro(645);
+        int expected = 529;
+        int actual = (int) Utils.convertDollarToDevise(645, Constants.DEVISE_EUR_ISO);
 
         assertEquals(expected, actual, 0.0001);
     }
 
     @Test
     public void convertEuroToDollarTest() throws Exception {
-        int expected = 766;
-        int actual = Utils.convertEuroToDollar(645);
+        int expected = 787;
+        int actual = (int) Utils.convertDeviseToDollar(645, Constants.DEVISE_EUR_ISO);
 
         assertEquals(expected, actual,0.001);
     }

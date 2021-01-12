@@ -4,14 +4,13 @@
 //todo: regler la vue Map
 //todo: Utiliser geocoder pour création d'address
 
-//todo: ajouter la table NearbyPOI pour pouvoir gérer une liste
+// --- todo: ajouter la table NearbyPOI et Photo pour pouvoir gérer une liste
 
 //todo: Gérer les liveData avec la devise
 
-
-
 //todo: utiliser DataBinding
 
+//todo: rajouter des possibilité de filtrage
 //todo: faire le moteur de recherche
     - Gérer le tri avec OrderBy
     - Stocker les parametres de filtres dans le ViewModel

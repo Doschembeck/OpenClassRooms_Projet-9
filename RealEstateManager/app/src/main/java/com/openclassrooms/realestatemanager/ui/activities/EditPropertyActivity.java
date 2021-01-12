@@ -19,6 +19,7 @@ import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,7 @@ public class EditPropertyActivity extends AppCompatActivity {
     private int thisYear;
     private int thisMonth;
     private int thisDayOfMonth;
-    private List<String> selectedNearbyPOI = Arrays.asList("Ecole", "Commerce");
+    private List<String> selectedNearbyPOI = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +47,7 @@ public class EditPropertyActivity extends AppCompatActivity {
 
         mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
 
-        binding.activityEditPropertyToolbar.toolbarOnlyback.setOnClickListener(v -> onBackPressed());
-        binding.activityEditPropertyAddproperty.setOnClickListener(v -> onClickButtonAddProperty());
-        binding.activityEditPropertySwitchIssold.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked){
-                binding.activityEditPropertyLinearlayoutDateofsale.setVisibility(View.VISIBLE);
-            }else {
-                binding.activityEditPropertyLinearlayoutDateofsale.setVisibility(View.GONE);
-            }
-        });
-        binding.activityEditPropertyButtonAddnearbypoi.setOnClickListener(v -> {
-            selectedNearbyPOI.add(binding.activityEditPropertyEdittextNearbypoi.getText().toString());
-        });
+        updateDate();
 
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
             month++;
@@ -70,22 +60,35 @@ public class EditPropertyActivity extends AppCompatActivity {
             binding.activityEditPropertyEdittextDateofsold.setText(String.format("%d/%s/%d", dayOfMonth, strMonth, year));
         };
 
-        updateDate();
-
+        // Listeners
+        binding.activityEditPropertyToolbar.toolbarOnlyback.setOnClickListener(v -> onBackPressed());
+        binding.activityEditPropertyAddproperty.setOnClickListener(v -> onClickButtonAddProperty());
+        binding.activityEditPropertySwitchIssold.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked){
+                binding.activityEditPropertyLinearlayoutDateofsale.setVisibility(View.VISIBLE);
+            }else {
+                binding.activityEditPropertyLinearlayoutDateofsale.setVisibility(View.GONE);
+            }
+        });
+        binding.activityEditPropertyButtonAddnearbypoi.setOnClickListener(this::onClickButtonAddNearbyPOI);
         binding.activityEditPropertyImageviewDateofsale.setOnClickListener(v -> {
             datePickerDialog = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, dateSetListener, thisYear, thisMonth, thisDayOfMonth);
             datePickerDialog.show();
         });
 
+        // Configuration
         configureSpinnerDevise();
         configureSpinnerPropertyType();
-        configureListViewNearbyPOI();
 
+        // UpdateUI
         updateUIWithSharedPreferences();
+        generateFakeInfoProperty(); //todo à supprimer
 
-        //todo à supprimer
-        generateFakeInfoProperty();
+    }
 
+    private void onClickButtonAddNearbyPOI(View view){
+        selectedNearbyPOI.add(binding.activityEditPropertyEdittextNearbypoi.getText().toString());
+        binding.activityEditPropertyTextviewNearbypoi.append(binding.activityEditPropertyEdittextNearbypoi.getText() + "\n");
     }
 
     private void updateDate(){
@@ -115,11 +118,6 @@ public class EditPropertyActivity extends AppCompatActivity {
     private void onClickButtonAddProperty(){
         createProperty(getPropertyWithUI());
         finish();
-    }
-
-    private void configureListViewNearbyPOI(){
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selectedNearbyPOI);
-        binding.activityEditPropertyListviewNearbypoi.setAdapter(adapter);
     }
 
     private void configureSpinnerDevise(){
@@ -154,8 +152,14 @@ public class EditPropertyActivity extends AppCompatActivity {
 
         if (binding.activityEditPropertySwitchIssold.isChecked()) dateOfSale = thisDate; else dateOfSale = null;
 
+        String nearbyPOI = null;
+        if (selectedNearbyPOI.size() > 0){
+            nearbyPOI = selectedNearbyPOI.get(0);
+        }
+
+        //todo: modifier la sa n'ajoute que le premier de la liste de Nearby
         return new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
-                selectedNearbyPOI, photoUrlList, addressId, realEstateAgent , dateOfSale, createdAt, updatedAt);
+                nearbyPOI, photoUrlList, addressId, realEstateAgent , dateOfSale, createdAt, updatedAt);
     }
 
     private void generateFakeInfoProperty() {

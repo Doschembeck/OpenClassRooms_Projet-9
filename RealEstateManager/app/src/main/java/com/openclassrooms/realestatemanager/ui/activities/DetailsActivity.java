@@ -89,6 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
                 .centerCrop()
                 .into(binding.activityDetailsPhotolist);
 
+        includeBinding.contentDetailTextviewDateofentry.setText(new SimpleDateFormat("dd/MM/yyyy à hh:mm").format(property.getCreatedAt()));
         includeBinding.contentDetailTextviewTypeofproperty.setText(Constants.ListPropertyType[property.getPropertyTypeId()]);
         includeBinding.contentDetailTextviewNbofrooms.setText("" + property.getNbOfRooms());
         includeBinding.contentDetailTextviewNbofbedrooms.setText("" + property.getNbOfBedRooms());
@@ -98,9 +99,17 @@ public class DetailsActivity extends AppCompatActivity {
         includeBinding.contentDetailTextviewDescription.setText(property.getDescription());
         includeBinding.contentDetailTextviewRealestateagent.setText(property.getRealEstateAgent());
 
+
+        if (property.getNearbyPOI() != null){
+            includeBinding.activityEditPropertyLinearlayoutNearbypoi.setVisibility(View.VISIBLE);
+            includeBinding.contentDetailTextviewNearbypoi.setText(property.getNearbyPOI());
+        } else {
+            includeBinding.activityEditPropertyLinearlayoutNearbypoi.setVisibility(View.GONE);
+        }
+
         if (property.isSold()){
             includeBinding.contentDetailLinearlayoutDateofsale.setVisibility(View.VISIBLE);
-            includeBinding.contentDetailTextviewDateofsale.setText(new SimpleDateFormat("dd/MM/yyyy").format(property.getDateOfSale()));
+            includeBinding.contentDetailTextviewDateofsale.setText(new SimpleDateFormat("dd/MM/yyyy à hh:mm").format(property.getDateOfSale()));
         }else {
             includeBinding.contentDetailLinearlayoutDateofsale.setVisibility(View.GONE);
         }

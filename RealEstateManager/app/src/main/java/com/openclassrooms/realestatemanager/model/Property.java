@@ -5,7 +5,6 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity(foreignKeys = @ForeignKey(entity = Address.class,
         parentColumns = "id",
@@ -21,8 +20,8 @@ public class Property {
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
-    private List<String> NearbyPOI;
-    private String photoUrlList; // todo; créer un objet special une description dois etre associé
+    private String nearbyPOI; // todo: Créer une table pour pouvoir faire une liste
+    private String photoUrlList; // todo; créer un objet special une description dois etre associé et en faire une liste
     private long addressId;
     private String realEstateAgent; // The real estate agent in charge of this property.
     private Boolean isSold;
@@ -30,7 +29,7 @@ public class Property {
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, List<String> nearbyPOI, String photoUrlList, long addressId, String realEstateAgent, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, String nearbyPOI, String photoUrlList, long addressId, String realEstateAgent, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -38,7 +37,7 @@ public class Property {
         this.nbOfRooms = nbOfRooms;
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
-        NearbyPOI = nearbyPOI;
+        this.nearbyPOI = nearbyPOI;
         this.photoUrlList = photoUrlList;
         this.addressId = addressId;
         this.realEstateAgent = realEstateAgent;
@@ -160,11 +159,11 @@ public class Property {
         isSold = sold;
     }
 
-    public List<String> getNearbyPOI() {
-        return NearbyPOI;
+    public String getNearbyPOI() {
+        return nearbyPOI;
     }
 
-    public void setNearbyPOI(List<String> nearbyPOI) {
-        NearbyPOI = nearbyPOI;
+    public void setNearbyPOI(String nearbyPOI) {
+        this.nearbyPOI = nearbyPOI;
     }
 }

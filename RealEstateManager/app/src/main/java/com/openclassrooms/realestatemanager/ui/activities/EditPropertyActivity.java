@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import com.openclassrooms.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
@@ -116,7 +117,7 @@ public class EditPropertyActivity extends AppCompatActivity {
     }
 
     private void onClickButtonAddProperty(){
-        createProperty(getPropertyWithUI());
+        createCompleteProperty();
         finish();
     }
 
@@ -126,7 +127,7 @@ public class EditPropertyActivity extends AppCompatActivity {
         binding.activityEditPropertySpinnerDevise.setAdapter(adapter);
     }
 
-    private Property getPropertyWithUI(){
+    private void createCompleteProperty(){
         //todo: faire une creation complete
 
         // Créer l'address
@@ -145,7 +146,6 @@ public class EditPropertyActivity extends AppCompatActivity {
         int nbOfBedRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofbedrooms.getText().toString());
         String description = binding.activityEditPropertyEdittextDescription.getText().toString();
         String realEstateAgent = binding.activityEditPropertyEdittextRealestateagent.getText().toString();
-        String photoUrlList = generateFakePhotos();
         Date createdAt = thisDate;
         Date updatedAt = thisDate;
         Date dateOfSale;
@@ -157,9 +157,16 @@ public class EditPropertyActivity extends AppCompatActivity {
             nearbyPOI = selectedNearbyPOI.get(0);
         }
 
-        //todo: modifier la sa n'ajoute que le premier de la liste de Nearby
-        return new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
-                nearbyPOI, photoUrlList, addressId, realEstateAgent , dateOfSale, createdAt, updatedAt);
+        long propertyId = createProperty(new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
+                nearbyPOI, addressId, realEstateAgent , dateOfSale, createdAt, updatedAt));
+
+        // Créer les photos
+        List<String> photoUrlList = generateFakePhotos();
+
+        for (int i=0; i < photoUrlList.size(); i++){
+            createPhoto(new Photo(0, propertyId,photoUrlList.get(i), "Très jolie photo !"));
+        }
+
     }
 
     private void generateFakeInfoProperty() {
@@ -181,7 +188,9 @@ public class EditPropertyActivity extends AppCompatActivity {
         binding.activityEditPropertySwitchIssold.setChecked(isSold);
     }
 
-    private String generateFakePhotos(){
+    private List<String> generateFakePhotos(){
+
+        List<String> newList = new ArrayList<>();
         List<String> listPhotos = Arrays.asList("https://photo.barnes-international.com/annonces/bms/178/xl/14569816415d5d245c21a232.24573384_b968cfeda8_1920.jpg",
                 "https://www.book-a-flat.com/magazine/wp-content/uploads/2016/12/espace-optimise-appartement-meuble-paris.jpg",
                 "https://www.vanupied.com/wp-content/uploads/68550354.jpg",
@@ -193,9 +202,13 @@ public class EditPropertyActivity extends AppCompatActivity {
                 "https://costainvest.com/media/images/properties/thumbnails/61097_lg.jpg"
                 );
 
+        int nbOfPhotos = 1 + new Random().nextInt(listPhotos.size() - 1);
 
-        return listPhotos.get(new Random().nextInt(listPhotos.size()));
+        for (int i = 0; i < nbOfPhotos; i++){
+            newList.add(listPhotos.get(new Random().nextInt(listPhotos.size())));
+        }
 
+        return newList;
     }
 
     private void configureSpinnerPropertyType(){
@@ -209,8 +222,12 @@ public class EditPropertyActivity extends AppCompatActivity {
         this.mViewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(this)).get(PropertyViewModel.class);
     }
 
-    private void createProperty(Property property){
-        this.mViewModel.createProperty(property);
+    private long createProperty(Property property){
+        return this.mViewModel.createProperty(property);
+    }
+
+    private void createPhoto(Photo photo){
+        this.mViewModel.createPhoto(photo);
     }
 
     private long createAddress(Address address){

@@ -4,7 +4,7 @@
 //todo: regler la vue Map
 //todo: Utiliser geocoder pour création d'address
 
-// --- todo: ajouter la table NearbyPOI et Photo pour pouvoir gérer une liste
+// --- todo: ajouter la table NearbyPOI pour pouvoir gérer une liste ===============================
 
 //todo: Gérer les liveData avec la devise
 
@@ -19,3 +19,4 @@
 
 //todo: Gerer la vue detaillé
     - Faire fonctionner le menu de la toolbar
+    - --- Afficher toutes les photos en les faisant défiler de gauche a droite ! ===================

@@ -27,12 +27,14 @@ import com.openclassrooms.realestatemanager.databinding.ContentDetailsBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -80,14 +82,19 @@ public class DetailsActivity extends AppCompatActivity {
                 address.getCountry()));
     }
 
+    private void updateUIWithPhoto(List<Photo> photoList){
+
+        //todo: voir pour afficher la liste de toutes les photos
+        Glide.with(this)
+                .load(photoList.get(0).getPhoto())
+                .centerCrop()
+                .into(binding.activityDetailsPhotolist);
+    }
+
     private void updateUIWithProperty(Property property){
 
         mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);
-
-        Glide.with(this)
-                .load(property.getPhotoUrlList())
-                .centerCrop()
-                .into(binding.activityDetailsPhotolist);
+        mViewModel.getAllPropertyPhoto(property.getAddressId()).observe(this, this::updateUIWithPhoto);
 
         includeBinding.contentDetailTextviewDateofentry.setText(new SimpleDateFormat("dd/MM/yyyy à hh:mm").format(property.getCreatedAt()));
         includeBinding.contentDetailTextviewTypeofproperty.setText(Constants.ListPropertyType[property.getPropertyTypeId()]);

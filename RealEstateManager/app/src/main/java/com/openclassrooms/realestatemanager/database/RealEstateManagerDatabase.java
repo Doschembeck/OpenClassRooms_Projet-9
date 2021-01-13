@@ -12,6 +12,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.openclassrooms.realestatemanager.database.dao.AddressDao;
+import com.openclassrooms.realestatemanager.database.dao.PhotoDao;
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao;
 import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.DateConverter;
@@ -21,7 +22,7 @@ import com.openclassrooms.realestatemanager.model.Property;
 import java.util.Arrays;
 import java.util.List;
 
-@Database(entities = {Property.class, Address.class}, version = 1, exportSchema = false)
+@Database(entities = {Property.class, Address.class, Photo.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
@@ -31,6 +32,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     // DAO
     public abstract PropertyDao propertyDao();
     public abstract AddressDao addressDao();
+    public abstract PhotoDao PhotoDao();
 
     // INSTANCE
     public static RealEstateManagerDatabase getInstance(Context context){

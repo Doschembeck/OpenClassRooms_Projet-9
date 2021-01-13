@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.database.repository.AddressDataRepository;
+import com.openclassrooms.realestatemanager.database.repository.PhotoDataRepository;
 import com.openclassrooms.realestatemanager.database.repository.PropertyDataRepository;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 
 import java.util.ArrayList;
@@ -24,18 +26,20 @@ public class PropertyViewModel extends ViewModel {
     // REPOSITORY
     private final PropertyDataRepository propertyDataRepository;
     public final AddressDataRepository addressDataRepository; //todo: remettre en priver si pas utiliser ailleur
+    private final PhotoDataRepository photoDataRepository;
     private final Executor executor;
 
     // --- CONSTRUCTOR ---
 
-    public PropertyViewModel(PropertyDataRepository propertyDataRepository, AddressDataRepository addressDataRepository, Executor executor) {
+    public PropertyViewModel(PropertyDataRepository propertyDataRepository, AddressDataRepository addressDataRepository, PhotoDataRepository photoDataRepository, Executor executor) {
         this.propertyDataRepository = propertyDataRepository;
         this.addressDataRepository = addressDataRepository;
+        this.photoDataRepository = photoDataRepository;
         this.executor = executor;
     }
 
     // ---------------
-    //  FOR PROPERTY
+    //  region FOR PROPERTY
     // ---------------
 
     // GET ALL PROPERTY
@@ -54,24 +58,54 @@ public class PropertyViewModel extends ViewModel {
     }
 
     // CREATE PROPERTY
-    public void createProperty(Property property){
-        executor.execute(() -> {
-            this.propertyDataRepository.createProperty(property);
-        });
+    public long createProperty(Property property){
+        return this.propertyDataRepository.createProperty(property);
     }
 
     // UPDATE PROPERTY
     public void updateProperty(Property property){
-        executor.execute(() -> {
-            this.propertyDataRepository.updateProperty(property);
-        });
+        executor.execute(() -> this.propertyDataRepository.updateProperty(property));
     }
 
     public void deleteProperty(Property property){
+        executor.execute(() -> this.propertyDataRepository.deleteProperty(property));
+    }
+
+    // endregion
+
+    // ---------------
+    //  region FOR PHOTO
+    // ---------------
+
+    // GET ALL PHOTOS
+    public LiveData<List<Photo>> getAllPropertyPhoto(long propertyId){
+        return this.photoDataRepository.getAllPropertyPhotos(propertyId);
+    }
+
+    // GET PHOTO
+    public LiveData<Photo> getPhoto(long photoId){
+        return this.photoDataRepository.getPhoto(photoId);
+    }
+
+    // CREATE PHOTO
+    public void createPhoto(Photo photo){
+        executor.execute(() -> this.photoDataRepository.createPhoto(photo));
+    }
+
+    // UPDATE PHOTO
+    public void updatePhoto(Photo photo){
         executor.execute(() -> {
-            this.propertyDataRepository.deleteProperty(property);
+            this.photoDataRepository.updatePhoto(photo);
         });
     }
+
+    public void deletePhoto(Photo photo){
+        executor.execute(() -> {
+            this.photoDataRepository.deletePhoto(photo);
+        });
+    }
+
+    // endregion
 
     // ---------------
     //  FOR ADDRESS

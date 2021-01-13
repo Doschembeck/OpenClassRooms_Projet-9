@@ -22,11 +22,14 @@ import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBind
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
+
+import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -59,10 +62,29 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         itemBinding.fragmentListviewItemTextviewCity.setText(address.getCity());
     }
 
+    private void updateWithPhoto(List<Photo> photoList){
+
+        if (photoList == null) return;
+
+        Photo photo = photoList.get(0);
+
+        if (photo.getPhoto() != null){
+            Glide.with(mContext)
+                    .load(photo.getPhoto())
+                    .error(R.drawable.image_not_found_scaled)
+                    .centerCrop()
+                    .into(itemBinding.fragmentListviewItemImageviewPhoto);
+        }else {
+            Glide.with(mContext)
+                    .load(R.drawable.image_not_found)
+                    .centerCrop()
+                    .into(itemBinding.fragmentListviewItemImageviewPhoto);
+        }
+    }
     public void updateWithProperty(Property property){
 
         //todo: Recuperer l'address et la passer en parametre de "updateWithAddress()"
-//        mViewModel.getAddress(property.getAddressId()).observe(, this::updateWithAddress);
+//        mViewModel.getAddress(property.getAddressId()).observe(this, this::updateWithAddress);
 
         propertyId = property.getId();
 
@@ -74,20 +96,8 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
             itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.GONE);
         }
 
-        //todo: Gérer maintenant la recuperation du premiere element de la liste "property.getPhotoIdList().get(0).getPhoto()"
-        if (property.getPhotoUrlList() != null){
-            Glide.with(mContext)
-                    .load(property.getPhotoUrlList())
-                    .error(R.drawable.image_not_found_scaled)
-                    .centerCrop()
-                    .into(itemBinding.fragmentListviewItemImageviewPhoto);
-        }else {
-            Glide.with(mContext)
-                    .load(R.drawable.image_not_found)
-                    .centerCrop()
-                    .into(itemBinding.fragmentListviewItemImageviewPhoto);
-        }
-
+        //todo: Recuperer la liste de photos et la passer en parametre de "updateWithPhoto()"
+//        mViewModel.getAllPropertyPhoto(property.getId()).observe(this, this::updateWithPhoto);
 
 //        mTextViewCity.setText(property.getAddressId().getCity());
         itemBinding.fragmentListviewItemTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));

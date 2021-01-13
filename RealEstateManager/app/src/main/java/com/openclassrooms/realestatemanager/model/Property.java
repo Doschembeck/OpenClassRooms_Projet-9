@@ -21,7 +21,6 @@ public class Property {
     private int nbOfBedRooms;
     private String description; // The full description of the property;
     private String nearbyPOI; // todo: Créer une table pour pouvoir faire une liste
-    private String photoUrlList; // todo; créer un objet special une description dois etre associé et en faire une liste
     private long addressId;
     private String realEstateAgent; // The real estate agent in charge of this property.
     private Boolean isSold;
@@ -29,7 +28,7 @@ public class Property {
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, String nearbyPOI, String photoUrlList, long addressId, String realEstateAgent, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, String nearbyPOI, long addressId, String realEstateAgent, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -38,7 +37,6 @@ public class Property {
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
         this.nearbyPOI = nearbyPOI;
-        this.photoUrlList = photoUrlList;
         this.addressId = addressId;
         this.realEstateAgent = realEstateAgent;
         this.isSold = dateOfSale != null;
@@ -133,14 +131,6 @@ public class Property {
 
     public long getId() {
         return id;
-    }
-
-    public String getPhotoUrlList() {
-        return photoUrlList;
-    }
-
-    public void setPhotoUrlList(String photoUrlList) {
-        this.photoUrlList = photoUrlList;
     }
 
     public Date getDateOfSale() {

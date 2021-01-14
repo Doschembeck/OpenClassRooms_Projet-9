@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import com.openclassrooms.realestatemanager.databinding.ActivityLoanSimulatorBinding;
@@ -36,6 +37,13 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoanSimulatorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //todo: gerer le change des dollars recupere en dollars par l'intent
+
+        Intent intent = getIntent();
+        if (intent != null){
+            costProperty = (int) intent.getExtras().getDouble("amount_property", 0);
+        }
 
         binding.activityLoanSimulatorToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
 

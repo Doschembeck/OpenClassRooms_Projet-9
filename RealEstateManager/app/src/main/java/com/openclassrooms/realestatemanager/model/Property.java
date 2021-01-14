@@ -7,14 +7,16 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-//todo: supprimer address en Cascade
 @Entity(foreignKeys = {
             @ForeignKey(entity = Address.class,
                     parentColumns = "id",
                     childColumns = "address_id",
+                    onDelete = ForeignKey.CASCADE
+            ),
             @ForeignKey(entity = Agent.class,
                     parentColumns = "id",
-                    childColumns = "agent_id"))
+                    childColumns = "agent_id"
+            )
         })
 public class Property {
 

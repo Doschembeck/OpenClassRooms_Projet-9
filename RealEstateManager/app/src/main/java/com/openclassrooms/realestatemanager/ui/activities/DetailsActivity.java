@@ -100,19 +100,25 @@ public class DetailsActivity extends AppCompatActivity {
 
             case R.id.menu_details_activity_toolbar_loansimulate :
 
-                startActivity(new Intent(this, LoanSimulatorActivity.class));
+                //todo à améliorer envoyer la property actuel
+                Intent intent = new Intent(this, LoanSimulatorActivity.class);
+                intent.putExtra("amount_property", mCurrentProperty.getPrice());
+                startActivity(intent);
 
                 break;
 
             case R.id.menu_details_activity_toolbar_editproperty :
 
-                //todo à améliorer
+                //todo à améliorer envoyer la property actuel
                 startActivity(new Intent(this, EditPropertyActivity.class));
 
                 break;
 
             case R.id.menu_details_activity_toolbar_sold :
 
+                //todo ajouter une date de vente
+                mCurrentProperty.setSold(!mCurrentProperty.isSold());
+                mViewModel.updateProperty(mCurrentProperty);
                 break;
 
             case R.id.menu_details_activity_toolbar_deleteproperty :
@@ -174,7 +180,8 @@ public class DetailsActivity extends AppCompatActivity {
             binding.activityDetailsButtonPicturearrowforward.setVisibility(View.VISIBLE);
         }
 
-        if (mPictureList.size() != -1){
+        if (currentIndexPicture <= mPictureList.size()){
+
             Glide.with(this)
                     .load(mPictureList.get(currentIndexPicture).getPhoto())
                     .centerCrop()
@@ -215,11 +222,15 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void updateUIWithProperty(Property property){
 
+        if (property == null) return;
+
         mCurrentProperty = property;
 
         // updateUIWith...
         mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);
         mViewModel.getAllPropertyPhoto(property.getAddressId()).observe(this, photoList -> {
+            if (photoList == null || photoList.size() == 0) return;
+
             mPictureList = photoList;
             displayPicture();
         });

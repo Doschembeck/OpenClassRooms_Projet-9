@@ -6,10 +6,15 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(foreignKeys = @ForeignKey(entity = Address.class,
-        parentColumns = "id",
-        childColumns = "addressId",
-        onDelete = ForeignKey.CASCADE))
+@Entity(foreignKeys = {
+            @ForeignKey(entity = Address.class,
+                    parentColumns = "id",
+                    childColumns = "addressId",
+                    onDelete = ForeignKey.CASCADE),
+            @ForeignKey(entity = Agent.class,
+                    parentColumns = "id",
+                    childColumns = "agentId")
+        })
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
@@ -20,15 +25,14 @@ public class Property {
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
-    private String nearbyPOI; // todo: Créer une table pour pouvoir faire une liste
     private long addressId;
-    private String realEstateAgent; // The real estate agent in charge of this property.
+    private long agentId; // The real estate agent in charge of this property.
     private Boolean isSold;
     private Date dateOfSale; // The date of sale of the property, if it has been sold;
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, String nearbyPOI, long addressId, String realEstateAgent, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -36,9 +40,8 @@ public class Property {
         this.nbOfRooms = nbOfRooms;
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
-        this.nearbyPOI = nearbyPOI;
         this.addressId = addressId;
-        this.realEstateAgent = realEstateAgent;
+        this.agentId = agentId;
         this.isSold = dateOfSale != null;
         this.dateOfSale = dateOfSale;
         this.createdAt = createdAt;
@@ -93,12 +96,12 @@ public class Property {
         this.addressId = addressId;
     }
 
-    public String getRealEstateAgent() {
-        return realEstateAgent;
+    public long getAgentId() {
+        return agentId;
     }
 
-    public void setRealEstateAgent(String realEstateAgent) {
-        this.realEstateAgent = realEstateAgent;
+    public void setAgentId(long agentId) {
+        this.agentId = agentId;
     }
 
     public Date getCreatedAt() {
@@ -149,11 +152,4 @@ public class Property {
         isSold = sold;
     }
 
-    public String getNearbyPOI() {
-        return nearbyPOI;
-    }
-
-    public void setNearbyPOI(String nearbyPOI) {
-        this.nearbyPOI = nearbyPOI;
-    }
 }

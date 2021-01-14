@@ -6,27 +6,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/background_authentication"
     tools:context=".ui.activities.AuthenticationActivity">
 
-    <EditText
-        android:id="@+id/activity_authentication_edittext_real_estate_agent_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:hint="Enter your User Agent Name"
-        android:textColorHint="#B4FFFFFF"
-        android:textColor="#ffff"
-        android:autofillHints=""
-        android:textAlignment="center"
-        android:inputType="text" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/activity_authentication_button"
-        android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/activity_authentication_spinner_agent"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
-        android:text="Continuer"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/activity_authentication_button_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="150dp"
+            android:text="Se connecter"/>
+
+        <Button
+            android:id="@+id/activity_authentication_button_registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Créer un agent"/>
+    </LinearLayout>
+
 
     <ImageView
         android:layout_width="wrap_content"

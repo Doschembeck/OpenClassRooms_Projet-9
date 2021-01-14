@@ -28,10 +28,63 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/activity_details_photolist"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/app_bar_height"/>
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:elevation="1dp"
+                        android:layout_alignParentTop="true"
+                        android:background="#68000000"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/activity_details_textview_picturedescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"/>
+
+                        <TextView
+                            android:id="@+id/activity_details_textview_currentindexpicture"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="textEnd"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="#ffff"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/activity_details_button_picturearrowback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#ffff"
+                        android:elevation="1dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/ic_baseline_arrow_back_24"/>
+
+                    <ImageView
+                        android:id="@+id/activity_details_button_picturearrowforward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#ffff"
+                        android:elevation="1dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:src="@drawable/ic_baseline_arrow_forward_24"/>
+
+
+                    <ImageView
+                        android:id="@+id/activity_details_photolist"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/app_bar_height"/>
+                </RelativeLayout>
 
                 <include
                     android:id="@+id/activity_details_include_content_details"

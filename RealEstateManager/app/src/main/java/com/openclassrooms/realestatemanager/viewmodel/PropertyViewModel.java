@@ -6,13 +6,18 @@ import androidx.lifecycle.ViewModel;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.database.repository.AddressDataRepository;
+import com.openclassrooms.realestatemanager.database.repository.AgentDataRepository;
+import com.openclassrooms.realestatemanager.database.repository.NearbyPoiDataRepository;
 import com.openclassrooms.realestatemanager.database.repository.PhotoDataRepository;
 import com.openclassrooms.realestatemanager.database.repository.PropertyDataRepository;
+import com.openclassrooms.realestatemanager.database.repository.PropertyNearbyPoiJoinDataRepository;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Agent;
+import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
+import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -27,14 +32,20 @@ public class PropertyViewModel extends ViewModel {
     private final PropertyDataRepository propertyDataRepository;
     public final AddressDataRepository addressDataRepository; //todo: remettre en priver si pas utiliser ailleur
     private final PhotoDataRepository photoDataRepository;
+    private final AgentDataRepository agentDataRepository;
+    private final NearbyPoiDataRepository nearbyPoiDataRepository;
+    private final PropertyNearbyPoiJoinDataRepository propertyNearbyPoiJoinDataRepository;
     private final Executor executor;
 
     // --- CONSTRUCTOR ---
 
-    public PropertyViewModel(PropertyDataRepository propertyDataRepository, AddressDataRepository addressDataRepository, PhotoDataRepository photoDataRepository, Executor executor) {
+    public PropertyViewModel(PropertyDataRepository propertyDataRepository, AddressDataRepository addressDataRepository, PhotoDataRepository photoDataRepository, AgentDataRepository agentDataRepository, NearbyPoiDataRepository nearbyPoiDataRepository, PropertyNearbyPoiJoinDataRepository propertyNearbyPoiJoinDataRepository, Executor executor) {
         this.propertyDataRepository = propertyDataRepository;
         this.addressDataRepository = addressDataRepository;
         this.photoDataRepository = photoDataRepository;
+        this.agentDataRepository = agentDataRepository;
+        this.nearbyPoiDataRepository = nearbyPoiDataRepository;
+        this.propertyNearbyPoiJoinDataRepository = propertyNearbyPoiJoinDataRepository;
         this.executor = executor;
     }
 
@@ -67,11 +78,62 @@ public class PropertyViewModel extends ViewModel {
         executor.execute(() -> this.propertyDataRepository.updateProperty(property));
     }
 
+    // DELETE NearbyPOI
     public void deleteProperty(Property property){
         executor.execute(() -> this.propertyDataRepository.deleteProperty(property));
     }
 
     // endregion
+
+    // ---------------
+    //  region FOR NearbyPOI
+    // ---------------
+
+    // GET ALL NearbyPOI
+    public LiveData<List<NearbyPOI>> getAllNearbyPOI(){
+        return this.nearbyPoiDataRepository.getAllNearbyPOI();
+    }
+
+    // GET NearbyPOI
+    public LiveData<NearbyPOI> getNearbyPOI(long nearbyPoiId){
+        return this.nearbyPoiDataRepository.getNearbyPOI(nearbyPoiId);
+    }
+
+    // CREATE NearbyPOI
+    public long createNearbyPOI(NearbyPOI nearbyPOI){
+        return this.nearbyPoiDataRepository.createNearbyPOI(nearbyPOI);
+    }
+
+    // UPDATE NearbyPOI
+    public void updateNearbyPOI(NearbyPOI nearbyPOI){
+        executor.execute(() -> this.nearbyPoiDataRepository.updateNearbyPOI(nearbyPOI));
+    }
+
+    // DELETE NearbyPOI
+    public void deleteNearbyPOI(NearbyPOI nearbyPOI){
+        executor.execute(() -> this.nearbyPoiDataRepository.deleteNearbyPOI(nearbyPOI));
+    }
+
+    // endregion
+
+    // ---------------
+    //  region FOR PropertyNearbyPoiJoin
+    // ---------------
+
+    // CREATE PropertyNearbyPoiJoin
+    public long createPropertyNearbyPoiJoin(PropertyNearbyPoiJoin propertyNearbyPoiJoin){
+        return this.propertyNearbyPoiJoinDataRepository.createPropertyNearbyPoiJoin(propertyNearbyPoiJoin);
+    }
+
+    // GET ALL Property with a NearbyPOI
+    public LiveData<List<Property>> getNearbyPoiForProperty(final long nearbyPOI){
+        return this.propertyNearbyPoiJoinDataRepository.getPropertyForNearbyPoi(nearbyPOI);
+    }
+
+    // GET ALL NearbyPOI with a Property
+    public LiveData<List<NearbyPOI>> getPropertyForNearbyPoi(long propertyId){
+        return this.propertyNearbyPoiJoinDataRepository.getNearbyPoiForProperty(propertyId);
+    }
 
     // ---------------
     //  region FOR PHOTO
@@ -102,6 +164,41 @@ public class PropertyViewModel extends ViewModel {
     public void deletePhoto(Photo photo){
         executor.execute(() -> {
             this.photoDataRepository.deletePhoto(photo);
+        });
+    }
+
+    // endregion
+
+    // ---------------
+    //  region FOR AGENT
+    // ---------------
+
+    // GET ALL AGENT
+    public LiveData<List<Agent>> getAllAgent(){
+        return this.agentDataRepository.getAllAgent();
+    }
+
+    // GET AGENT
+    public LiveData<Agent> getAgent(long agentId){
+        return this.agentDataRepository.getAgent(agentId);
+    }
+
+    // CREATE AGENT
+    public void createAgent(Agent agent){
+        executor.execute(() -> this.agentDataRepository.createAgent(agent));
+    }
+
+    // UPDATE AGENT
+    public void updateAgent(Agent agent){
+        executor.execute(() -> {
+            this.agentDataRepository.updateAgent(agent);
+        });
+    }
+
+    // DELETE AGENT
+    public void deleteAgent(Agent agent){
+        executor.execute(() -> {
+            this.agentDataRepository.deleteAgent(agent);
         });
     }
 

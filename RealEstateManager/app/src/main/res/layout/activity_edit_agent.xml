@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.activities.EditAgentActivity">
+
+    <ImageView
+        android:id="@+id/activity_edit_agent_imageview_profilpicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#ff564f"/>
+
+    <EditText
+        android:id="@+id/activity_edit_agent_editext_urlpicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Url Picture"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/activity_edit_agent_editext_firstname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Prenom"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/activity_edit_agent_editext_lastname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Nom"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/activity_edit_agent_button_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Créer l'agent"/>
+
+</LinearLayout>

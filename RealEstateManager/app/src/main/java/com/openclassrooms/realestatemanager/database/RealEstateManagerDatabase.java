@@ -12,17 +12,23 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.openclassrooms.realestatemanager.database.dao.AddressDao;
+import com.openclassrooms.realestatemanager.database.dao.AgentDao;
+import com.openclassrooms.realestatemanager.database.dao.NearbyPoiDao;
 import com.openclassrooms.realestatemanager.database.dao.PhotoDao;
 import com.openclassrooms.realestatemanager.database.dao.PropertyDao;
+import com.openclassrooms.realestatemanager.database.dao.PropertyNearbyPoiJoinDao;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.DateConverter;
+import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
+import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Database(entities = {Property.class, Address.class, Photo.class}, version = 1, exportSchema = false)
+@Database(entities = {Property.class, Address.class, Photo.class, Agent.class, NearbyPOI.class, PropertyNearbyPoiJoin.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class RealEstateManagerDatabase extends RoomDatabase {
 
@@ -33,6 +39,9 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
     public abstract PropertyDao propertyDao();
     public abstract AddressDao addressDao();
     public abstract PhotoDao PhotoDao();
+    public abstract AgentDao AgentDao();
+    public abstract NearbyPoiDao NearbyPoiDao();
+    public abstract PropertyNearbyPoiJoinDao PropertyNearbyPoiJoinDao();
 
     // INSTANCE
     public static RealEstateManagerDatabase getInstance(Context context){
@@ -40,8 +49,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             synchronized (RealEstateManagerDatabase.class){
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    RealEstateManagerDatabase.class, "REMDatabase3.db") //todo: supprimer "REMDatabase.db" / "REMDatabase2.db" puis le remettre
-                            .addCallback(prepopulateDatabase())
+                    RealEstateManagerDatabase.class, "REMDatabase.db") //todo: supprimer "REMDatabase.db" / "REMDatabase2.db" puis le remettre
                             .allowMainThreadQueries()
                             .build();
                 }
@@ -49,38 +57,4 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-
-    // ----
-
-    private static Callback prepopulateDatabase(){
-        return new Callback() {
-            @Override
-            public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                super.onCreate(db);
-//
-////                List<Long> photoList = Arrays.asList(Arrays.asList(1l,2l,3l);
-//
-//                ContentValues contentValues = new ContentValues();
-//                contentValues.put("id", 1);
-//                contentValues.put("propertyTypeId", 1);
-//                contentValues.put("price", 465213.0);
-//                contentValues.put("area", 329);
-//                contentValues.put("nbOfRooms", 7);
-//                contentValues.put("nbOfBedRooms", 3);
-//                contentValues.put("description", "Contenu de la description");
-////                contentValues.put("photoIdList", photoList);
-//                contentValues.put("addressId", 1);
-////                contentValues.put("nearbyPOI", Arrays.asList("restaurant"));
-//                contentValues.put("isSold", false);
-//                contentValues.put("dateOfEntry", "21/10/2020");
-//                contentValues.put("realEstateAgent", "thomas");
-//                contentValues.put("createdAt", "21/10/2020");
-//                contentValues.put("updatedAt", "21/10/2020");
-//
-//                db.insert("Property", OnConflictStrategy.IGNORE, contentValues);
-            }
-        };
-    }
-
-
 }

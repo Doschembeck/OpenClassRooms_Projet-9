@@ -4,13 +4,13 @@
     tools:context="com.openclassrooms.realestatemanager.ui.activities.DetailsActivity">
 
 <!--    Todo: a faire fonctionner   -->
-    <item
-        android:id="@+id/action_back"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_baseline_arrow_back_24"
-        android:iconTint="#ffff"
-        android:title="back"
-        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:id="@+id/action_back"-->
+<!--        android:orderInCategory="100"-->
+<!--        android:icon="@drawable/ic_baseline_arrow_back_24"-->
+<!--        android:iconTint="#ffff"-->
+<!--        android:title="back"-->
+<!--        app:showAsAction="always" />-->
 
     <item
         android:id="@+id/action_settings"

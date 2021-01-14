@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class Constants {
 
     public static final String PREF_SHARED_KEY = "real_estate_manager_shared_preferences";
-    public static final String PREF_REAL_ESTATE_AGENT_NAME_KEY = "user_agent_name";
     public static final String PREF_CURRENCY_KEY = "currency";
+    public static final String PREF_AGENT_ID_LOGGED_KEY = "agent_id";
     public static final String PREF_DEFVALUE_TEST = "65GD46F46R54968R66sG7IHU79867YEHZ615zOIZ79GBONOGINkhoedugdjbkz5498454686C848656SCX";
 
     // All rate of change is Dollar US to devise === Dollar US | USD | $ | 1 ===

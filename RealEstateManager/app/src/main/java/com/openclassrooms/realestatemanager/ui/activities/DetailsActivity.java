@@ -1,23 +1,12 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +16,8 @@ import com.openclassrooms.realestatemanager.databinding.ContentDetailsBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Agent;
+import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
@@ -34,6 +25,7 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -43,12 +35,13 @@ public class DetailsActivity extends AppCompatActivity {
     private PropertyViewModel mViewModel;
     SharedPreferences mSharedPreferences;
     private String devise;
+    private int currentIndexPicture = 0;
+    private List<Photo> mPictureList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureViewModel();
-
         binding = ActivityDetailsBinding.inflate(getLayoutInflater());
         includeBinding = binding.activityDetailsIncludeContentDetails;
         setContentView(binding.getRoot());
@@ -60,6 +53,19 @@ public class DetailsActivity extends AppCompatActivity {
 
         mViewModel.getProperty(propertyId).observe(this, this::updateUIWithProperty);
 
+        // Listeners
+        binding.activityDetailsButtonPicturearrowback.setOnClickListener(v -> {
+            if (currentIndexPicture != 0){
+                currentIndexPicture--;
+                displayPicture();
+            }
+        });
+        binding.activityDetailsButtonPicturearrowforward.setOnClickListener(v -> {
+            if (mPictureList.size() != currentIndexPicture + 1){
+                currentIndexPicture++;
+                displayPicture();
+            }
+        });
         binding.activityDetailsFabFavorite.setOnClickListener(this::onClickFloatingActionButton);
 
         setSupportActionBar(binding.toolbar);
@@ -82,20 +88,71 @@ public class DetailsActivity extends AppCompatActivity {
                 address.getCountry()));
     }
 
-    private void updateUIWithPhoto(List<Photo> photoList){
+    private void displayPicture(){
 
-        //todo: voir pour afficher la liste de toutes les photos
-        Glide.with(this)
-                .load(photoList.get(0).getPhoto())
-                .centerCrop()
-                .into(binding.activityDetailsPhotolist);
+        if (currentIndexPicture == 0){
+            binding.activityDetailsButtonPicturearrowback.setVisibility(View.GONE);
+        } else {
+            binding.activityDetailsButtonPicturearrowback.setVisibility(View.VISIBLE);
+        }
+
+        if (mPictureList.size() == currentIndexPicture + 1){
+            binding.activityDetailsButtonPicturearrowforward.setVisibility(View.GONE);
+        } else {
+            binding.activityDetailsButtonPicturearrowforward.setVisibility(View.VISIBLE);
+        }
+
+        if (mPictureList.size() != -1){
+            Glide.with(this)
+                    .load(mPictureList.get(currentIndexPicture).getPhoto())
+                    .centerCrop()
+                    .into(binding.activityDetailsPhotolist);
+
+            binding.activityDetailsTextviewPicturedescription.setText(mPictureList.get(currentIndexPicture).getPhotoDescription());
+            binding.activityDetailsTextviewCurrentindexpicture.setText(currentIndexPicture + 1 + "/" + mPictureList.size());
+        }
+
+    }
+
+    private void updateUIWithAgent(Agent agent){
+        includeBinding.contentDetailTextviewRealestateagent.setText(agent.getLastname().toUpperCase() + " " + agent.getFirstname());
+    }
+
+    private void updateUIWithNearbyPOI(List<NearbyPOI> nearbyPOIList){
+
+        if (nearbyPOIList.size() != -1){
+
+            includeBinding.contentDetailsLinearlayoutNearbypoi.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < nearbyPOIList.size(); i++){
+
+                String appendBefore = "";
+
+                if (i != 0) {
+                    appendBefore += ", ";
+                }
+
+                includeBinding.contentDetailTextviewNearbypoi.append(appendBefore + nearbyPOIList.get(i).getName());
+
+            }
+        } else {
+            includeBinding.contentDetailsLinearlayoutNearbypoi.setVisibility(View.GONE);
+        }
+
     }
 
     private void updateUIWithProperty(Property property){
 
+        // updateUIWith...
         mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);
-        mViewModel.getAllPropertyPhoto(property.getAddressId()).observe(this, this::updateUIWithPhoto);
+        mViewModel.getAllPropertyPhoto(property.getAddressId()).observe(this, photoList -> {
+            mPictureList = photoList;
+            displayPicture();
+        });
+        mViewModel.getAgent(property.getAgentId()).observe(this, this::updateUIWithAgent);
+        mViewModel.getPropertyForNearbyPoi(property.getId()).observe(this, this::updateUIWithNearbyPOI);
 
+        // UpdateUIWithProperty
         includeBinding.contentDetailTextviewDateofentry.setText(new SimpleDateFormat("dd/MM/yyyy à hh:mm").format(property.getCreatedAt()));
         includeBinding.contentDetailTextviewTypeofproperty.setText(Constants.ListPropertyType[property.getPropertyTypeId()]);
         includeBinding.contentDetailTextviewNbofrooms.setText("" + property.getNbOfRooms());
@@ -104,16 +161,6 @@ public class DetailsActivity extends AppCompatActivity {
         includeBinding.contentDetailTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
         includeBinding.contentDetailTextviewPricepersquaremeter.setText(Utils.formatEditTextWithDevise(property.getPrice() / property.getArea(), devise) + "/m²");
         includeBinding.contentDetailTextviewDescription.setText(property.getDescription());
-        includeBinding.contentDetailTextviewRealestateagent.setText(property.getRealEstateAgent());
-
-
-        if (property.getNearbyPOI() != null){
-            includeBinding.activityEditPropertyLinearlayoutNearbypoi.setVisibility(View.VISIBLE);
-            includeBinding.contentDetailTextviewNearbypoi.setText(property.getNearbyPOI());
-        } else {
-            includeBinding.activityEditPropertyLinearlayoutNearbypoi.setVisibility(View.GONE);
-        }
-
         if (property.isSold()){
             includeBinding.contentDetailLinearlayoutDateofsale.setVisibility(View.VISIBLE);
             includeBinding.contentDetailTextviewDateofsale.setText(new SimpleDateFormat("dd/MM/yyyy à hh:mm").format(property.getDateOfSale()));

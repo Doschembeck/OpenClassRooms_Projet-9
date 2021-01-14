@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         configureSpinnerToolbar();
 
+        // Listeners
+
         binding.activityMainToolbar.setNavigationOnClickListener(view -> {
             if (binding.activityMainDrawerLayout.isDrawerOpen(GravityCompat.START)){
                 binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START);

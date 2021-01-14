@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,24 +9,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.openclassrooms.realestatemanager.model.Agent;
+import com.openclassrooms.realestatemanager.utils.Constants;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
-    protected T binding;
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Type superclass = getClass().getGenericSuperclass();
-        Class<?> aClass = (Class<?>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
-        try {
-            Method method = aClass.getDeclaredMethod("inflate", LayoutInflater.class);
-            binding = (T) method.invoke(null, getLayoutInflater());
-            setContentView(binding.getRoot());
-        } catch (NoSuchMethodException | IllegalAccessException| InvocationTargetException e) {
-            e.printStackTrace();
-        }
+public abstract class BaseActivity extends AppCompatActivity {
+
+    protected long getCurrentAgentId(){
+        return this.getSharedPreferences().getLong(Constants.PREF_AGENT_ID_LOGGED_KEY, -1);
     }
+
+    protected SharedPreferences getSharedPreferences(){
+        return getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
+    }
+
 }

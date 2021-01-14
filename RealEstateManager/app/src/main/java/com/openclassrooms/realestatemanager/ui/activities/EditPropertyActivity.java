@@ -1,19 +1,20 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 
 import com.openclassrooms.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
+import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -26,18 +27,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class EditPropertyActivity extends AppCompatActivity {
+public class EditPropertyActivity extends BaseActivity {
 
     private PropertyViewModel mViewModel;
     private ActivityEditPropertyBinding binding;
-    private SharedPreferences mSharedPreferences;
-    DatePickerDialog datePickerDialog;
+    private DatePickerDialog datePickerDialog;
 
     private Date thisDate;
     private int thisYear;
     private int thisMonth;
     private int thisDayOfMonth;
-    private List<String> selectedNearbyPOI = new ArrayList<>();
+    private List<NearbyPOI> selectedNearbyPOI = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,6 @@ public class EditPropertyActivity extends AppCompatActivity {
         configureViewModel();
         binding = ActivityEditPropertyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
 
         updateDate();
 
@@ -82,14 +80,36 @@ public class EditPropertyActivity extends AppCompatActivity {
         configureSpinnerPropertyType();
 
         // UpdateUI
+        mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithNearbyPOI);
         updateUIWithSharedPreferences();
         generateFakeInfoProperty(); //todo à supprimer
 
     }
 
     private void onClickButtonAddNearbyPOI(View view){
-        selectedNearbyPOI.add(binding.activityEditPropertyEdittextNearbypoi.getText().toString());
-        binding.activityEditPropertyTextviewNearbypoi.append(binding.activityEditPropertyEdittextNearbypoi.getText() + "\n");
+        String nearbyPoiName = binding.activityEditPropertyEdittextNearbypoi.getText().toString();
+
+        mViewModel.createNearbyPOI(new NearbyPOI(0, nearbyPoiName));
+    }
+
+    private void updateUIWithNearbyPOI(List<NearbyPOI> nearbyPOIList){
+
+        binding.activityEditPropertyLinearlayoutNearbypoi.removeAllViewsInLayout();
+
+        for (NearbyPOI nearbyPOI : nearbyPOIList){
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+                if (isChecked){
+                    selectedNearbyPOI.add(nearbyPOI);
+                }else {
+                    selectedNearbyPOI.remove(nearbyPOI);
+                }
+
+            });
+            checkBox.setText(nearbyPOI.getName());
+            binding.activityEditPropertyLinearlayoutNearbypoi.addView(checkBox);
+        }
     }
 
     private void updateDate(){
@@ -103,7 +123,7 @@ public class EditPropertyActivity extends AppCompatActivity {
 
     private void updateUIWithSharedPreferences(){
 
-        String deviseSelected = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "");
+        String deviseSelected = getSharedPreferences().getString(Constants.PREF_CURRENCY_KEY, "");
         int positionDevise = 0;
 
         for (int i = 0; i < Constants.LIST_OF_DEVISES_ISO.length; i++){
@@ -113,7 +133,6 @@ public class EditPropertyActivity extends AppCompatActivity {
         }
 
         binding.activityEditPropertySpinnerDevise.setSelection(positionDevise);
-        binding.activityEditPropertyEdittextRealestateagent.setText(mSharedPreferences.getString(Constants.PREF_REAL_ESTATE_AGENT_NAME_KEY, ""));
     }
 
     private void onClickButtonAddProperty(){
@@ -145,26 +164,22 @@ public class EditPropertyActivity extends AppCompatActivity {
         int nbOfRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofrooms.getText().toString());
         int nbOfBedRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofbedrooms.getText().toString());
         String description = binding.activityEditPropertyEdittextDescription.getText().toString();
-        String realEstateAgent = binding.activityEditPropertyEdittextRealestateagent.getText().toString();
-        Date createdAt = thisDate;
-        Date updatedAt = thisDate;
-        Date dateOfSale;
 
+        Date dateOfSale;
         if (binding.activityEditPropertySwitchIssold.isChecked()) dateOfSale = thisDate; else dateOfSale = null;
 
-        String nearbyPOI = null;
-        if (selectedNearbyPOI.size() > 0){
-            nearbyPOI = selectedNearbyPOI.get(0);
-        }
-
         long propertyId = createProperty(new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
-                nearbyPOI, addressId, realEstateAgent , dateOfSale, createdAt, updatedAt));
+                addressId, getCurrentAgentId() , dateOfSale, thisDate, thisDate));
 
         // Créer les photos
         List<String> photoUrlList = generateFakePhotos();
-
         for (int i=0; i < photoUrlList.size(); i++){
-            createPhoto(new Photo(0, propertyId,photoUrlList.get(i), "Très jolie photo !"));
+            createPhoto(new Photo(0, propertyId, photoUrlList.get(i), "Salon"));
+        }
+
+        // Lie les NearbyPOI aux Property
+        for (NearbyPOI nearbyPOI : selectedNearbyPOI){
+            mViewModel.createPropertyNearbyPoiJoin(new PropertyNearbyPoiJoin(propertyId, nearbyPOI.getId()));
         }
 
     }

@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.openclassrooms.realestatemanager.ui.activities.DetailsActivity">
+
+    <group>
+        <item
+            android:id="@+id/menu_details_activity_toolbar_compare"
+            android:orderInCategory="100"
+            android:title="Comparer"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_loansimulate"
+            android:orderInCategory="100"
+            android:title="Simuler un pret"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_editproperty"
+            android:orderInCategory="100"
+            android:title="Modifier"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_sold"
+            android:orderInCategory="100"
+            android:title="Vendu"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_deleteproperty"
+            android:orderInCategory="100"
+            android:title="Supprimer"
+            app:showAsAction="never" />
+
+    </group>
+
+</menu>

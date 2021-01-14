@@ -30,7 +30,7 @@ public interface PhotoDao {
     @Query("SELECT * FROM Photo WHERE id = :photoId")
     LiveData<Photo> getPhoto(long photoId);
 
-    @Query("SELECT * FROM Photo WHERE propertyId = :propertyId")
+    @Query("SELECT * FROM Photo WHERE property_id = :propertyId")
     LiveData<List<Photo>> getAllPropertyPhotos(long propertyId);
 
 }

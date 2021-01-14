@@ -1,16 +1,24 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailsBinding;
 import com.openclassrooms.realestatemanager.databinding.ContentDetailsBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
@@ -37,6 +45,7 @@ public class DetailsActivity extends AppCompatActivity {
     private String devise;
     private int currentIndexPicture = 0;
     private List<Photo> mPictureList = new ArrayList<>();
+    private Property mCurrentProperty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +77,72 @@ public class DetailsActivity extends AppCompatActivity {
         });
         binding.activityDetailsFabFavorite.setOnClickListener(this::onClickFloatingActionButton);
 
-        setSupportActionBar(binding.toolbar);
-//        binding.activityDetailsToolbarLayout.setTitle("NOM");
+        configureToolBar();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_details_activity_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()){
+            case R.id.menu_details_activity_toolbar_compare :
+
+                //todo
+                break;
+
+            case R.id.menu_details_activity_toolbar_loansimulate :
+
+                startActivity(new Intent(this, LoanSimulatorActivity.class));
+
+                break;
+
+            case R.id.menu_details_activity_toolbar_editproperty :
+
+                //todo à améliorer
+                startActivity(new Intent(this, EditPropertyActivity.class));
+
+                break;
+
+            case R.id.menu_details_activity_toolbar_sold :
+
+                break;
+
+            case R.id.menu_details_activity_toolbar_deleteproperty :
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Etes vous sur de vouloir supprimer cette propriété ?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Oui", (dialog, which) -> {
+                    if (mCurrentProperty != null){
+                        mViewModel.deleteProperty(mCurrentProperty);
+                        finish();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                break;
+        }
+
+        return true;
+    }
+
+    private void configureToolBar(){
+
+        //todo: Changer la couleur de la fleche de retour
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24));
+        binding.toolbar.setNavigationOnClickListener(v -> {
+            onBackPressed();
+        });
     }
 
     // 2 - Configuring ViewModel
@@ -142,6 +214,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void updateUIWithProperty(Property property){
+
+        mCurrentProperty = property;
 
         // updateUIWith...
         mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);

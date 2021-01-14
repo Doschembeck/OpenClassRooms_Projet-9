@@ -86,10 +86,28 @@ public class EditPropertyActivity extends BaseActivity {
 
     }
 
+    // === OnClick buttons ===
+
     private void onClickButtonAddNearbyPOI(View view){
         String nearbyPoiName = binding.activityEditPropertyEdittextNearbypoi.getText().toString();
 
         mViewModel.createNearbyPOI(new NearbyPOI(0, nearbyPoiName));
+    }
+
+    private void onClickButtonAddProperty(){
+        createCompleteProperty();
+        finish();
+    }
+
+    // === Update UI ===
+
+    private void updateDate(){
+        thisDate = new Date();
+        thisYear = Integer.parseInt(new SimpleDateFormat("yyyy").format(thisDate)) ;
+        thisMonth = Integer.parseInt(new SimpleDateFormat("MM").format(thisDate));
+        thisDayOfMonth = Integer.parseInt(new SimpleDateFormat("dd").format(thisDate));
+
+        binding.activityEditPropertyEdittextDateofsold.setText(new SimpleDateFormat("dd/MM/yyyy").format(thisDate));
     }
 
     private void updateUIWithNearbyPOI(List<NearbyPOI> nearbyPOIList){
@@ -112,15 +130,6 @@ public class EditPropertyActivity extends BaseActivity {
         }
     }
 
-    private void updateDate(){
-        thisDate = new Date();
-        thisYear = Integer.parseInt(new SimpleDateFormat("yyyy").format(thisDate)) ;
-        thisMonth = Integer.parseInt(new SimpleDateFormat("MM").format(thisDate));
-        thisDayOfMonth = Integer.parseInt(new SimpleDateFormat("dd").format(thisDate));
-
-        binding.activityEditPropertyEdittextDateofsold.setText(new SimpleDateFormat("dd/MM/yyyy").format(thisDate));
-    }
-
     private void updateUIWithSharedPreferences(){
 
         String deviseSelected = getSharedPreferences().getString(Constants.PREF_CURRENCY_KEY, "");
@@ -135,16 +144,7 @@ public class EditPropertyActivity extends BaseActivity {
         binding.activityEditPropertySpinnerDevise.setSelection(positionDevise);
     }
 
-    private void onClickButtonAddProperty(){
-        createCompleteProperty();
-        finish();
-    }
-
-    private void configureSpinnerDevise(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.LIST_OF_DEVISES_NAME);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.activityEditPropertySpinnerDevise.setAdapter(adapter);
-    }
+    // === Process ===
 
     private void createCompleteProperty(){
         //todo: faire une creation complete
@@ -155,7 +155,7 @@ public class EditPropertyActivity extends BaseActivity {
         String city = binding.activityEditPropertyEdittextCity.getText().toString();
         String zipcode = binding.activityEditPropertyEdittextZipcode.getText().toString();
         String country = binding.activityEditPropertyEdittextCountry.getText().toString();
-        long addressId = createAddress(new Address(0, streetNumber, streetName, city, zipcode, country));
+        long addressId = mViewModel.createAddress((new Address(0, streetNumber, streetName, city, zipcode, country)));
 
         // Créer la Property
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();
@@ -168,13 +168,13 @@ public class EditPropertyActivity extends BaseActivity {
         Date dateOfSale;
         if (binding.activityEditPropertySwitchIssold.isChecked()) dateOfSale = thisDate; else dateOfSale = null;
 
-        long propertyId = createProperty(new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
-                addressId, getCurrentAgentId() , dateOfSale, thisDate, thisDate));
+        long propertyId = mViewModel.createProperty((new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
+                addressId, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
 
         // Créer les photos
         List<String> photoUrlList = generateFakePhotos();
         for (int i=0; i < photoUrlList.size(); i++){
-            createPhoto(new Photo(0, propertyId, photoUrlList.get(i), "Salon"));
+            mViewModel.createPhoto(new Photo(0, propertyId, photoUrlList.get(i), "Salon"));
         }
 
         // Lie les NearbyPOI aux Property
@@ -183,6 +183,8 @@ public class EditPropertyActivity extends BaseActivity {
         }
 
     }
+
+    // === Generators ===
 
     private void generateFakeInfoProperty() {
 
@@ -226,27 +228,22 @@ public class EditPropertyActivity extends BaseActivity {
         return newList;
     }
 
+    // === Configuration ===
+
+    private void configureSpinnerDevise(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.LIST_OF_DEVISES_NAME);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.activityEditPropertySpinnerDevise.setAdapter(adapter);
+    }
+
     private void configureSpinnerPropertyType(){
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.ListPropertyType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.activityEditPropertySpinnerPropertytype.setAdapter(adapter);
     }
 
-    // 2 - Configuring ViewModel
     private void configureViewModel(){
         this.mViewModel = ViewModelProviders.of(this, Injection.provideViewModelFactory(this)).get(PropertyViewModel.class);
-    }
-
-    private long createProperty(Property property){
-        return this.mViewModel.createProperty(property);
-    }
-
-    private void createPhoto(Photo photo){
-        this.mViewModel.createPhoto(photo);
-    }
-
-    private long createAddress(Address address){
-        return this.mViewModel.createAddress(address); //todo: need return long
     }
 
 }

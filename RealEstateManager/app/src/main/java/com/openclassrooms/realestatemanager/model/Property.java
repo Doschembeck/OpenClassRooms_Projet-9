@@ -1,31 +1,35 @@
 package com.openclassrooms.realestatemanager.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
+//todo: supprimer address en Cascade
 @Entity(foreignKeys = {
             @ForeignKey(entity = Address.class,
                     parentColumns = "id",
-                    childColumns = "addressId",
-                    onDelete = ForeignKey.CASCADE),
+                    childColumns = "address_id",
             @ForeignKey(entity = Agent.class,
                     parentColumns = "id",
-                    childColumns = "agentId")
+                    childColumns = "agent_id"))
         })
 public class Property {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+    @ColumnInfo(name = "property_type_id", index = true)
     private int propertyTypeId; // appartement, loft, manoir, etc
     private Double price; // in dollars
     private float area; // La surface du bien (en m2)
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
+    @ColumnInfo(name = "address_id", index = true)
     private long addressId;
+    @ColumnInfo(name = "agent_id", index = true)
     private long agentId; // The real estate agent in charge of this property.
     private Boolean isSold;
     private Date dateOfSale; // The date of sale of the property, if it has been sold;

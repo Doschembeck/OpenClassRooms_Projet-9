@@ -23,23 +23,11 @@
                 android:id="@+id/activity_main_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="#F3F3F3"
                 android:elevation="10dp"
+                app:title="Search Property"
                 app:navigationIcon="@drawable/ic_baseline_dehaze_24"
                 app:menu="@menu/menu_toolbar">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/spinner_toolbar_background">
-                    <Spinner
-                        android:id="@+id/activity_main_toolbar_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:spinnerMode="dialog"/>
-                </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
 

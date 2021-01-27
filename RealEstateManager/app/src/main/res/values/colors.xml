@@ -8,5 +8,6 @@
     <color name="button_favorite">#FF9800</color>
     <color name="background_textview_border_color">#000000</color>
     <color name="background_textview_background_color">#00F81313</color>
+    <color name="starFavorite">#FDD835</color>
 
 </resources>

@@ -33,9 +33,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PropertyViewModel mViewModel;
     private ActivityMainBinding binding;
     private final int LAUNCH_PARAMETER_ACTIVITY = 932;
-    Bundle mSavedInstanceState;
+    private final int LAUNCH_DETAILS_ACTIVITY = 933;
 
-    private static final String[]paths = {"Massieux", "- 120 000€"};
     private int currentFragment = 1;
     private final int ID_FRAGMENT_LIST = 1;
     private final int ID_FRAGMENT_MAP = 2;
@@ -46,16 +45,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureViewModel();
-
-        mSavedInstanceState = savedInstanceState;
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        configureSpinnerToolbar();
-
-        // Listeners
-
+        // --- LISTENERS ---
         binding.activityMainToolbar.setNavigationOnClickListener(view -> {
             if (binding.activityMainDrawerLayout.isDrawerOpen(GravityCompat.START)){
                 binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START);
@@ -63,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 binding.activityMainDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
-
         binding.activityMainToolbar.setOnMenuItemClickListener(item -> {
 
             switch (item.getItemId()){
@@ -93,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         });
 
-        showListFragment();
-
         // Configuration
         binding.activityMainNavView.setNavigationItemSelectedListener(this);
+
+        showListFragment();
 
         searchProperties();
 
@@ -121,23 +113,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-    }
+        if (requestCode == LAUNCH_DETAILS_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
 
-    private void searchProperties(){
+               searchProperties();
 
-        Parameter parameter = mViewModel.mCurrentParameterMutableLiveData.getValue();
-//        parameter.setPriceMax(190000);
-//        parameter.setAreaMin(150);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
 
-        this.mViewModel.searchProperties(parameter).observe(this, properties -> {
-            mViewModel.mListPropertyMutableLiveData.setValue(properties);
-        });
-    }
-
-    private void configureSpinnerToolbar(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,paths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.activityMainToolbarSpinner.setAdapter(adapter);
     }
 
     // 2 - Configuring ViewModel
@@ -145,6 +131,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         this.mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
     }
+
+    private void searchProperties(){
+
+        Parameter parameter = mViewModel.mCurrentParameterMutableLiveData.getValue();
+
+        this.mViewModel.searchProperties(parameter).observe(this, properties -> {
+            mViewModel.mListPropertyMutableLiveData.setValue(properties);
+        });
+    }
+
 
     // 4 - Create each fragment page and show it
 
@@ -202,6 +198,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.activity_main_drawer_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 finish();
+                break;
+            case R.id.activity_main_drawer_favorite:
+
+                mViewModel.onlyFavorites = true;
+                binding.activityMainToolbar.setTitle("Favoris");
+                showListFragment();
+                binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_filter).setVisible(false);
+
+                searchProperties();
+
+                break;
+            case R.id.activity_main_drawer_search_property:
+
+                mViewModel.onlyFavorites = false;
+                binding.activityMainToolbar.setTitle("Search Property");
+                showListFragment();
+                binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_filter).setVisible(true);
+
+                searchProperties();
+
                 break;
             default:
                 break;

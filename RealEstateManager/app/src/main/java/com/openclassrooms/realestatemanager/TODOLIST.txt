@@ -1,9 +1,13 @@
 
-//todo: BUG quand on change entre vue list et vue map sa recréer le fragment (Utiliser la navigation graphe)
+//todo: utiliser la methode de OpenClassRooms pour gérer les cliques de la recyclerview
+
+//todo: actualiser la recherche lors du retour de detailsActivity
 
 //todo: Recuperer Address dans le viewHolder
 
-//todo : actualisation properties filtré
+//todo: activer le mode des favoris
+
+//todo: activer le mode de comparaison
 
 //todo: Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)
 // upload les images sur le serveur

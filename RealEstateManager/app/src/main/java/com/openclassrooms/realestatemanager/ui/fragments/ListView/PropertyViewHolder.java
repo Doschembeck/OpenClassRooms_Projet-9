@@ -55,6 +55,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void onClickCardView(){
+        //todo: faire une startActivityForResult() pour réactualiser lors du retour
         mContext.startActivity(new Intent(mContext, DetailsActivity.class).putExtra("property_id", propertyId));
     }
 

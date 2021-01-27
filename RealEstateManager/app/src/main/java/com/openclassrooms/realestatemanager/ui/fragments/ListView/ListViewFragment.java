@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
@@ -22,7 +23,9 @@ import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -95,11 +98,24 @@ public class ListViewFragment extends Fragment {
             return;
         }
 
-        Log.d("TAG1", "updateUI: Updated !");
+        // Gere le cas ou on cherche uniquement dans les favoris
+        if (mViewModel.onlyFavorites){
+            List<Property> newList = new ArrayList<>();
+            Set<String> listFavorites = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, null);
+
+            for (int i = 0; i < users.size(); i++){
+                if (listFavorites.contains(String.valueOf(users.get(i).getId()))){
+                    newList.add(users.get(i));
+                }
+            }
+
+            users = newList;
+        }
 
         mListProperty.clear();
         mListProperty.addAll(users);
         mAdapter.notifyDataSetChanged();
     }
+
 }
 

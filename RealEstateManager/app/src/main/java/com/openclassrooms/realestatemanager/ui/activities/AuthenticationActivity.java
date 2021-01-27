@@ -86,7 +86,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     private void initSharedPreferences(){
         mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
 
-        if(Constants.PREF_DEFVALUE_TEST.equals(mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, Constants.PREF_DEFVALUE_TEST))){
+        if(Constants.PREF_CURRENCY_DEFVALUE.equals(mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, Constants.PREF_CURRENCY_DEFVALUE))){
             mSharedPreferences.edit().putString(Constants.PREF_CURRENCY_KEY, "$").apply();
         }
 

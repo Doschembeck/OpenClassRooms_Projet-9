@@ -27,6 +27,7 @@ public class PropertyViewModel extends ViewModel {
     // DATA
     public MutableLiveData<List<Property>> mListPropertyMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<Parameter> mCurrentParameterMutableLiveData = new MutableLiveData<>(new Parameter());
+    public boolean onlyFavorites = false;
 
     // REPOSITORY
     private final PropertyDataRepository propertyDataRepository;

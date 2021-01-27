@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +36,9 @@ import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -46,6 +50,7 @@ public class DetailsActivity extends AppCompatActivity {
     private int currentIndexPicture = 0;
     private List<Photo> mPictureList = new ArrayList<>();
     private Property mCurrentProperty;
+    boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,13 +147,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void configureToolBar(){
-
-        //todo: Changer la couleur de la fleche de retour
-        setSupportActionBar(binding.toolbar);
-        binding.toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24));
-        binding.toolbar.setNavigationOnClickListener(v -> {
-            onBackPressed();
-        });
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     // 2 - Configuring ViewModel
@@ -221,10 +220,11 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void updateUIWithProperty(Property property){
-
         if (property == null) return;
 
         mCurrentProperty = property;
+
+        checkIfPropertyIsFavorite();
 
         // updateUIWith...
         mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);
@@ -254,9 +254,45 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
+    private void checkIfPropertyIsFavorite(){
+        // Get the list of favorites properties
+        Set<String> set = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, new HashSet<>());
+
+        if (set.contains(String.valueOf(mCurrentProperty.getId()))){
+            isFavorite = true;
+            binding.activityDetailsFabFavorite.setImageResource(R.drawable.ic_baseline_star_24);
+            binding.activityDetailsFabFavorite.setColorFilter(getResources().getColor(R.color.starFavorite), PorterDuff.Mode.SRC_ATOP);
+
+        }else {
+            isFavorite = false;
+            binding.activityDetailsFabFavorite.setImageResource(R.drawable.ic_baseline_star_outline_24);
+        }
+
+    }
+
+
     private void onClickFloatingActionButton(View view){
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        String message = "ERROR";
+
+        // Get the list of favorites properties
+        Set<String> set = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, new HashSet<>());
+
+        // Add or remove
+        if (!isFavorite){
+            set.add(String.valueOf(mCurrentProperty.getId()));
+            message = "Ajouté aux favoris";
+
+        } else if (isFavorite){
+            set.remove(String.valueOf(mCurrentProperty.getId()));
+            message = "Supprimé des favoris";
+        }
+
+        // Update the favorite list
+        mSharedPreferences.edit().putStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, set).apply();
+
+        checkIfPropertyIsFavorite();
+
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
 
 }

@@ -155,7 +155,9 @@ public class EditPropertyActivity extends BaseActivity {
         String city = binding.activityEditPropertyEdittextCity.getText().toString();
         String zipcode = binding.activityEditPropertyEdittextZipcode.getText().toString();
         String country = binding.activityEditPropertyEdittextCountry.getText().toString();
-        long addressId = mViewModel.createAddress((new Address(0, streetNumber, streetName, city, zipcode, country)));
+        double longitude = new Random().nextInt(360) - 180; //todo
+        double latitude = new Random().nextInt(180) - 90; //todo
+        long addressId = mViewModel.createAddress((new Address(0, streetNumber, streetName, city, zipcode, country, latitude, longitude)));
 
         // Créer la Property
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();

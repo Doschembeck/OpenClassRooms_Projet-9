@@ -34,10 +34,8 @@
                 android:id="@+id/activity_parameter_edittext_pricemin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="Prix minimum :"
-                android:text="100000"/>
+                android:hint="Prix min"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--    Prix maximum     -->
@@ -50,10 +48,8 @@
                 android:id="@+id/activity_parameter_edittext_pricemax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="Prix maximum :"
-                android:text="300000"/>
+                android:hint="Prix max"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -74,10 +70,8 @@
                 android:id="@+id/activity_parameter_edittext_nbOfRoomsmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="nbOfRooms minimum :"
-                android:text="2"/>
+                android:hint="nbOfRooms min"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--    nbOfRooms maximum     -->
@@ -90,10 +84,8 @@
                 android:id="@+id/activity_parameter_edittext_nbOfRoomsmax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="nbOfRooms maximum :"
-                android:text="10"/>
+                android:hint="nbOfRooms max"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -114,10 +106,8 @@
                 android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="nbOfBedRooms minimum :"
-                android:text="1"/>
+                android:hint="nbOfBedRooms min"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--    nbOfBedRooms maximum     -->
@@ -130,10 +120,8 @@
                 android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="nbOfBedRooms maximum :"
-                android:text="3"/>
+                android:hint="nbOfBedRooms max"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -154,10 +142,8 @@
                 android:id="@+id/activity_parameter_edittext_areamin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="area minimum :"
-                android:text="35"/>
+                android:hint="area min"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--    area maximum     -->
@@ -170,10 +156,8 @@
                 android:id="@+id/activity_parameter_edittext_areamax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:inputType="number"
-                android:hint="area maximum :"
-                android:text="600"/>
+                android:hint="area max"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
@@ -187,10 +171,8 @@
             android:id="@+id/activity_parameter_edittext_realEstateAgent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:inputType="number"
-            android:hint="realEstateAgent :"
-            android:text="Thomas"/>
+            android:hint="realEstateAgent"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!--    isSold     -->

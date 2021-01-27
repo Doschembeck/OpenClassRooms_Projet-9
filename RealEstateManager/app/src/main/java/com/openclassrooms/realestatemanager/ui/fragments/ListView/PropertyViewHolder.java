@@ -85,6 +85,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
 
         //todo: Recuperer l'address et la passer en parametre de "updateWithAddress()"
 //        mViewModel.getAddress(property.getAddressId()).observe(this, this::updateWithAddress);
+// recyclerview callBack
 
         propertyId = property.getId();
 

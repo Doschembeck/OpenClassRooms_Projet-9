@@ -171,7 +171,7 @@ public class Parameter implements Parcelable {
 
     public SimpleSQLiteQuery getParamsFormatted(){
 
-        String params = "SELECT * FROM Property";
+        String params = "SELECT * FROM " + "Property";
 
         // Si aucun des attributs n'a été changer alors on recupere toutes les properties
         if (getAreaMin() == 0 && getAreaMax() == 0 &&
@@ -190,39 +190,39 @@ public class Parameter implements Parcelable {
         if(getPriceMax() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "price BETWEEN " + getPriceMin() + " AND " + getPriceMax();
+            params += "price" + " BETWEEN " + getPriceMin() + " AND " + getPriceMax();
         }
         else if(priceMin > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "price > " + getPriceMin();
+            params += "price" + " > " + getPriceMin();
         }
 
         if(getRealEstateAgent() != null) {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "realEstateAgent = '" + getRealEstateAgent() + "'";
+            params += "agent_id" + " = '" + getRealEstateAgent() + "'";
         }
 
         if(getNbOfRoomsMax() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfRooms BETWEEN " + getNbOfRoomsMin() + " AND " + getNbOfRoomsMax();
+            params += "nbOfRooms" + " BETWEEN " + getNbOfRoomsMin() + " AND " + getNbOfRoomsMax();
         }
         else if(getNbOfRoomsMin() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfRooms > " + getNbOfRoomsMin();
+            params += "nbOfRooms" + " > " + getNbOfRoomsMin();
         }
 
         if(getNbOfBedRoomsMax() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfBedRooms BETWEEN " + getNbOfBedRoomsMin() + " AND " + getNbOfBedRoomsMax();
+            params += "nbOfBedRooms" + " BETWEEN " + getNbOfBedRoomsMin() + " AND " + getNbOfBedRoomsMax();
         }
         else if(getNbOfBedRoomsMin() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfBedRooms > " + getNbOfBedRoomsMin();
+            params += "nbOfBedRooms" + " > " + getNbOfBedRoomsMin();
         }
 
 //        if(city != null){
@@ -232,19 +232,19 @@ public class Parameter implements Parcelable {
         if(getAreaMax() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "area BETWEEN " + getAreaMin() + " AND " + getAreaMax();
+            params += "area" + " BETWEEN " + getAreaMin() + " AND " + getAreaMax();
         }
         else if(getAreaMin() > 0)
         {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "area > " + getAreaMin();
+            params += "area" + " > " + getAreaMin();
         }
 
         //todo: isSold est formaté comme ceci : (true, false)
         if(getSold() != 2) {
             if (isFirstParam) isFirstParam = false; else  params += " AND ";
 
-            params += "isSold = " + getSold();
+            params += "isSold" + " = " + getSold();
 
         }else {
             Log.e("TAG1", "getParamsFormatted: NO SOLD !");

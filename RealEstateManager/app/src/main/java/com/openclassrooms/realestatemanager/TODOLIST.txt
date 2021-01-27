@@ -1,19 +1,28 @@
 
+//todo: BUG quand on change entre vue list et vue map sa recréer le fragment (Utiliser la navigation graphe)
+
 //todo: Recuperer Address dans le viewHolder
 
-//todo: regler la vue Map
-//todo: Utiliser geocoder pour création d'address
+//todo : actualisation properties filtré
 
-//todo: Gérer les liveData avec la devise
+//todo: Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)
+// upload les images sur le serveur
+// dossier avec toute les images dedans
+
+//todo: gerer local ou online
+
+//todo: Utiliser geocoder pour création d'address
 
 //todo: utiliser DataBinding
 
 //todo: rajouter des possibilité de filtrage
+
 //todo: faire le moteur de recherche
     - Gérer le tri avec OrderBy
-    - Stocker les parametres de filtres dans le ViewModel
 
 //todo: Bug lorsque je clique rapidement sur créer une propriété sa en créer plusieur
 
 //todo: Gerer la vue detaillé
-    - Faire fonctionner le menu de la toolbar
+    - Gérer les actions du menu de la toolbar + couleur du bouton retour ===========================
+
+//todo: https://stackoverflow.com/questions/58266383/firebase-storage-automatic-sync-with-local-storage

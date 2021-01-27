@@ -40,10 +40,11 @@ public class LoanSimulatorActivity extends AppCompatActivity {
 
         //todo: gerer le change des dollars recupere en dollars par l'intent
 
-        Intent intent = getIntent();
-        if (intent != null){
-            costProperty = (int) intent.getExtras().getDouble("amount_property", 0);
-        }
+        //todo: a reparer
+//        Intent intent = getIntent();
+//        if (intent != null){
+//            costProperty = (int) intent.getExtras().getDouble("amount_property", 0);
+//        }
 
         binding.activityLoanSimulatorToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
 

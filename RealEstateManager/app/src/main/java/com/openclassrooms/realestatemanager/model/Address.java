@@ -3,25 +3,33 @@ package com.openclassrooms.realestatemanager.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.android.gms.maps.model.LatLng;
+
 @Entity
 public class Address {
 
     @PrimaryKey(autoGenerate = true)
-    private long id; //todo: enlerver l'id du constructor
+    private long id;
     private int streetNumber;
     private String streetName;
     private String city;
     private String zipCode;
     private String country;
+    private double latitude;
+    private double longitude;
 
-    public Address(long id, int streetNumber, String streetName, String city, String zipCode, String country) {
+    public Address(long id, int streetNumber, String streetName, String city, String zipCode, String country, double latitude, double longitude) {
         this.id = id;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
         this.city = city;
         this.zipCode = zipCode;
         this.country = country;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
+
+    // region  --- GETTERS / SETTERS ---
 
     public int getStreetNumber() {
         return streetNumber;
@@ -65,5 +73,31 @@ public class Address {
 
     public long getId() {
         return id;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    //endregion
+
+    public LatLng getLatLng(){
+        return new LatLng(latitude, longitude);
+    }
+
+    public String getCompleteAddress(){
+        return streetNumber  + " " + streetName + ", " + city + " " + zipCode + ", " + country;
     }
 }

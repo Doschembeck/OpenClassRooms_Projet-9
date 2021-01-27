@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.ui.fragments.ListView;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,27 +12,30 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Property;
+import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ListViewFragment extends Fragment {
 
     private FragmentListviewBinding binding;
+    SharedPreferences mSharedPreferences;
+    private Context mContext;
+    private PropertyViewModel mViewModel;
 
+    private String actualDevise;
     private List<Property> mListProperty;
     private PropertyAdapter mAdapter;
-    private PropertyViewModel mViewModel;
-    private Context mContext;
 
     public ListViewFragment() { }
 
@@ -43,15 +47,17 @@ public class ListViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListviewBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
         mContext = view.getContext();
-
         configureViewModel();
+
+        mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
+        actualDevise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
+
+        Log.d("TAG1", "onCreate: ");
 
         mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(), this::updateUI);
 
         this.configureRecyclerView();
-        getAllProperty();
 
         return view;
     }
@@ -59,18 +65,6 @@ public class ListViewFragment extends Fragment {
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(mContext);
         this.mViewModel = ViewModelProviders.of(requireActivity(), mViewModelFactory).get(PropertyViewModel.class);
-    }
-
-    private void getAllProperty(){
-
-        //todo: à stocker dans le viewModel
-        Parameter parameter = new Parameter();
-//        parameter.setPriceMax(190000);
-//        parameter.setAreaMin(150);
-
-        this.mViewModel.searchProperties(parameter.getParamsFormatted()).observe(getViewLifecycleOwner(), properties -> {
-            mViewModel.mListPropertyMutableLiveData.setValue(properties);
-        });
     }
 
     // -----------------

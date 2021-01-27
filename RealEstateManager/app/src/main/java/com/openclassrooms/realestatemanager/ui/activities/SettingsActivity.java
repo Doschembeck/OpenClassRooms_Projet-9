@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -44,6 +45,12 @@ public class SettingsActivity extends AppCompatActivity {
         binding.activitySettingsToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
         binding.activitySettingsButtonReset.setOnClickListener(v -> deleteAllProperty());
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private void configureSpinnerCurrency(){

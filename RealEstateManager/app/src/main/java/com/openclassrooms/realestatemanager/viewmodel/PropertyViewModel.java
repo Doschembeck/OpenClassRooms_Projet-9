@@ -14,6 +14,7 @@ import com.openclassrooms.realestatemanager.database.repository.PropertyNearbyPo
 import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
+import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
@@ -23,10 +24,9 @@ import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {
 
-    // OLD START
+    // DATA
     public MutableLiveData<List<Property>> mListPropertyMutableLiveData = new MutableLiveData<>();
-    public MutableLiveData<List<String>> mListFilterPropertyMutableLiveData = new MutableLiveData<>(); //todo: a mettre dans un autre viewmodel
-    // OLD END
+    public MutableLiveData<Parameter> mCurrentParameterMutableLiveData = new MutableLiveData<>(new Parameter());
 
     // REPOSITORY
     private final PropertyDataRepository propertyDataRepository;
@@ -59,8 +59,9 @@ public class PropertyViewModel extends ViewModel {
     }
 
     // GET FILTRED PROPERTIES
-    public LiveData<List<Property>> searchProperties(SupportSQLiteQuery query){
-        return this.propertyDataRepository.searchProperties(query);
+    public LiveData<List<Property>> searchProperties(Parameter parameter){
+        mCurrentParameterMutableLiveData.setValue(parameter);
+        return this.propertyDataRepository.searchProperties(parameter.getParamsFormatted());
     }
 
     // GET PROPERTY

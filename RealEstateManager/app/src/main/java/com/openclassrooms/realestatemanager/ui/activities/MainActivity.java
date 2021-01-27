@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.navigation.NavigationView;
@@ -22,9 +21,8 @@ import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Parameter;
-import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
-import com.openclassrooms.realestatemanager.ui.fragments.MapViewFragment;
+import com.openclassrooms.realestatemanager.ui.fragments.MapsFragment;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.Arrays;
@@ -35,18 +33,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PropertyViewModel mViewModel;
     private ActivityMainBinding binding;
     private final int LAUNCH_PARAMETER_ACTIVITY = 932;
+    Bundle mSavedInstanceState;
 
     private static final String[]paths = {"Massieux", "- 120 000€"};
     private int currentFragment = 1;
     private final int ID_FRAGMENT_LIST = 1;
     private final int ID_FRAGMENT_MAP = 2;
-    private Fragment fragmentMap;
     private Fragment fragmentList;
+    private Fragment fragmentMaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureViewModel();
+
+        mSavedInstanceState = savedInstanceState;
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     switch (currentFragment){
                         case ID_FRAGMENT_LIST:
                             showMapFragment();
-                            break;
+                        break;
                         case ID_FRAGMENT_MAP:
                             showListFragment();
                             break;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 case R.id.menu_toolbar_item_filter:
 
-                    startActivityForResult(new Intent(this, ParameterActivity.class), LAUNCH_PARAMETER_ACTIVITY);
+                    startActivityForResult(new Intent(this, ParameterActivity.class).putExtra("parameter", mViewModel.mCurrentParameterMutableLiveData.getValue()), LAUNCH_PARAMETER_ACTIVITY);
 
                     break;
                 default:
@@ -92,12 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         });
 
-        generateFakeFilterProperty();
-
         showListFragment();
 
         // Configuration
         binding.activityMainNavView.setNavigationItemSelectedListener(this);
+
+        searchProperties();
 
     }
 
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Parameter parameter = data.getParcelableExtra("result");
 
-                this.mViewModel.searchProperties(parameter.getParamsFormatted()).observe(this, properties -> {
+                this.mViewModel.searchProperties(parameter).observe(this, properties -> {
                     mViewModel.mListPropertyMutableLiveData.setValue(properties);
                 });
 
@@ -120,6 +121,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
+    }
+
+    private void searchProperties(){
+
+        Parameter parameter = mViewModel.mCurrentParameterMutableLiveData.getValue();
+//        parameter.setPriceMax(190000);
+//        parameter.setAreaMin(150);
+
+        this.mViewModel.searchProperties(parameter).observe(this, properties -> {
+            mViewModel.mListPropertyMutableLiveData.setValue(properties);
+        });
     }
 
     private void configureSpinnerToolbar(){
@@ -134,19 +146,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
     }
 
-    private void generateFakeFilterProperty(){
-        // todo à supprimer
-        List<String> listTest = Arrays.asList("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"
-                , "Item 7", "Item 8", "Item 9", "Item 10", "Item 11", "Item 12");
-
-        mViewModel.mListFilterPropertyMutableLiveData.setValue(listTest);
-    }
-
     // 4 - Create each fragment page and show it
 
     private void showMapFragment(){
-        if (this.fragmentMap == null) this.fragmentMap = MapViewFragment.newInstance();
-        this.startTransactionFragment(this.fragmentMap);
+        if (this.fragmentMaps == null) this.fragmentMaps = MapsFragment.newInstance();
+        this.startTransactionFragment(this.fragmentMaps);
 
         binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_list_24);
         currentFragment = ID_FRAGMENT_MAP;
@@ -165,7 +169,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // 3 - Generic method that will replace and show a fragment inside the MainActivity Frame Layout
     private void startTransactionFragment(Fragment fragment){
         if (!fragment.isVisible()){
-            getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, fragment).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.activity_main_frame_layout, fragment)
+                    .commit();
         }
     }
 
@@ -194,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.activity_main_drawer_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                finish();
                 break;
             default:
                 break;

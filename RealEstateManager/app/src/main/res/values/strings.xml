@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="mapbox_access_token">pk.eyJ1IjoidGhvbWFzZGVzY2hvbWJlY2siLCJhIjoiY2trNzNuMjltMGEzbjJ3bzB6aTg0ODBiYSJ9.PbzRPhAK49o9iDdwcwc_qQ</string>
+
     <string name="app_name">Real Estate Manager</string>
     <string name="title_activity_main2">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -18,8 +18,11 @@ import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
+import com.openclassrooms.realestatemanager.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {

@@ -159,6 +159,8 @@ public class EditPropertyActivity extends BaseActivity {
         double latitude = new Random().nextInt(180) - 90; //todo
         long addressId = mViewModel.createAddress((new Address(0, streetNumber, streetName, city, zipcode, country, latitude, longitude)));
 
+        String mainPictureUrl = generateFakePhotos().get(0);
+
         // Créer la Property
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();
         double price = Utils.convertDeviseToDollar(Integer.parseInt(binding.activityEditPropertyEdittextPrice.getText().toString()), Constants.LIST_OF_DEVISES_ISO[binding.activityEditPropertySpinnerDevise.getSelectedItemPosition()]);
@@ -171,7 +173,7 @@ public class EditPropertyActivity extends BaseActivity {
         if (binding.activityEditPropertySwitchIssold.isChecked()) dateOfSale = thisDate; else dateOfSale = null;
 
         long propertyId = mViewModel.createProperty((new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
-                addressId, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
+                addressId, city, mainPictureUrl, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
 
         // Créer les photos
         List<String> photoUrlList = generateFakePhotos();

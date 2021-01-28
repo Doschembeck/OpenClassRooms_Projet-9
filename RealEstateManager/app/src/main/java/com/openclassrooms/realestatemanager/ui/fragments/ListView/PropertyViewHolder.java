@@ -3,13 +3,17 @@ package com.openclassrooms.realestatemanager.ui.fragments.ListView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
@@ -30,48 +35,58 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.List;
+import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class PropertyViewHolder extends RecyclerView.ViewHolder {
 
     private FragmentListviewItemBinding itemBinding;
-    long propertyId;
     SharedPreferences mSharedPreferences;
     private Context mContext;
+    private PropertyViewModel mViewModel;
 
     private String devise; //todo: voir si il ce met a jour quand je modifie la devise
 
-    public PropertyViewHolder(FragmentListviewItemBinding itemBinding) {
+    public PropertyViewHolder(FragmentListviewItemBinding itemBinding, PropertyViewModel viewModel) {
         super(itemBinding.getRoot());
         this.itemBinding = itemBinding;
         this.mContext = itemBinding.getRoot().getContext();
+        this.mViewModel = viewModel;
 
         mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
         devise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
 
-        itemBinding.fragmentListviewItemCardview.setOnClickListener(v -> onClickCardView());
+    }
+
+    private void checkIsFavorite(long propertyId){
+
+        Set<String> listFavorites = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, null);
+
+        if (listFavorites != null && listFavorites.contains(String.valueOf(propertyId))){
+            itemBinding.fragmentListviewItemImageviewStarfavorite.setVisibility(View.VISIBLE);
+            itemBinding.fragmentListviewItemImageviewStarfavorite.setColorFilter(mContext.getResources().getColor(R.color.starFavorite), PorterDuff.Mode.SRC_ATOP);
+        } else {
+            itemBinding.fragmentListviewItemImageviewStarfavorite.setVisibility(View.GONE);
+        }
 
     }
 
-    private void onClickCardView(){
-        //todo: faire une startActivityForResult() pour réactualiser lors du retour
-        mContext.startActivity(new Intent(mContext, DetailsActivity.class).putExtra("property_id", propertyId));
+    private void checkIsSold(Property property){
+
+        if (property.isSold()){
+            itemBinding.fragmentListviewItemImageviewSold.setVisibility(View.VISIBLE);
+            itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.VISIBLE);
+        } else {
+            itemBinding.fragmentListviewItemImageviewSold.setVisibility(View.GONE);
+            itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.GONE);
+        }
     }
 
-    public void updateWithAddress(Address address){
-        itemBinding.fragmentListviewItemTextviewCity.setText(address.getCity());
-    }
-
-    private void updateWithPhoto(List<Photo> photoList){
-
-        if (photoList == null) return;
-
-        Photo photo = photoList.get(0);
-
-        if (photo.getPhoto() != null){
+    private void displayMainPicture(String mainPictureUrl){
+        if (mainPictureUrl != null){
             Glide.with(mContext)
-                    .load(photo.getPhoto())
+                    .load(mainPictureUrl)
                     .error(R.drawable.image_not_found_scaled)
                     .centerCrop()
                     .into(itemBinding.fragmentListviewItemImageviewPhoto);
@@ -82,33 +97,18 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
                     .into(itemBinding.fragmentListviewItemImageviewPhoto);
         }
     }
+
     public void updateWithProperty(Property property){
 
-        //todo: Recuperer l'address et la passer en parametre de "updateWithAddress()"
-//        mViewModel.getAddress(property.getAddressId()).observe(this, this::updateWithAddress);
-// recyclerview callBack
+        checkIsFavorite(property.getId());
+        checkIsSold(property);
+        displayMainPicture(property.getMainPictureUrl());
 
-        propertyId = property.getId();
-
-        if (property.isSold()){
-            itemBinding.fragmentListviewItemImageviewSold.setVisibility(View.VISIBLE);
-            itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.VISIBLE);
-        } else {
-            itemBinding.fragmentListviewItemImageviewSold.setVisibility(View.GONE);
-            itemBinding.fragmentListviewItemTextviewSold.setVisibility(View.GONE);
-        }
-
-        //todo: Recuperer la liste de photos et la passer en parametre de "updateWithPhoto()"
-//        mViewModel.getAllPropertyPhoto(property.getId()).observe(this, this::updateWithPhoto);
-
-//        mTextViewCity.setText(property.getAddressId().getCity());
+        itemBinding.fragmentListviewItemTextviewCity.setText(property.getCity());
         itemBinding.fragmentListviewItemTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
         itemBinding.fragmentListviewItemTextviewRooms.setText(property.getNbOfRooms() + " Pièces");
         itemBinding.fragmentListviewItemTextviewBedrooms.setText(property.getNbOfBedRooms() + " Chambres");
         itemBinding.fragmentListviewItemTextviewArea.setText(property.getArea() + "m²");
-
-        //todo: a supprimer
-        itemBinding.fragmentListviewItemTextviewCity.setText("%VILLE_NAME%");
 
     }
 }

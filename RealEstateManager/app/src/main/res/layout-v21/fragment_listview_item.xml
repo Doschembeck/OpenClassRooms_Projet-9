@@ -9,6 +9,26 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="1dp"
+        android:layout_margin="13dp"
+        android:textColor="#43A047"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:text="Bonne affaire"/>
+
+    <ImageView
+        android:id="@+id/fragment_listview_item_imageview_starfavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_baseline_star_24"
+        android:visibility="gone"
+        android:elevation="1dp"
+        android:layout_margin="10dp"/>
+
     <ImageView
         android:id="@+id/fragment_listview_item_imageview_photo"
         android:layout_width="match_parent"

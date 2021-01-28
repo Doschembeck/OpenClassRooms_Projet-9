@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -146,6 +147,12 @@ public class DetailsActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
+
     private void configureToolBar(){
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
@@ -262,14 +269,11 @@ public class DetailsActivity extends AppCompatActivity {
             isFavorite = true;
             binding.activityDetailsFabFavorite.setImageResource(R.drawable.ic_baseline_star_24);
             binding.activityDetailsFabFavorite.setColorFilter(getResources().getColor(R.color.starFavorite), PorterDuff.Mode.SRC_ATOP);
-
         }else {
             isFavorite = false;
             binding.activityDetailsFabFavorite.setImageResource(R.drawable.ic_baseline_star_outline_24);
         }
-
     }
-
 
     private void onClickFloatingActionButton(View view){
         String message = "ERROR";

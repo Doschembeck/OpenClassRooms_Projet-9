@@ -9,10 +9,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +34,18 @@ import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
+import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.List;
+import java.util.Set;
 
 public class MapsFragment extends Fragment {
 
     private PropertyViewModel mViewModel;
     private Context mContext;
     private FragmentMapsBinding binding;
+    private SharedPreferences mSharedPreferences;
 
     // DATA FOR CALCULATE CENTER
     int currentIndexProperty;
@@ -67,8 +72,9 @@ public class MapsFragment extends Fragment {
             mGoogleMap = googleMap;
 
             mGoogleMap.setOnInfoWindowClickListener(marker -> {
-                long test = Long.parseLong(marker.getTag().toString());
-                startActivity(new Intent(getActivity(), DetailsActivity.class).putExtra("property_id", test));
+
+                getActivity().startActivityForResult(new Intent(mContext, DetailsActivity.class)
+                                .putExtra("property_id", Long.parseLong(marker.getTag().toString())), Constants.LAUNCH_DETAILS_ACTIVITY);
             });
 
             mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(), MapsFragment.this::updateUI);
@@ -85,6 +91,8 @@ public class MapsFragment extends Fragment {
         View view = binding.getRoot();
         mContext = view.getContext();
         configureViewModel();
+
+        mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, Context.MODE_PRIVATE);
 
         return view;
     }
@@ -140,9 +148,20 @@ public class MapsFragment extends Fragment {
                     maxLon = address.getLongitude();
                 }
 
+                // Check if this is a favorite property
+                Set<String> listFavorites = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, null);
+                BitmapDescriptor bitmapDescriptor;
+
+                if (listFavorites != null && listFavorites.contains(String.valueOf(property.getId()))){
+                    bitmapDescriptor = vectorToBitmap(mContext, R.drawable.marker_home_favorite);
+                }else {
+                    bitmapDescriptor = vectorToBitmap(mContext, R.drawable.marker_home2);
+                }
+
+                // Creation du marker
                 mGoogleMap.addMarker(new MarkerOptions()
                         .position(address.getLatLng())
-                        .icon(vectorToBitmap(mContext, R.drawable.marker_home2))
+                        .icon(bitmapDescriptor)
                         .title(address.getCompleteAddress()))
                         .setTag(property.getId()
                 );

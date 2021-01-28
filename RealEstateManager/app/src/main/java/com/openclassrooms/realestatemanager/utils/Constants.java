@@ -13,6 +13,9 @@ public class Constants {
 
     public static final String PREF_CURRENCY_DEFVALUE = "65GD46F46R54968R66sG7IHU79867YEHZ615zOIZ79GBONOGINkhoedugdjbkz5498454686C848656SCX";
 
+    public static final int LAUNCH_PARAMETER_ACTIVITY = 932;
+    public static final int LAUNCH_DETAILS_ACTIVITY = 933;
+
     // All rate of change is Dollar US to devise === Dollar US | USD | $ | 1 ===
     // On les identifies grace a l'ISO qui est unique pour chaque devise
     public static final String DEVISE_USD_ISO = "USD";

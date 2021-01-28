@@ -1,11 +1,7 @@
 
-//todo: utiliser la methode de OpenClassRooms pour gérer les cliques de la recyclerview
+//todo: BUG map ne charge pas surement a ause d'une restriction
 
-//todo: actualiser la recherche lors du retour de detailsActivity
-
-//todo: Recuperer Address dans le viewHolder
-
-//todo: activer le mode des favoris
+//todo: bug au lancement de l'app les sharedPreferences sont resets !
 
 //todo: activer le mode de comparaison
 

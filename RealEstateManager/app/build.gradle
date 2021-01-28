@@ -62,4 +62,8 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
     //VIEW MODEL & LIVE DATA
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    // My Librairie CodeHelperLib
+    implementation 'com.github.Doschembeck:CodeHelperLib:1.0.1'
+
 }

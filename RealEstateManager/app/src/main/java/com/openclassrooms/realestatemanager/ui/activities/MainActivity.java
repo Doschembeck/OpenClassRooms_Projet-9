@@ -2,10 +2,12 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,19 +23,22 @@ import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Parameter;
+import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
 import com.openclassrooms.realestatemanager.ui.fragments.MapsFragment;
+import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private PropertyViewModel mViewModel;
     private ActivityMainBinding binding;
-    private final int LAUNCH_PARAMETER_ACTIVITY = 932;
-    private final int LAUNCH_DETAILS_ACTIVITY = 933;
+    private SharedPreferences mSharedPreferences;
 
     private int currentFragment = 1;
     private final int ID_FRAGMENT_LIST = 1;
@@ -47,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         configureViewModel();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
 
         // --- LISTENERS ---
         binding.activityMainToolbar.setNavigationOnClickListener(view -> {
@@ -74,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
 
                 case R.id.menu_toolbar_item_filter:
-
-                    startActivityForResult(new Intent(this, ParameterActivity.class).putExtra("parameter", mViewModel.mCurrentParameterMutableLiveData.getValue()), LAUNCH_PARAMETER_ACTIVITY);
-
+                    startActivityForResult(new Intent(this, ParameterActivity.class)
+                            .putExtra("parameter", mViewModel.mCurrentParameterMutableLiveData.getValue()),
+                            Constants.LAUNCH_PARAMETER_ACTIVITY);
                     break;
                 default:
                     break;
@@ -98,14 +105,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LAUNCH_PARAMETER_ACTIVITY) {
+        if (requestCode == Constants.LAUNCH_DETAILS_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
 
-                Parameter parameter = data.getParcelableExtra("result");
-
-                this.mViewModel.searchProperties(parameter).observe(this, properties -> {
-                    mViewModel.mListPropertyMutableLiveData.setValue(properties);
-                });
+                searchProperties();
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -113,10 +116,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        if (requestCode == LAUNCH_DETAILS_ACTIVITY) {
+        if (requestCode == Constants.LAUNCH_PARAMETER_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
 
-               searchProperties();
+                Parameter parameter = data.getParcelableExtra("result");
+
+                this.mViewModel.searchProperties(parameter).observe(this, properties -> {
+                    mViewModel.mListPropertyMutableLiveData.setValue(properties);
+                });
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -137,6 +144,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Parameter parameter = mViewModel.mCurrentParameterMutableLiveData.getValue();
 
         this.mViewModel.searchProperties(parameter).observe(this, properties -> {
+
+            // Gere le cas ou on cherche uniquement dans les favoris
+            if (mViewModel.onlyFavorites){
+                List<Property> newList = new ArrayList<>();
+                Set<String> listFavorites = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, null);
+
+                for (int i = 0; i < properties.size(); i++){
+                    if (listFavorites.contains(String.valueOf(properties.get(i).getId()))){
+                        newList.add(properties.get(i));
+                    }
+                }
+
+                properties = newList;
+            }
+
             mViewModel.mListPropertyMutableLiveData.setValue(properties);
         });
     }

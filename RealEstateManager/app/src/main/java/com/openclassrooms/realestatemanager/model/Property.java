@@ -31,6 +31,8 @@ public class Property {
     private String description; // The full description of the property;
     @ColumnInfo(name = "address_id", index = true)
     private long addressId;
+    private String city;
+    private String mainPictureUrl;
     @ColumnInfo(name = "agent_id", index = true)
     private long agentId; // The real estate agent in charge of this property.
     private Boolean isSold;
@@ -38,7 +40,7 @@ public class Property {
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, String city, String mainPictureUrl, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -47,6 +49,8 @@ public class Property {
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
         this.addressId = addressId;
+        this.city = city;
+        this.mainPictureUrl = mainPictureUrl;
         this.agentId = agentId;
         this.isSold = dateOfSale != null;
         this.dateOfSale = dateOfSale;
@@ -158,4 +162,19 @@ public class Property {
         isSold = sold;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getMainPictureUrl() {
+        return mainPictureUrl;
+    }
+
+    public void setMainPictureUrl(String mainPictureUrl) {
+        this.mainPictureUrl = mainPictureUrl;
+    }
 }

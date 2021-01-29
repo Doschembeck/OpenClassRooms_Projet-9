@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.database.dao;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -30,8 +32,16 @@ public interface PropertyDao {
     LiveData<Property> getProperty(long propertyId);
 
     @Query("SELECT * FROM Property")
-    LiveData<List<Property>> getAllProperty();
+    LiveData<List<Property>> getAllLiveDataProperty();
+
+    @Query("SELECT * FROM Property")
+    List<Property> getAllProperty();
 
     @RawQuery(observedEntities = Property.class)
     LiveData<List<Property>> searchProperties(SupportSQLiteQuery query);
+
+    // "SELECT city, AVG(pricePerSquareMeter) FROM property GROUP BY city"
+    @Query("SELECT city , AVG(pricePerSquareMeter) FROM Property GROUP BY city")
+    Cursor getListCityWithAveragePricePerSquareMeter();
+
 }

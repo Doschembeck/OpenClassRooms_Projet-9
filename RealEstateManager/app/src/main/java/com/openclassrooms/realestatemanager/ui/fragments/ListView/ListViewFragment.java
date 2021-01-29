@@ -66,8 +66,6 @@ public class ListViewFragment extends Fragment {
         mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
         actualDevise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
 
-        Log.d("TAG1", "onCreate: ");
-
         mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(), this::updateUI);
 
         this.configureRecyclerView();
@@ -98,10 +96,10 @@ public class ListViewFragment extends Fragment {
     // 3 - Configure RecyclerView, Adapter, LayoutManager & glue it together
     private void configureRecyclerView(){
         // 3.1 - Reset list
-        this.mListProperty = new ArrayList<Property>();
+        this.mListProperty = new ArrayList<>();
 
         // 3.2 - Create mAdapter passing the list of users
-        this.mAdapter = new PropertyAdapter(this.mListProperty, mViewModel);
+        this.mAdapter = new PropertyAdapter(this.mListProperty);
         // 3.3 - Attach the mAdapter to the recyclerview to populate items
         binding.fragmentListviewRecyclerView.setAdapter(this.mAdapter);
         // 3.4 - Set layout manager to position the items

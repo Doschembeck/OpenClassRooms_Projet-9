@@ -1,6 +1,4 @@
 
-//todo: BUG map ne charge pas surement a ause d'une restriction
-
 //todo: bug au lancement de l'app les sharedPreferences sont resets !
 
 //todo: activer le mode de comparaison

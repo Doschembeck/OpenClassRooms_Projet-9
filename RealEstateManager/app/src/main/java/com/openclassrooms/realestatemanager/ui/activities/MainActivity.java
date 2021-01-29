@@ -150,9 +150,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 List<Property> newList = new ArrayList<>();
                 Set<String> listFavorites = mSharedPreferences.getStringSet(Constants.PREF_FAVORITES_PROPERTIES_KEY, null);
 
-                for (int i = 0; i < properties.size(); i++){
-                    if (listFavorites.contains(String.valueOf(properties.get(i).getId()))){
-                        newList.add(properties.get(i));
+                if (listFavorites != null){
+                    for (int i = 0; i < properties.size(); i++){
+                        if (listFavorites.contains(String.valueOf(properties.get(i).getId()))){
+                            newList.add(properties.get(i));
+                        }
                     }
                 }
 

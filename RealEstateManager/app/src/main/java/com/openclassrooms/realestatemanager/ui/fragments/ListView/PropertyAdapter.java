@@ -24,18 +24,16 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyViewHolder> {
 
     // FOR DATA
     private List<Property> mListProperty;
-    private PropertyViewModel mViewModel;
 
     // CONSTRUCTOR
-    public PropertyAdapter(List<Property> listProperty, PropertyViewModel viewModel) {
+    public PropertyAdapter(List<Property> listProperty) {
         this.mListProperty = listProperty;
-        this.mViewModel = viewModel;
     }
 
     @Override
     public PropertyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // CREATE VIEW HOLDER AND INFLATING ITS XML LAYOUT
-        return new PropertyViewHolder(FragmentListviewItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false), mViewModel);
+        return new PropertyViewHolder(FragmentListviewItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     // UPDATE VIEW HOLDER

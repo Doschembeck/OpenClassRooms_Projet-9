@@ -1,9 +1,10 @@
 package com.openclassrooms.realestatemanager.viewmodel;
 
+import android.database.Cursor;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.database.repository.AddressDataRepository;
 import com.openclassrooms.realestatemanager.database.repository.AgentDataRepository;
@@ -18,11 +19,8 @@ import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
-import com.openclassrooms.realestatemanager.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {
@@ -57,8 +55,13 @@ public class PropertyViewModel extends ViewModel {
     //  region FOR PROPERTY
     // ---------------
 
+    // GET ALL LIVE DATA PROPERTY
+    public LiveData<List<Property>> getAllLiveDataProperty(){
+        return this.propertyDataRepository.getAllLiveDataProperty();
+    }
+
     // GET ALL PROPERTY
-    public LiveData<List<Property>> getAllProperty(){
+    public List<Property> getAllProperty(){
         return this.propertyDataRepository.getAllProperty();
     }
 
@@ -71,6 +74,11 @@ public class PropertyViewModel extends ViewModel {
     // GET PROPERTY
     public LiveData<Property> getProperty(long propertyId){
         return this.propertyDataRepository.getProperty(propertyId);
+    }
+
+    // GET THE AVERAGE OF PricePerSquareMeter OF city IN LIST
+    public Cursor getListCityWithAveragePricePerSquareMeter(){
+        return this.propertyDataRepository.getListCityWithAveragePricePerSquareMeter();
     }
 
     // CREATE PROPERTY

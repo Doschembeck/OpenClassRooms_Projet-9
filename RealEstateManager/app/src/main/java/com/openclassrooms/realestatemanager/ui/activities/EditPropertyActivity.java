@@ -16,6 +16,7 @@ import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
@@ -168,12 +169,14 @@ public class EditPropertyActivity extends BaseActivity {
         int nbOfRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofrooms.getText().toString());
         int nbOfBedRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofbedrooms.getText().toString());
         String description = binding.activityEditPropertyEdittextDescription.getText().toString();
+        double pricePerSquareMeter = price / area;
+        float rate = ScriptsStats.getRateProperty(mViewModel, pricePerSquareMeter, city);
 
         Date dateOfSale;
         if (binding.activityEditPropertySwitchIssold.isChecked()) dateOfSale = thisDate; else dateOfSale = null;
 
-        long propertyId = mViewModel.createProperty((new Property(0,propertyType,price,area,nbOfRooms,nbOfBedRooms,description,
-                addressId, city, mainPictureUrl, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
+        long propertyId = mViewModel.createProperty((new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description,
+                addressId, rate, city, mainPictureUrl, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
 
         // Créer les photos
         List<String> photoUrlList = generateFakePhotos();

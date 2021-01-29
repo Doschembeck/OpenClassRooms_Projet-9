@@ -1,40 +1,23 @@
 package com.openclassrooms.realestatemanager.ui.fragments.ListView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBinding;
-import com.openclassrooms.realestatemanager.injections.Injection;
-import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
-import com.openclassrooms.realestatemanager.model.Address;
-import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
-import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
-import java.util.List;
 import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -44,15 +27,13 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
     private FragmentListviewItemBinding itemBinding;
     SharedPreferences mSharedPreferences;
     private Context mContext;
-    private PropertyViewModel mViewModel;
 
-    private String devise; //todo: voir si il ce met a jour quand je modifie la devise
+    private String devise;
 
-    public PropertyViewHolder(FragmentListviewItemBinding itemBinding, PropertyViewModel viewModel) {
+    public PropertyViewHolder(FragmentListviewItemBinding itemBinding) {
         super(itemBinding.getRoot());
         this.itemBinding = itemBinding;
         this.mContext = itemBinding.getRoot().getContext();
-        this.mViewModel = viewModel;
 
         mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
         devise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
@@ -98,11 +79,44 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    private void updateRate(float rate){
+        // rate < -15% = tres bonne affaire
+        // rate < -5% = bonne affaire
+        // rate < +5% = Affaire equitable
+        // rate < +15% = Au dessus du marché
+        // rate > +15% = Trop chere
+
+        if (rate <= 0.85){
+            itemBinding.fragmentListviewItemProgressbarRate.setProgress(100);
+            itemBinding.fragmentListviewItemProgressbarRate.getProgressDrawable().setColorFilter( Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
+            itemBinding.fragmentListviewItemTextviewRate.setText("Trés bonne affaire");
+       }else if (rate <= 0.95){
+            itemBinding.fragmentListviewItemProgressbarRate.setProgress(75);
+            itemBinding.fragmentListviewItemProgressbarRate.getProgressDrawable().setColorFilter( Color.GREEN, android.graphics.PorterDuff.Mode.SRC_IN);
+            itemBinding.fragmentListviewItemTextviewRate.setText("Bonne affaire");
+       }else if (rate <= 1.05){
+            itemBinding.fragmentListviewItemProgressbarRate.setProgress(50);
+            itemBinding.fragmentListviewItemProgressbarRate.getProgressDrawable().setColorFilter( Color.YELLOW, android.graphics.PorterDuff.Mode.SRC_IN);
+            itemBinding.fragmentListviewItemTextviewRate.setText("Offre equitable");
+       }else if (rate <= 1.15){
+            itemBinding.fragmentListviewItemProgressbarRate.setProgress(25);
+            itemBinding.fragmentListviewItemProgressbarRate.getProgressDrawable().setColorFilter( Color.parseColor("#F4511E"), android.graphics.PorterDuff.Mode.SRC_IN);
+           itemBinding.fragmentListviewItemTextviewRate.setText("Au dessus du marché");
+       }else if (rate > 1.25){
+            itemBinding.fragmentListviewItemProgressbarRate.setProgress(5);
+            itemBinding.fragmentListviewItemProgressbarRate.getProgressDrawable().setColorFilter( Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
+            itemBinding.fragmentListviewItemTextviewRate.setText("Loin au dessus du marché");
+       }
+
+    }
+
     public void updateWithProperty(Property property){
 
         checkIsFavorite(property.getId());
         checkIsSold(property);
         displayMainPicture(property.getMainPictureUrl());
+
+        updateRate(property.getRate());
 
         itemBinding.fragmentListviewItemTextviewCity.setText(property.getCity());
         itemBinding.fragmentListviewItemTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));

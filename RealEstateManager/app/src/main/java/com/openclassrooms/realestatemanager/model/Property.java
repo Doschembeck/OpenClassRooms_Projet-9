@@ -25,12 +25,14 @@ public class Property {
     @ColumnInfo(name = "property_type_id", index = true)
     private int propertyTypeId; // appartement, loft, manoir, etc
     private Double price; // in dollars
+    private Double pricePerSquareMeter;
     private float area; // La surface du bien (en m2)
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
     @ColumnInfo(name = "address_id", index = true)
     private long addressId;
+    private Float rate;
     private String city;
     private String mainPictureUrl;
     @ColumnInfo(name = "agent_id", index = true)
@@ -40,15 +42,17 @@ public class Property {
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, String city, String mainPictureUrl, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, Double pricePerSquareMeter, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, Float rate, String city, String mainPictureUrl, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
+        this.pricePerSquareMeter = pricePerSquareMeter;
         this.area = area;
         this.nbOfRooms = nbOfRooms;
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
         this.addressId = addressId;
+        this.rate = rate;
         this.city = city;
         this.mainPictureUrl = mainPictureUrl;
         this.agentId = agentId;
@@ -176,5 +180,21 @@ public class Property {
 
     public void setMainPictureUrl(String mainPictureUrl) {
         this.mainPictureUrl = mainPictureUrl;
+    }
+
+    public Float getRate() {
+        return rate;
+    }
+
+    public void setRate(Float rate) {
+        this.rate = rate;
+    }
+
+    public Double getPricePerSquareMeter() {
+        return pricePerSquareMeter;
+    }
+
+    public void setPricePerSquareMeter(Double pricePerSquareMeter) {
+        this.pricePerSquareMeter = pricePerSquareMeter;
     }
 }

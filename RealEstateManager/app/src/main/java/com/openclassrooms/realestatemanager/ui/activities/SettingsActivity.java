@@ -1,24 +1,28 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.bumptech.glide.util.Util;
 import com.openclassrooms.realestatemanager.databinding.ActivitySettingsBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
-import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
-import com.openclassrooms.realestatemanager.utils.Utils;
+import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private PropertyViewModel mViewModel;
     private SharedPreferences mSharedPreferences;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         configureViewModel();
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        mContext = this;
 
         mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
 
@@ -44,8 +50,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         binding.activitySettingsToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
         binding.activitySettingsButtonReset.setOnClickListener(v -> deleteAllProperty());
+        binding.activitySettingsButtonScriptrate.setOnClickListener(v -> ScriptsStats.scriptStatsAllRate(mViewModel));
 
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -72,7 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void deleteAllProperty(){
-        this.mViewModel.getAllProperty().observe(this, properties -> {
+        this.mViewModel.getAllLiveDataProperty().observe(this, properties -> {
             for(Property p : properties){
                 deleteProperty(p);
             }

@@ -21,6 +21,7 @@
         <item
             android:id="@+id/activity_main_drawer_comparator"
             android:icon="@drawable/ic_baseline_compare_arrows_24"
+            android:enabled="false"
             android:title="Comparateur" />
         <item
             android:id="@+id/activity_main_drawer_loan_simulator"

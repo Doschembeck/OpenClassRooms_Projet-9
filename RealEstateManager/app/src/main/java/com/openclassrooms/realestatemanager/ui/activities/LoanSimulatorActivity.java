@@ -46,7 +46,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
 //            costProperty = (int) intent.getExtras().getDouble("amount_property", 0);
 //        }
 
-        binding.activityLoanSimulatorToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
+        binding.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
 
         setMaxSeekbar();
 

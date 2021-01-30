@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -226,20 +227,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.activity_main_drawer_favorite:
 
                 mViewModel.onlyFavorites = true;
+                binding.activityMainToolbar.setBackgroundColor(getResources().getColor(R.color.starFavorite));
                 binding.activityMainToolbar.setTitle("Favoris");
-                showListFragment();
                 binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_filter).setVisible(false);
 
+                showListFragment();
                 searchProperties();
 
                 break;
             case R.id.activity_main_drawer_search_property:
 
                 mViewModel.onlyFavorites = false;
+                binding.activityMainToolbar.setBackgroundColor(getResources().getColor(R.color.main_activity_toolbar_backgroundcolor));
                 binding.activityMainToolbar.setTitle("Search Property");
-                showListFragment();
                 binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_filter).setVisible(true);
 
+                showListFragment();
                 searchProperties();
 
                 break;

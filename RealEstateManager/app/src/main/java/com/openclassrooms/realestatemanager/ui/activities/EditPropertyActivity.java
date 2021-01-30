@@ -1,13 +1,22 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.openclassrooms.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
@@ -20,12 +29,14 @@ import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class EditPropertyActivity extends BaseActivity {
@@ -34,6 +45,8 @@ public class EditPropertyActivity extends BaseActivity {
     private ActivityEditPropertyBinding binding;
     private DatePickerDialog datePickerDialog;
 
+    private Geocoder mGeocoder;
+    private Address mAddress;
     private Date thisDate;
     private int thisYear;
     private int thisMonth;
@@ -46,6 +59,8 @@ public class EditPropertyActivity extends BaseActivity {
         configureViewModel();
         binding = ActivityEditPropertyBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        setupAutoComplete();
 
         updateDate();
 
@@ -61,7 +76,8 @@ public class EditPropertyActivity extends BaseActivity {
         };
 
         // Listeners
-        binding.activityEditPropertyToolbar.toolbarOnlyback.setOnClickListener(v -> onBackPressed());
+        binding.activityEditPropertyButtonGeocoding.setOnClickListener(this::startAutoComplete);
+        binding.activityEditPropertyToolbar.setOnClickListener(v -> onBackPressed());
         binding.activityEditPropertyAddproperty.setOnClickListener(v -> onClickButtonAddProperty());
         binding.activityEditPropertySwitchIssold.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
@@ -87,6 +103,55 @@ public class EditPropertyActivity extends BaseActivity {
 
     }
 
+    private void setupAutoComplete() {
+        if (!Places.isInitialized()) {
+            Places.initialize(this, "AIzaSyDKEy4YPdOH5ErxxEZ0SPFBUF4JNGf83kw"); //todo: Recuperer la clé depuis les ressources
+            mGeocoder = new Geocoder(this, Locale.getDefault());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.AUTOCOMPLETE_REQUEST_CODE){
+            if (resultCode == AutocompleteActivity.RESULT_OK){
+                LatLng latLng = Autocomplete.getPlaceFromIntent(data).getLatLng();;
+
+                getAddress(latLng.latitude, latLng.longitude);
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR){
+            } else if (resultCode == AutocompleteActivity.RESULT_CANCELED){
+            }
+        }
+    }
+
+    private void getAddress(Double latitude, Double longitude) {
+
+        try {
+            List<android.location.Address> addresses = mGeocoder.getFromLocation(latitude, longitude, 1);
+
+            if (addresses != null && addresses.size() > 0) {
+                android.location.Address address = addresses.get(0);
+                mAddress = new Address(0, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        binding.activityEditPropertyEdittextAddress.setText(mAddress.getCompleteAddress());
+    }
+
+    private void startAutoComplete(View view) {
+
+        startActivityForResult(
+                new Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.FULLSCREEN,
+                    Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
+                        .build(this),
+                Constants.AUTOCOMPLETE_REQUEST_CODE);
+    }
+
     // === OnClick buttons ===
 
     private void onClickButtonAddNearbyPOI(View view){
@@ -96,8 +161,9 @@ public class EditPropertyActivity extends BaseActivity {
     }
 
     private void onClickButtonAddProperty(){
-        createCompleteProperty();
-        finish();
+        if (createCompleteProperty()){
+            finish();
+        }
     }
 
     // === Update UI ===
@@ -147,22 +213,38 @@ public class EditPropertyActivity extends BaseActivity {
 
     // === Process ===
 
-    private void createCompleteProperty(){
+    private boolean createCompleteProperty(){
         //todo: faire une creation complete
 
-        // Créer l'address
-        int streetNumber = Integer.parseInt(binding.activityEditPropertyEdittextStreetnumber.getText().toString());
-        String streetName = binding.activityEditPropertyEdittextStreetname.getText().toString();
-        String city = binding.activityEditPropertyEdittextCity.getText().toString();
-        String zipcode = binding.activityEditPropertyEdittextZipcode.getText().toString();
-        String country = binding.activityEditPropertyEdittextCountry.getText().toString();
-        double longitude = new Random().nextInt(360) - 180; //todo
-        double latitude = new Random().nextInt(180) - 90; //todo
-        long addressId = mViewModel.createAddress((new Address(0, streetNumber, streetName, city, zipcode, country, latitude, longitude)));
+        if (mAddress != null){
+            // Créer l'address
+            long addressId = mViewModel.createAddress(mAddress);
 
+            // Créer la Property
+            long propertyId = createProperty(addressId);
+
+            // Créer les photos
+            List<String> photoUrlList = generateFakePhotos();
+            for (int i=0; i < photoUrlList.size(); i++){
+                mViewModel.createPhoto(new Photo(0, propertyId, photoUrlList.get(i), "Salon"));
+            }
+
+            // Lie les NearbyPOI aux Property
+            for (NearbyPOI nearbyPOI : selectedNearbyPOI){
+                mViewModel.createPropertyNearbyPoiJoin(new PropertyNearbyPoiJoin(propertyId, nearbyPOI.getId()));
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    private long createProperty(long addressId) {
+
+        //todo
         String mainPictureUrl = generateFakePhotos().get(0);
 
-        // Créer la Property
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();
         double price = Utils.convertDeviseToDollar(Integer.parseInt(binding.activityEditPropertyEdittextPrice.getText().toString()), Constants.LIST_OF_DEVISES_ISO[binding.activityEditPropertySpinnerDevise.getSelectedItemPosition()]);
         float area = Float.parseFloat(binding.activityEditPropertyEdittextArea.getText().toString());
@@ -170,25 +252,11 @@ public class EditPropertyActivity extends BaseActivity {
         int nbOfBedRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofbedrooms.getText().toString());
         String description = binding.activityEditPropertyEdittextDescription.getText().toString();
         double pricePerSquareMeter = price / area;
-        float rate = ScriptsStats.getRateProperty(mViewModel, pricePerSquareMeter, city);
+        float rate = ScriptsStats.getRateProperty(mViewModel, pricePerSquareMeter, mAddress.getCity());
+        Date dateOfSale = binding.activityEditPropertySwitchIssold.isChecked() ? thisDate : null;
 
-        Date dateOfSale;
-        if (binding.activityEditPropertySwitchIssold.isChecked()) dateOfSale = thisDate; else dateOfSale = null;
-
-        long propertyId = mViewModel.createProperty((new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description,
-                addressId, rate, city, mainPictureUrl, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
-
-        // Créer les photos
-        List<String> photoUrlList = generateFakePhotos();
-        for (int i=0; i < photoUrlList.size(); i++){
-            mViewModel.createPhoto(new Photo(0, propertyId, photoUrlList.get(i), "Salon"));
-        }
-
-        // Lie les NearbyPOI aux Property
-        for (NearbyPOI nearbyPOI : selectedNearbyPOI){
-            mViewModel.createPropertyNearbyPoiJoin(new PropertyNearbyPoiJoin(propertyId, nearbyPOI.getId()));
-        }
-
+        return mViewModel.createProperty((new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description,
+                addressId, rate, mAddress.getCity(), mainPictureUrl, getCurrentAgentId() , dateOfSale, thisDate, thisDate)));
     }
 
     // === Generators ===

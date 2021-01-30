@@ -1,6 +1,8 @@
 
 //todo: bug au lancement de l'app les sharedPreferences sont resets !
 
+//todo: automatisé la recherche de points d'interets
+
 //todo: activer le mode de comparaison
 
 //todo: Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)

@@ -15,6 +15,7 @@ public class Constants {
 
     public static final int LAUNCH_PARAMETER_ACTIVITY = 932;
     public static final int LAUNCH_DETAILS_ACTIVITY = 933;
+    public static final int AUTOCOMPLETE_REQUEST_CODE = 934;
 
     // All rate of change is Dollar US to devise === Dollar US | USD | $ | 1 ===
     // On les identifies grace a l'ISO qui est unique pour chaque devise

@@ -9,5 +9,7 @@
     <color name="background_textview_border_color">#000000</color>
     <color name="background_textview_background_color">#00F81313</color>
     <color name="starFavorite">#FDD835</color>
+    <color name="main_activity_toolbar_backgroundcolor">#F3F3F3</color>
+    <color name="main_activity_toolbar_textcolor">#FC494949</color>
 
 </resources>

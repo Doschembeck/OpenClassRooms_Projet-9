@@ -10,7 +10,7 @@ public class Address {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
-    private int streetNumber;
+    private String streetNumber;
     private String streetName;
     private String city;
     private String zipCode;
@@ -18,7 +18,7 @@ public class Address {
     private double latitude;
     private double longitude;
 
-    public Address(long id, int streetNumber, String streetName, String city, String zipCode, String country, double latitude, double longitude) {
+    public Address(long id, String streetNumber, String streetName, String city, String zipCode, String country, double latitude, double longitude) {
         this.id = id;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
@@ -31,11 +31,11 @@ public class Address {
 
     // region  --- GETTERS / SETTERS ---
 
-    public int getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(int streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 

@@ -7,8 +7,12 @@
     android:orientation="vertical"
     tools:context=".ui.activities.SettingsActivity">
 
-    <include android:id="@+id/activity_settings_toolbar"
-        layout="@layout/toolbar_backonly"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_onlyback"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
 
     <LinearLayout
         android:id="@+id/activity_settings_linearlayout"

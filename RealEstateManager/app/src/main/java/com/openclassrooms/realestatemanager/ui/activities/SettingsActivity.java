@@ -48,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         configureSpinnerCurrency();
 
-        binding.activitySettingsToolbar.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
+        binding.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
         binding.activitySettingsButtonReset.setOnClickListener(v -> deleteAllProperty());
         binding.activitySettingsButtonScriptrate.setOnClickListener(v -> ScriptsStats.scriptStatsAllRate(mViewModel));
 

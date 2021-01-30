@@ -8,8 +8,13 @@
     android:orientation="vertical">
 
 <!--    todo: y manque les photos et l'adresse-->
-    <include android:id="@+id/activity_edit_property_toolbar"
-        layout="@layout/toolbar_backonly"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_edit_property_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Create Property"
+        android:elevation="4dp"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -44,9 +49,9 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_marginVertical="10dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -54,14 +59,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:textSize="22sp"
                         android:textAlignment="center"
                         android:hint="Prix"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Spinner
                     android:id="@+id/activity_edit_property_spinner_devise"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"/>
 
             </LinearLayout>
@@ -196,102 +203,18 @@
 
             </LinearLayout>
 
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginVertical="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_edit_property_edittext_streetnumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:inputType="number"
-                        android:hint="Numero de rue"
-                        android:text="69"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:layout_marginVertical="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_edit_property_edittext_streetname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:inputType="textPostalAddress"
-                        android:hint="Nom de la rue"
-                        android:text="rue de la Rouette"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_edit_property_edittext_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginVertical="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_edit_property_edittext_zipcode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:inputType="number"
-                        android:hint="Code postal"
-                        android:text="01600"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginVertical="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_edit_property_edittext_city"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:inputType="textPostalAddress"
-                        android:hint="Ville"
-                        android:text="Massieux"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginVertical="10dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_edit_property_edittext_country"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:inputType="textPostalAddress"
-                        android:hint="Pays"
-                        android:text="France"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <!--endregion-->
+                    android:enabled="false"
+                    android:hint="Adresse"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

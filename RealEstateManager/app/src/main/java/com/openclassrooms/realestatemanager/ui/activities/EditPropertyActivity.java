@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -76,9 +77,25 @@ public class EditPropertyActivity extends BaseActivity {
         };
 
         // Listeners
+        binding.activityEditPropertyButtonAddphotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
         binding.activityEditPropertyButtonGeocoding.setOnClickListener(this::startAutoComplete);
         binding.activityEditPropertyToolbar.setOnClickListener(v -> onBackPressed());
         binding.activityEditPropertyAddproperty.setOnClickListener(v -> onClickButtonAddProperty());
+        binding.activityEditPropertyButtonCreatepoi.setOnClickListener(view -> {
+            if(binding.activityEditPropertyLinearlayoutCreatenearbypoi.getVisibility() == View.GONE){
+                binding.activityEditPropertyButtonCreatepoi.setText("Annuler");
+                binding.activityEditPropertyLinearlayoutCreatenearbypoi.setVisibility(View.VISIBLE);
+            } else {
+                binding.activityEditPropertyButtonCreatepoi.setText("Créer un point d'interet");
+                binding.activityEditPropertyLinearlayoutCreatenearbypoi.setVisibility(View.GONE);
+            }
+        });
+
         binding.activityEditPropertySwitchIssold.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
                 binding.activityEditPropertyLinearlayoutDateofsale.setVisibility(View.VISIBLE);
@@ -95,6 +112,8 @@ public class EditPropertyActivity extends BaseActivity {
         // Configuration
         configureSpinnerDevise();
         configureSpinnerPropertyType();
+
+        mViewModel.propertyPictureListMutableLiveData.setValue(generateFakePhotos()); //todo à supprimer
 
         // UpdateUI
         mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithNearbyPOI);
@@ -129,17 +148,20 @@ public class EditPropertyActivity extends BaseActivity {
     private void getAddress(Double latitude, Double longitude) {
 
         try {
-            List<android.location.Address> addresses = mGeocoder.getFromLocation(latitude, longitude, 1);
+            if (mGeocoder != null){
+                List<android.location.Address> addresses = mGeocoder.getFromLocation(latitude, longitude, 1);
 
-            if (addresses != null && addresses.size() > 0) {
-                android.location.Address address = addresses.get(0);
-                mAddress = new Address(0, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
+                if (addresses != null && addresses.size() > 0) {
+                    android.location.Address address = addresses.get(0);
+                    mAddress = new Address(0, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
+                    binding.activityEditPropertyEdittextAddress.setText(mAddress.getCompleteAddress());
+                }
+            } else {
+                Toast.makeText(this, "Erreur veuillez choisir une adresse valide", Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        binding.activityEditPropertyEdittextAddress.setText(mAddress.getCompleteAddress());
     }
 
     private void startAutoComplete(View view) {
@@ -156,8 +178,23 @@ public class EditPropertyActivity extends BaseActivity {
 
     private void onClickButtonAddNearbyPOI(View view){
         String nearbyPoiName = binding.activityEditPropertyEdittextNearbypoi.getText().toString();
+        binding.activityEditPropertyEdittextNearbypoi.setText("");
 
-        mViewModel.createNearbyPOI(new NearbyPOI(0, nearbyPoiName));
+        if (!nearbyPoiName.replaceAll("\\s", "").equals("")){
+            mViewModel.createNearbyPOI(new NearbyPOI(0, formatPOIName(nearbyPoiName)));
+            binding.activityEditPropertyLinearlayoutCreatenearbypoi.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(this, "Le nom du point d'interet de peut pas etre vide !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private String formatPOIName(String poiName){
+
+        String formattedString = poiName.replaceAll("\\s", "");
+        formattedString = formattedString.substring(0, 1).toUpperCase() + formattedString.substring(1);
+
+        return formattedString;
     }
 
     private void onClickButtonAddProperty(){
@@ -224,7 +261,7 @@ public class EditPropertyActivity extends BaseActivity {
             long propertyId = createProperty(addressId);
 
             // Créer les photos
-            List<String> photoUrlList = generateFakePhotos();
+            List<String> photoUrlList = mViewModel.propertyPictureListMutableLiveData.getValue();
             for (int i=0; i < photoUrlList.size(); i++){
                 mViewModel.createPhoto(new Photo(0, propertyId, photoUrlList.get(i), "Salon"));
             }
@@ -243,7 +280,7 @@ public class EditPropertyActivity extends BaseActivity {
     private long createProperty(long addressId) {
 
         //todo
-        String mainPictureUrl = generateFakePhotos().get(0);
+        String mainPictureUrl = mViewModel.propertyPictureListMutableLiveData.getValue().get(0);
 
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();
         double price = Utils.convertDeviseToDollar(Integer.parseInt(binding.activityEditPropertyEdittextPrice.getText().toString()), Constants.LIST_OF_DEVISES_ISO[binding.activityEditPropertySpinnerDevise.getSelectedItemPosition()]);

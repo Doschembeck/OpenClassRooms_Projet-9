@@ -1,28 +1,24 @@
 
-//todo: bug au lancement de l'app les sharedPreferences sont resets !
-
-//todo: automatisé la recherche de points d'interets
+//todo BUG : Lors du lancement de l'app les sharedPreferences sont resets !
+//todo BUG : Lors de la suppression d'une property qui a des POI
+//todo BUG : Lorsque je clique rapidement sur créer une propriété sa en créer plusieur
 
 //todo: activer le mode de comparaison
 
 //todo: Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)
+//todo: https://stackoverflow.com/questions/58266383/firebase-storage-automatic-sync-with-local-storage
 // upload les images sur le serveur
 // dossier avec toute les images dedans
 
-//todo: gerer local ou online
-
-//todo: Utiliser geocoder pour création d'address
-
 //todo: utiliser DataBinding
 
-//todo: rajouter des possibilité de filtrage
-
 //todo: faire le moteur de recherche
+    - Filtrer par nombre de photos etc..
     - Gérer le tri avec OrderBy
 
-//todo: Bug lorsque je clique rapidement sur créer une propriété sa en créer plusieur
 
 //todo: Gerer la vue detaillé
     - Gérer les actions du menu de la toolbar + couleur du bouton retour ===========================
 
-//todo: https://stackoverflow.com/questions/58266383/firebase-storage-automatic-sync-with-local-storage
+//todo BONUS : gerer local ou online
+//todo BONUS : automatisé la recherche de points d'interets

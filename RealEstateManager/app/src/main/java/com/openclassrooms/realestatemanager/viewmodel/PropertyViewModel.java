@@ -26,6 +26,7 @@ import java.util.concurrent.Executor;
 public class PropertyViewModel extends ViewModel {
 
     // DATA
+    public MutableLiveData<List<String>> propertyPictureListMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<List<Property>> mListPropertyMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<Parameter> mCurrentParameterMutableLiveData = new MutableLiveData<>(new Parameter());
     public boolean onlyFavorites = false;

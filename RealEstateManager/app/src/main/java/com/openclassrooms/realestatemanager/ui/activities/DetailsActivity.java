@@ -164,12 +164,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void updateUIWithAddress(Address address){
-        includeBinding.contentDetailTextviewAddress.setText(String.format("%d %s %s %s %s",
-                address.getStreetNumber(),
-                address.getStreetName(),
-                address.getZipCode(),
-                address.getCity(),
-                address.getCountry()));
+        includeBinding.contentDetailTextviewAddress.setText(address.getCompleteAddress());
     }
 
     private void displayPicture(){

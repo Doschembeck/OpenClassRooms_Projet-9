@@ -1,9 +1,10 @@
 
-//todo BUG : Lors du lancement de l'app les sharedPreferences sont resets !
-//todo BUG : Lors de la suppression d'une property qui a des POI
+//todo BUG : probleme autocomplete bug au bout de la deuxieme recherche obliger de relancer
 //todo BUG : Lorsque je clique rapidement sur créer une propriété sa en créer plusieur
-
-//todo: activer le mode de comparaison
+//todo BUG : Affichage des images se fait uniquement sur l'activiter apres la creation ou le modif
+//todo BUG : Lors du lancement de l'app les sharedPreferences sont resets !
+//todo BUG : Modifier property ajout et suppression d'images
+//todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 
 //todo: Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)
 //todo: https://stackoverflow.com/questions/58266383/firebase-storage-automatic-sync-with-local-storage
@@ -16,9 +17,6 @@
     - Filtrer par nombre de photos etc..
     - Gérer le tri avec OrderBy
 
-
-//todo: Gerer la vue detaillé
-    - Gérer les actions du menu de la toolbar + couleur du bouton retour ===========================
-
+//todo BONUS : activer le mode de comparaison
 //todo BONUS : gerer local ou online
 //todo BONUS : automatisé la recherche de points d'interets

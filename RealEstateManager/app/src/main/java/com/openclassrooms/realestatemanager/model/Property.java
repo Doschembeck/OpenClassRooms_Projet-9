@@ -1,5 +1,8 @@
 package com.openclassrooms.realestatemanager.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -10,15 +13,14 @@ import java.util.Date;
 @Entity(foreignKeys = {
             @ForeignKey(entity = Address.class,
                     parentColumns = "id",
-                    childColumns = "address_id",
-                    onDelete = ForeignKey.CASCADE
+                    childColumns = "address_id"
             ),
             @ForeignKey(entity = Agent.class,
                     parentColumns = "id",
                     childColumns = "agent_id"
             )
         })
-public class Property {
+public class Property implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -197,4 +199,68 @@ public class Property {
     public void setPricePerSquareMeter(Double pricePerSquareMeter) {
         this.pricePerSquareMeter = pricePerSquareMeter;
     }
+
+//   region ---- PARECELABLE METHODS ---
+
+    protected Property(Parcel in) {
+        this.id = in.readLong();
+        this.propertyTypeId = in.readInt();
+        this.price = in.readDouble();
+        this.pricePerSquareMeter = in.readDouble();;
+        this.area = in.readFloat();;
+        this.nbOfRooms = in.readInt();;
+        this.nbOfBedRooms = in.readInt();;
+        this.description = in.readString();;
+        this.addressId = in.readLong();;
+        this.rate = in.readFloat();;
+        this.city = in.readString();;
+        this.mainPictureUrl = in.readString();;
+        this.agentId = in.readLong();;
+        this.dateOfSale = new Date(in.readLong());
+        this.isSold = this.dateOfSale != null;
+        this.createdAt = new Date(in.readLong());
+        this.updatedAt = new Date(in.readLong());
+    }
+
+    public static final Creator<Property> CREATOR = new Creator<Property>() {
+        @Override
+        public Property createFromParcel(Parcel in) {
+            return new Property(in);
+        }
+
+        @Override
+        public Property[] newArray(int size) {
+            return new Property[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        //todo ajouter les attributs rajouter en haut !
+
+        //todo: regler probleme si il n'y a pas de date de vente
+        dest.writeLong(id);
+        dest.writeInt(propertyTypeId);
+        dest.writeDouble(price);
+        dest.writeDouble(pricePerSquareMeter);
+        dest.writeFloat(area);
+        dest.writeInt(nbOfRooms);
+        dest.writeInt(nbOfBedRooms);
+        dest.writeString(description);
+        dest.writeLong(addressId);
+        dest.writeFloat(rate);
+        dest.writeString(city);
+        dest.writeString(mainPictureUrl);
+        dest.writeLong(agentId);
+        dest.writeLong(dateOfSale.getTime());
+        dest.writeLong(createdAt.getTime());
+        dest.writeLong(updatedAt.getTime());
+    }
+
+//    endregion
 }

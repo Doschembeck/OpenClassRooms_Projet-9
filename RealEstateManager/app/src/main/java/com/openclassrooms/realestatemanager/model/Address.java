@@ -29,7 +29,13 @@ public class Address {
         this.longitude = longitude;
     }
 
-    // region  --- GETTERS / SETTERS ---
+    // region  --- GETTERS / SETTERS --
+    //
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    // -
 
     public String getStreetNumber() {
         return streetNumber;

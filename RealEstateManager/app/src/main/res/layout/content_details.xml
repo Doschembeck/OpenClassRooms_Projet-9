@@ -289,6 +289,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"/>
 
+            <ImageView
+                android:id="@+id/content_detail_imageview_staticmap"
+                android:layout_width="300dp"
+                android:layout_height="300dp"/>
+
         </LinearLayout>
 
 

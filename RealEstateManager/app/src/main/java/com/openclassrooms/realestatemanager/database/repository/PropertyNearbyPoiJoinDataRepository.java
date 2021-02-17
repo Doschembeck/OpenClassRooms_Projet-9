@@ -5,6 +5,7 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 
 import com.openclassrooms.realestatemanager.database.dao.PropertyNearbyPoiJoinDao;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 
@@ -21,6 +22,11 @@ public class PropertyNearbyPoiJoinDataRepository {
     // CREATE NearbyPOI
     public long createPropertyNearbyPoiJoin(PropertyNearbyPoiJoin propertyNearbyPoiJoin){
         return this.propertyNearbyPoiJoinDao.createPropertyNearbyPoiJoin(propertyNearbyPoiJoin);
+    }
+
+    // DELETE
+    public long deletePropertyNearbyPoiJoin(PropertyNearbyPoiJoin propertyNearbyPoiJoin){
+        return this.propertyNearbyPoiJoinDao.deletePropertyNearbyPoi(propertyNearbyPoiJoin);
     }
 
     // GET ALL NearbyPOI link with a Property

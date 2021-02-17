@@ -14,6 +14,7 @@ import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBinding;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -68,7 +69,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         if (mainPictureUrl != null){
             Glide.with(mContext)
                     .load(mainPictureUrl)
-                    .error(R.drawable.image_not_found_scaled)
+                    .error(R.drawable.image_not_found_scaled) //todo: tombe en error lors de l'affichage d'un url local
                     .centerCrop()
                     .into(itemBinding.fragmentListviewItemImageviewPhoto);
         }else {
@@ -119,7 +120,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         updateRate(property.getRate());
 
         itemBinding.fragmentListviewItemTextviewCity.setText(property.getCity());
-        itemBinding.fragmentListviewItemTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
+        itemBinding.fragmentListviewItemTextviewPrice.setText(FormatUtils.formatEditTextWithDevise(property.getPrice(), devise));
         itemBinding.fragmentListviewItemTextviewRooms.setText(property.getNbOfRooms() + " Pièces");
         itemBinding.fragmentListviewItemTextviewBedrooms.setText(property.getNbOfBedRooms() + " Chambres");
         itemBinding.fragmentListviewItemTextviewArea.setText(property.getArea() + "m²");

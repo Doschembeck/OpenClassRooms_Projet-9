@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="Details Property"
-        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-        app:menu="@menu/menu_details_activity_toolbar"/>
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,6 +63,7 @@
                         android:id="@+id/activity_details_button_picturearrowback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:background="#ffff"
                         android:elevation="1dp"
                         android:layout_centerVertical="true"
@@ -74,6 +74,7 @@
                         android:id="@+id/activity_details_button_picturearrowforward"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:background="#ffff"
                         android:elevation="1dp"
                         android:layout_alignParentEnd="true"

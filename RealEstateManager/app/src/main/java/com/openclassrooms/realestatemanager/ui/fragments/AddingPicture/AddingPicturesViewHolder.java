@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentAddingpicturesItemBinding;
+import com.openclassrooms.realestatemanager.model.Photo;
 
 import java.lang.ref.WeakReference;
 
@@ -27,15 +28,17 @@ public class AddingPicturesViewHolder extends RecyclerView.ViewHolder implements
         mContext = itemBinding.getRoot().getContext();
     }
 
-    public void updateWithPropertyPicture(String propertyPicture, AddingPicturesAdapter.Listener callback){
+    public void updateWithPropertyPicture(Photo propertyPicture, AddingPicturesAdapter.Listener callback){
 
         //3 - Implement Listener on ImageButton
         mItemBinding.fragmentAddingpicturesItemButtonDelete.setOnClickListener(this);
         //4 - Create a new weak Reference to our Listener
         this.callbackWeakRef = new WeakReference<>(callback);
 
+        mItemBinding.fragmentAddingpicturesItemTextviewDescription.setText(propertyPicture.getPhotoDescription());
+
         Glide.with(mContext)
-                .load(propertyPicture)
+                .load(propertyPicture.getUrlPicture())
                 .error(R.drawable.image_not_found_scaled)
                 .centerCrop()
                 .into(mItemBinding.fragmentAddingpicturesItemImageviewPicture);

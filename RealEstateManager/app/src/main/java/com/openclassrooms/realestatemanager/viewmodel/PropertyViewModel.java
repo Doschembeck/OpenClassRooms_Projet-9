@@ -20,13 +20,14 @@ import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
 public class PropertyViewModel extends ViewModel {
 
     // DATA
-    public MutableLiveData<List<String>> propertyPictureListMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<Photo>> propertyPictureListMutableLiveData = new MutableLiveData<>(new ArrayList<>());
     public MutableLiveData<List<Property>> mListPropertyMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<Parameter> mCurrentParameterMutableLiveData = new MutableLiveData<>(new Parameter());
     public boolean onlyFavorites = false;
@@ -137,6 +138,12 @@ public class PropertyViewModel extends ViewModel {
     // CREATE PropertyNearbyPoiJoin
     public long createPropertyNearbyPoiJoin(PropertyNearbyPoiJoin propertyNearbyPoiJoin){
         return this.propertyNearbyPoiJoinDataRepository.createPropertyNearbyPoiJoin(propertyNearbyPoiJoin);
+    }
+
+    public void deletePropertyNearbyPoiJoin(PropertyNearbyPoiJoin propertyNearbyPoiJoin){
+        executor.execute(() -> {
+            this.propertyNearbyPoiJoinDataRepository.deletePropertyNearbyPoiJoin(propertyNearbyPoiJoin);
+        });
     }
 
     // GET ALL Property with a NearbyPOI

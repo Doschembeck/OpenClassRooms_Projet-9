@@ -15,22 +15,22 @@ public class Photo {
     private long id;
     @ColumnInfo(name = "property_id", index = true)
     private long propertyId;
-    private String photo;
+    private String urlPicture;
     private String photoDescription;
 
-    public Photo(long id, long propertyId, String photo, String photoDescription) {
+    public Photo(long id, long propertyId, String urlPicture, String photoDescription) {
         this.id = id;
         this.propertyId = propertyId;
-        this.photo = photo;
+        this.urlPicture = urlPicture;
         this.photoDescription = photoDescription;
     }
 
-    public String getPhoto() {
-        return photo;
+    public String getUrlPicture() {
+        return urlPicture;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setUrlPicture(String urlPicture) {
+        this.urlPicture = urlPicture;
     }
 
     public String getPhotoDescription() {

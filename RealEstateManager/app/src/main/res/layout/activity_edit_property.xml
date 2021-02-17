@@ -7,7 +7,6 @@
     tools:context=".ui.activities.EditPropertyActivity"
     android:orientation="vertical">
 
-<!--    todo: y manque les photos-->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/activity_edit_property_toolbar"
         android:layout_width="match_parent"
@@ -25,10 +24,40 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/activity_edit_property_button_addphotos"
+                android:id="@+id/activity_edit_property_button_createphotos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ajouter une photo"/>
+
+            <LinearLayout
+                android:id="@+id/activity_edit_property_linearlayout_createphotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginVertical="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_edit_property_edittext_picturedescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Description de la photo"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/activity_edit_property_button_addphotos"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Ajouter"/>
+            </LinearLayout>
 
             <fragment
                 android:layout_width="match_parent"
@@ -144,8 +173,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:hint="Description"
-                    android:text="Maison sans vis a vis, bien située..."/>
+                    android:hint="Description"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- region Address -->

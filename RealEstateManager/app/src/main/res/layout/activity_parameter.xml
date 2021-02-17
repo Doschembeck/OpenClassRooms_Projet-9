@@ -1,231 +1,386 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.activities.ParameterActivity">
 
-    <TextView
-        android:id="@+id/activity_parameter_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="PARAMETER ACTIVITY"
-        android:textSize="50sp"/>
-
-    <!--    Prix     -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!--    Prix minimum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_pricemin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Prix min"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--    Prix maximum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_pricemax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Prix max"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <!--    nbOfRooms     -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <!--    nbOfRooms minimum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_nbOfRoomsmin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="nbOfRooms min"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--    nbOfRooms maximum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_nbOfRoomsmax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="nbOfRooms max"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <!--    nbOfBedRooms     -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <!--    nbOfRooms minimum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="nbOfBedRooms min"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--    nbOfBedRooms maximum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="nbOfBedRooms max"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <!--    area     -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <!--    area minimum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_areamin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="area min"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--    area maximum     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_areamax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="area max"/>
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
-
-    <!--    realEstateAgent     -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_parameter_edittext_realEstateAgent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="realEstateAgent"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--    isSold     -->
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="Affiché les propriétés:"
-        android:textStyle="bold"
-        android:textSize="28sp"/>
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/activity_parameter_radiobutton_sold"
+        <TextView
+            android:id="@+id/activity_parameter_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vendu"
-            android:textSize="22sp"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="PARAMETER ACTIVITY"
+            android:textSize="50sp"/>
 
-        <RadioButton
-            android:id="@+id/activity_parameter_radiobutton_available"
+        <!--    Prix     -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    Prix minimum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_pricemin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Prix min"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    Prix maximum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_pricemax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Prix max"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--    nbOfRooms     -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    nbOfRooms minimum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_nbOfRoomsmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="nbOfRooms min"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    nbOfRooms maximum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_nbOfRoomsmax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="nbOfRooms max"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--    nbOfBedRooms     -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    nbOfRooms minimum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="nbOfBedRooms min"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    nbOfBedRooms maximum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="nbOfBedRooms max"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--    area     -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    area minimum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_areamin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="area min"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    area maximum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_areamax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="area max"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--    Created Date     -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mise sur le marché"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    Created Date minimum     -->
+            <ImageView
+                android:id="@+id/activity_parameter_imageview_createdatmin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_date_range_24"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_createdatmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="De"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    Created Date maximum     -->
+            <ImageView
+                android:id="@+id/activity_parameter_imageview_createdatmax"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_date_range_24"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_createdatmax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="A"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--    Date of sale     -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date de vente"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    Date of sale minimum     -->
+            <ImageView
+                android:id="@+id/activity_parameter_imageview_dateofsalemin"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_date_range_24"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_dateofsalemin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="De"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    Date of sale maximum     -->
+            <ImageView
+                android:id="@+id/activity_parameter_imageview_dateofsalemax"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_baseline_date_range_24"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_dateofsalemax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="A"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!--    Address     -->
+        <Button
+            android:id="@+id/activity_parameter_button_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selectionner un lieu de reference"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_parameter_edittext_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Autour de cette address"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_parameter_linearlayout_nearbypoi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:text="A proximité de :"/>
+        </LinearLayout>
+
+
+        <!--    realEstateAgent     -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/activity_parameter_edittext_realEstateAgent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="realEstateAgent"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--    isSold     -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Disponnible"
-            android:textSize="22sp"/>
-        <RadioButton
-            android:id="@+id/activity_parameter_radiobutton_all"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Affiché les propriétés:"
+            android:textStyle="bold"
+            android:textSize="28sp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_sold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vendu"
+                android:textSize="22sp"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Disponnible"
+                android:textSize="22sp"/>
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Tous"
+                android:textSize="22sp"/>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/activity_parameter_button_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Tous"
-            android:textSize="22sp"/>
+            android:layout_gravity="center"
+            android:text="FILTRER"
+            android:textStyle="bold"
+            android:textSize="30sp"/>
+    </LinearLayout>
 
-    </RadioGroup>
-
-
-
-    <Button
-        android:id="@+id/activity_parameter_button_filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="FILTRER"
-        android:textStyle="bold"
-        android:textSize="30sp"/>
-
-
-</LinearLayout>
+</ScrollView>

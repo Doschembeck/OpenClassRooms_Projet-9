@@ -2,12 +2,14 @@ package com.openclassrooms.realestatemanager.database.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
 
@@ -24,5 +26,8 @@ public interface PropertyNearbyPoiJoinDao {
 
     @Query("SELECT * FROM NearbyPOI INNER JOIN property_nearbypoi_join ON NearbyPOI.id = property_nearbypoi_join.nearbyPoiId WHERE property_nearbypoi_join.propertyId = :propertyId")
     LiveData<List<NearbyPOI>> getNearbyPoiForProperty(final long propertyId);
+
+    @Delete
+    int deletePropertyNearbyPoi(PropertyNearbyPoiJoin propertyForNearbyPoi);
 
 }

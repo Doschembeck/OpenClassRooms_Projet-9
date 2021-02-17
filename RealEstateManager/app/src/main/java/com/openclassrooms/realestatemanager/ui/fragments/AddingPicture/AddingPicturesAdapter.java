@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.realestatemanager.databinding.FragmentAddingpicturesItemBinding;
+import com.openclassrooms.realestatemanager.model.Photo;
 
 import java.util.List;
 
@@ -21,10 +22,10 @@ public class AddingPicturesAdapter extends RecyclerView.Adapter<AddingPicturesVi
     private final Listener callback;
 
     // FOR DATA
-    private List<String> propertyPictureList;
+    private List<Photo> propertyPictureList;
 
     // CONSTRUCTOR
-    public AddingPicturesAdapter(Listener callback, List<String> propertyPictureList) {
+    public AddingPicturesAdapter(Listener callback, List<Photo> propertyPictureList) {
         this.callback = callback;
         this.propertyPictureList = propertyPictureList;
     }
@@ -41,7 +42,7 @@ public class AddingPicturesAdapter extends RecyclerView.Adapter<AddingPicturesVi
         viewHolder.updateWithPropertyPicture(this.propertyPictureList.get(position), this.callback);
     }
 
-    public String getPicture(int position){
+    public Photo getPicture(int position){
         return this.propertyPictureList.get(position);
     }
 

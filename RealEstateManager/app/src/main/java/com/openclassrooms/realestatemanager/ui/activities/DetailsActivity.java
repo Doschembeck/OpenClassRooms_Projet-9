@@ -2,13 +2,10 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.openclassrooms.realestatemanager.R;
@@ -32,7 +28,7 @@ import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
-import com.openclassrooms.realestatemanager.utils.Utils;
+import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.text.SimpleDateFormat;
@@ -84,7 +80,6 @@ public class DetailsActivity extends AppCompatActivity {
         binding.activityDetailsFabFavorite.setOnClickListener(this::onClickFloatingActionButton);
 
         configureToolBar();
-
     }
 
     @Override
@@ -95,65 +90,13 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        switch (item.getItemId()){
-            case R.id.menu_details_activity_toolbar_compare :
-
-                //todo
-                break;
-
-            case R.id.menu_details_activity_toolbar_loansimulate :
-
-                //todo à améliorer envoyer la property actuel
-                Intent intent = new Intent(this, LoanSimulatorActivity.class);
-                intent.putExtra("amount_property", mCurrentProperty.getPrice());
-                startActivity(intent);
-
-                break;
-
-            case R.id.menu_details_activity_toolbar_editproperty :
-
-                //todo à améliorer envoyer la property actuel
-                startActivity(new Intent(this, EditPropertyActivity.class));
-
-                break;
-
-            case R.id.menu_details_activity_toolbar_sold :
-
-                //todo ajouter une date de vente
-                mCurrentProperty.setSold(!mCurrentProperty.isSold());
-                mViewModel.updateProperty(mCurrentProperty);
-                break;
-
-            case R.id.menu_details_activity_toolbar_deleteproperty :
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Etes vous sur de vouloir supprimer cette propriété ?");
-                builder.setCancelable(true);
-                builder.setPositiveButton("Oui", (dialog, which) -> {
-                    if (mCurrentProperty != null){
-                        mViewModel.deleteProperty(mCurrentProperty);
-                        finish();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-                break;
-        }
-
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
         setResult(Activity.RESULT_OK);
         finish();
     }
 
     private void configureToolBar(){
+        setSupportActionBar(binding.toolbar);
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
@@ -165,6 +108,20 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void updateUIWithAddress(Address address){
         includeBinding.contentDetailTextviewAddress.setText(address.getCompleteAddress());
+
+        String center = address.getLatitude() + "," + address.getLongitude();
+        String zoom = "13";
+        String size = "300x300";
+        String maptype = "roadmap";
+        String markers = center;
+        String key = "AIzaSyDKEy4YPdOH5ErxxEZ0SPFBUF4JNGf83kw"; // TODO : utiliser la clé de maniére securiser
+        String url = "https://maps.googleapis.com/maps/api/staticmap" + "?center=" + center + "&zoom=" + zoom + "&size=" + size + "&maptype=" + maptype + "&markers=" + markers + "&key=" + key;
+
+        Glide.with(this)
+                .load(url)
+                .error(R.drawable.image_not_found_scaled)
+                .centerCrop()
+                .into(binding.activityDetailsIncludeContentDetails.contentDetailImageviewStaticmap);
     }
 
     private void displayPicture(){
@@ -183,15 +140,16 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (currentIndexPicture <= mPictureList.size()){
 
+            //todo : tombe dans error
             Glide.with(this)
-                    .load(mPictureList.get(currentIndexPicture).getPhoto())
+                    .load(mPictureList.get(currentIndexPicture).getUrlPicture())
+                    .error(R.drawable.image_not_found_scaled)
                     .centerCrop()
                     .into(binding.activityDetailsPhotolist);
 
             binding.activityDetailsTextviewPicturedescription.setText(mPictureList.get(currentIndexPicture).getPhotoDescription());
             binding.activityDetailsTextviewCurrentindexpicture.setText(currentIndexPicture + 1 + "/" + mPictureList.size());
         }
-
     }
 
     private void updateUIWithAgent(Agent agent){
@@ -203,6 +161,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (nearbyPOIList.size() != -1){
 
             includeBinding.contentDetailsLinearlayoutNearbypoi.setVisibility(View.VISIBLE);
+            includeBinding.contentDetailTextviewNearbypoi.setText("");
 
             for (int i = 0; i < nearbyPOIList.size(); i++){
 
@@ -230,11 +189,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         // updateUIWith...
         mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);
-        mViewModel.getAllPropertyPhoto(property.getAddressId()).observe(this, photoList -> {
-            if (photoList == null || photoList.size() == 0) return;
-
-            mPictureList = photoList;
-            displayPicture();
+        mViewModel.getAllPropertyPhoto(property.getId()).observe(this, photoList -> {
+            if (!(photoList.size() == 0)){
+                mPictureList = photoList;
+                displayPicture();
+            }
         });
         mViewModel.getAgent(property.getAgentId()).observe(this, this::updateUIWithAgent);
         mViewModel.getPropertyForNearbyPoi(property.getId()).observe(this, this::updateUIWithNearbyPOI);
@@ -245,8 +204,8 @@ public class DetailsActivity extends AppCompatActivity {
         includeBinding.contentDetailTextviewNbofrooms.setText("" + property.getNbOfRooms());
         includeBinding.contentDetailTextviewNbofbedrooms.setText("" + property.getNbOfBedRooms());
         includeBinding.contentDetailTextviewArea.setText(property.getArea() + " m²");
-        includeBinding.contentDetailTextviewPrice.setText(Utils.formatEditTextWithDevise(property.getPrice(), devise));
-        includeBinding.contentDetailTextviewPricepersquaremeter.setText(Utils.formatEditTextWithDevise(property.getPrice() / property.getArea(), devise) + "/m²");
+        includeBinding.contentDetailTextviewPrice.setText(FormatUtils.formatEditTextWithDevise(property.getPrice(), devise));
+        includeBinding.contentDetailTextviewPricepersquaremeter.setText(FormatUtils.formatEditTextWithDevise(property.getPrice() / property.getArea(), devise) + "/m²");
         includeBinding.contentDetailTextviewDescription.setText(property.getDescription());
         if (property.isSold()){
             includeBinding.contentDetailLinearlayoutDateofsale.setVisibility(View.VISIBLE);
@@ -294,4 +253,47 @@ public class DetailsActivity extends AppCompatActivity {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menu_details_activity_toolbar_compare :
+
+                //todo
+                break;
+
+            case R.id.menu_details_activity_toolbar_loansimulate :
+                Intent intent = new Intent(this, LoanSimulatorActivity.class);
+                intent.putExtra("amount_property", mCurrentProperty.getPrice());
+                startActivity(intent);
+                break;
+
+            case R.id.menu_details_activity_toolbar_editproperty :
+
+                //todo à améliorer envoyer la property actuel
+                startActivity(new Intent(this, EditPropertyActivity.class)
+                        .putExtra("property", mCurrentProperty)
+                );
+
+                break;
+
+            case R.id.menu_details_activity_toolbar_deleteproperty :
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Etes vous sur de vouloir supprimer cette propriété ?");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Oui", (dialog, which) -> {
+                    if (mCurrentProperty != null){
+                        mViewModel.deleteProperty(mCurrentProperty);
+                        finish();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

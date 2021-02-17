@@ -8,10 +8,14 @@ import androidx.room.ForeignKey;
         foreignKeys = {
             @ForeignKey(entity = Property.class,
                 parentColumns = "id",
-                childColumns = "propertyId"),
-            @ForeignKey(entity = Property.class,
+                childColumns = "propertyId",
+                onDelete = ForeignKey.CASCADE
+            ),
+            @ForeignKey(entity = NearbyPOI.class,
                 parentColumns = "id",
-                childColumns = "propertyId")
+                childColumns = "nearbyPoiId",
+                onDelete = ForeignKey.CASCADE
+            )
         })
 public class PropertyNearbyPoiJoin {
 

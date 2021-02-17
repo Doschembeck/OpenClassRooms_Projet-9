@@ -163,8 +163,7 @@ public class MapsFragment extends Fragment {
                         .position(address.getLatLng())
                         .icon(bitmapDescriptor)
                         .title(address.getCompleteAddress()))
-                        .setTag(property.getId()
-                );
+                        .setTag(property.getId());
 
                 //Si c'est le dernier
                 if (properties.size() - 1 == currentIndexProperty){

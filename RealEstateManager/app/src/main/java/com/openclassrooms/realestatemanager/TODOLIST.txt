@@ -6,17 +6,16 @@
 //todo BUG : Modifier property ajout et suppression d'images
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 
-//todo: Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)
-//todo: https://stackoverflow.com/questions/58266383/firebase-storage-automatic-sync-with-local-storage
-// upload les images sur le serveur
-// dossier avec toute les images dedans
-
-//todo: utiliser DataBinding
-
 //todo: faire le moteur de recherche
-    - Filtrer par nombre de photos etc..
+    - Filtrer par nombre de photos / Lieu de reference / NearbyPOI
     - Gérer le tri avec OrderBy
+//todo : parameterAtivity permettre de supprimer les dates
+//todo: utiliser DataBinding
 
 //todo BONUS : activer le mode de comparaison
 //todo BONUS : gerer local ou online
 //todo BONUS : automatisé la recherche de points d'interets
+//todo BONUS : Comment faire pour recuperer un lien en important un photo du telephone (sur quoi herberger)
+    https://stackoverflow.com/questions/58266383/firebase-storage-automatic-sync-with-local-storage
+    - upload les images sur le serveur
+    - dossier avec toute les images dedans

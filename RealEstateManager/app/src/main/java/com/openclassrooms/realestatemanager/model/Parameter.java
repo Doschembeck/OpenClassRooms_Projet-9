@@ -19,6 +19,12 @@ public class Parameter implements Parcelable {
     private int nbOfBedRoomsMax;
     private int areaMin;
     private int areaMax;
+    private long createdAtMin;
+    private long createdAtMax;
+    private long dateOfSaleMin;
+    private long dateOfSaleMax;
+    private int nbOfPicturesMin;
+    private int nbOfPicturesMax;
     private byte isSold; // 0 = display only unSold | 1 = display only Sold | 2 = display all
 
     //    private String city;
@@ -32,6 +38,12 @@ public class Parameter implements Parcelable {
         this.nbOfBedRoomsMax = 0;
         this.areaMin = 0;
         this.areaMax = 0;
+        this.createdAtMin = 0;
+        this.createdAtMax = 0;
+        this.dateOfSaleMin = 0;
+        this.dateOfSaleMax = 0;
+        this.nbOfPicturesMin = 0;
+        this.nbOfPicturesMax = 0;
         this.isSold = 2;
     }
 
@@ -47,6 +59,12 @@ public class Parameter implements Parcelable {
         nbOfBedRoomsMax = in.readInt();
         areaMin = in.readInt();
         areaMax = in.readInt();
+        createdAtMin = in.readLong();
+        createdAtMax = in.readLong();
+        dateOfSaleMin = in.readLong();
+        dateOfSaleMax = in.readLong();
+        nbOfPicturesMin = in.readInt();
+        nbOfPicturesMax = in.readInt();
         isSold = in.readByte();
     }
 
@@ -80,6 +98,12 @@ public class Parameter implements Parcelable {
         dest.writeInt(nbOfBedRoomsMax);
         dest.writeInt(areaMin);
         dest.writeInt(areaMax);
+        dest.writeLong(createdAtMin);
+        dest.writeLong(createdAtMax);
+        dest.writeLong(dateOfSaleMin);
+        dest.writeLong(dateOfSaleMax);
+        dest.writeInt(nbOfPicturesMin);
+        dest.writeInt(nbOfPicturesMax);
         dest.writeByte(isSold);
     }
 
@@ -167,88 +191,144 @@ public class Parameter implements Parcelable {
         isSold = sold;
     }
 
-//    endregion
+    public long getCreatedAtMin() {
+        return createdAtMin;
+    }
+
+    public void setCreatedAtMin(long createdAtMin) {
+        this.createdAtMin = createdAtMin;
+    }
+
+    public long getCreatedAtMax() {
+        return createdAtMax;
+    }
+
+    public void setCreatedAtMax(long createdAtMax) {
+        this.createdAtMax = createdAtMax;
+    }
+
+    public long getDateOfSaleMin() {
+        return dateOfSaleMin;
+    }
+
+    public void setDateOfSaleMin(long dateOfSaleMin) {
+        this.dateOfSaleMin = dateOfSaleMin;
+    }
+
+    public long getDateOfSaleMax() {
+        return dateOfSaleMax;
+    }
+
+    public void setDateOfSaleMax(long dataOfSaleMax) {
+        this.dateOfSaleMax = dataOfSaleMax;
+    }
+
+    public int getNbOfPicturesMin() {
+        return nbOfPicturesMin;
+    }
+
+    public void setNbOfPicturesMin(int nbOfPicturesMin) {
+        this.nbOfPicturesMin = nbOfPicturesMin;
+    }
+
+    public int getNbOfPicturesMax() {
+        return nbOfPicturesMax;
+    }
+
+    public void setNbOfPicturesMax(int nbOfPicturesMax) {
+        this.nbOfPicturesMax = nbOfPicturesMax;
+    }
+
+    //    endregion
+
+    private String getIsFirstParams(Boolean isFirstParam){
+        return isFirstParam ? " WHERE " : " AND ";
+    }
+
+    private String queryMinMax(Boolean isFirstParam, String tableName, long min, long max){
+        String params = "";
+
+        if(max > 0)
+        {
+            params += getIsFirstParams(isFirstParam);
+            params += tableName + " BETWEEN " + min + " AND " + max;
+        }
+        else if(min > 0)
+        {
+            params += getIsFirstParams(isFirstParam);
+            params += tableName + " > " + min;
+        }
+
+        return params;
+    }
 
     public SimpleSQLiteQuery getParamsFormatted(){
 
+        boolean isFirstParam = true;
         String params = "SELECT * FROM " + "Property";
 
-        // Si aucun des attributs n'a été changer alors on recupere toutes les properties
-        if (getAreaMin() == 0 && getAreaMax() == 0 &&
-                getNbOfRoomsMin() == 0 && getNbOfRoomsMax() == 0 &&
-                getSold() == 2 &&
-                getNbOfBedRoomsMin() == 0 && getNbOfBedRoomsMax() == 0 &&
-                getPriceMin() == 0 && getPriceMax() == 0 &&
-                getRealEstateAgent() == null)
-        {
-            return new SimpleSQLiteQuery(params);
+        String priceQuery = queryMinMax(isFirstParam, "price", getPriceMin(), getPriceMax());
+        params += priceQuery;
+        isFirstParam = priceQuery.equals("");
+
+        String nbOfRoomsQuery = queryMinMax(isFirstParam, "nbOfRooms", getNbOfRoomsMin(), getNbOfRoomsMax());
+        params += nbOfRoomsQuery;
+        isFirstParam = nbOfRoomsQuery.equals("");
+
+        String nbOfBedRoomsQuery = queryMinMax(isFirstParam, "nbOfBedRooms", getNbOfBedRoomsMin(), getNbOfBedRoomsMax());
+        params += nbOfBedRoomsQuery;
+        isFirstParam = nbOfBedRoomsQuery.equals("");
+
+        String areaQuery = queryMinMax(isFirstParam, "area", getAreaMin(), getAreaMax());
+        params += areaQuery;
+        isFirstParam = areaQuery.equals("");
+
+        String createdAtQuery = queryMinMax(isFirstParam, "createdAt", getCreatedAtMin() - 1, getCreatedAtMax());
+        params += createdAtQuery;
+        isFirstParam = createdAtQuery.equals("");
+
+        if (getSold() == 1){
+            String dateOfSaleQuery = queryMinMax(isFirstParam, "dateOfSale", getDateOfSaleMin() - 1, getDateOfSaleMax());
+            params += dateOfSaleQuery;
+            isFirstParam = dateOfSaleQuery.equals("");
         }
 
-        Boolean isFirstParam = true;
-        params += " WHERE ";
+        if(getSold() != 2) {
+            params += getIsFirstParams(isFirstParam);
+            params += "isSold" + " = " + getSold();
 
-        if(getPriceMax() > 0)
-        {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "price" + " BETWEEN " + getPriceMin() + " AND " + getPriceMax();
-        }
-        else if(priceMin > 0)
-        {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "price" + " > " + getPriceMin();
+            if (isFirstParam) isFirstParam = false;
         }
 
         if(getRealEstateAgent() != null) {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
+            params += getIsFirstParams(isFirstParam);
             params += "agent_id" + " = '" + getRealEstateAgent() + "'";
+
+            if (isFirstParam) isFirstParam = false;
         }
 
-        if(getNbOfRoomsMax() > 0)
+
+        //todo lancer une requete dans la table photos pour compter les photos de cette id
+        if(getNbOfPicturesMax() > 0)
         {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfRooms" + " BETWEEN " + getNbOfRoomsMin() + " AND " + getNbOfRoomsMax();
+            params += getIsFirstParams(isFirstParam);
+            params += tableName + " BETWEEN " + getNbOfPicturesMin() + " AND " + getNbOfPicturesMax();
+            if (isFirstParam) isFirstParam = false;
         }
-        else if(getNbOfRoomsMin() > 0)
+        else if(getNbOfPicturesMin() > 0)
         {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfRooms" + " > " + getNbOfRoomsMin();
+            params += getIsFirstParams(isFirstParam);
+            params += tableName + " > " + getNbOfPicturesMin();
+            if (isFirstParam) isFirstParam = false;
         }
 
-        if(getNbOfBedRoomsMax() > 0)
-        {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfBedRooms" + " BETWEEN " + getNbOfBedRoomsMin() + " AND " + getNbOfBedRoomsMax();
-        }
-        else if(getNbOfBedRoomsMin() > 0)
-        {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "nbOfBedRooms" + " > " + getNbOfBedRoomsMin();
-        }
+
+
+
 
 //        if(city != null){
 //            params += " city = '" + city + "'";
 //        }
-
-        if(getAreaMax() > 0)
-        {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "area" + " BETWEEN " + getAreaMin() + " AND " + getAreaMax();
-        }
-        else if(getAreaMin() > 0)
-        {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-            params += "area" + " > " + getAreaMin();
-        }
-
-        //todo: isSold est formaté comme ceci : (true, false)
-        if(getSold() != 2) {
-            if (isFirstParam) isFirstParam = false; else  params += " AND ";
-
-            params += "isSold" + " = " + getSold();
-
-        }else {
-            Log.e("TAG1", "getParamsFormatted: NO SOLD !");
-        }
 
         Log.i("TAG1", "getParamsFormatted: " + params);
         return new SimpleSQLiteQuery(params);

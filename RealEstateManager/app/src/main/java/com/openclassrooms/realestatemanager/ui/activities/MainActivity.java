@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
         mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
 
         // --- LISTENERS ---
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         showListFragment();
 
-        searchProperties();
+        searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
 
     }
 
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == Constants.LAUNCH_DETAILS_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
 
-                searchProperties();
+                searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -124,9 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Parameter parameter = data.getParcelableExtra("result");
 
-                this.mViewModel.searchProperties(parameter).observe(this, properties -> {
-                    mViewModel.mListPropertyMutableLiveData.setValue(properties);
-                });
+                searchProperties(parameter);
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -142,9 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(PropertyViewModel.class);
     }
 
-    private void searchProperties(){
-
-        Parameter parameter = mViewModel.mCurrentParameterMutableLiveData.getValue();
+    private void searchProperties(Parameter parameter){
 
         this.mViewModel.searchProperties(parameter).observe(this, properties -> {
 
@@ -234,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_filter).setVisible(false);
 
                 showListFragment();
-                searchProperties();
+                searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
 
                 break;
             case R.id.activity_main_drawer_search_property:
@@ -245,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_filter).setVisible(true);
 
                 showListFragment();
-                searchProperties();
+                searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
 
                 break;
             default:

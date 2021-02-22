@@ -2,18 +2,14 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -21,7 +17,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.android.material.textfield.TextInputEditText;
 import com.openclassrooms.realestatemanager.databinding.ActivityParameterBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
@@ -69,6 +64,13 @@ public class ParameterActivity extends AppCompatActivity {
         mBinding.activityParameterImageviewCreatedatmax.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextCreatedatmax));
         mBinding.activityParameterImageviewDateofsalemin.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextDateofsalemin));
         mBinding.activityParameterImageviewDateofsalemax.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextDateofsalemax));
+        mBinding.activityParameterRadiobuttonSold.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b){
+                mBinding.activityParameterLinearlayoutDateofsale.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.activityParameterLinearlayoutDateofsale.setVisibility(View.GONE);
+            }
+        });
 
         mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPoi);
     }
@@ -160,6 +162,12 @@ public class ParameterActivity extends AppCompatActivity {
         mBinding.activityParameterEdittextNbOfBedRoomsmin.setText(String.valueOf(parameter.getNbOfBedRoomsMin()));
         mBinding.activityParameterEdittextNbOfBedRoomsmax.setText(String.valueOf(parameter.getNbOfBedRoomsMax()));
         mBinding.activityParameterEdittextRealEstateAgent.setText(parameter.getRealEstateAgent());
+        mBinding.activityParameterEdittextCreatedatmin.setText(!(parameter.getCreatedAtMin() == 0) ? FormatUtils.formatDate(new Date(parameter.getCreatedAtMin())) : "");
+        mBinding.activityParameterEdittextCreatedatmax.setText(!(parameter.getCreatedAtMax() == 0) ? FormatUtils.formatDate(new Date(parameter.getCreatedAtMax())) : "");
+        mBinding.activityParameterEdittextDateofsalemin.setText(!(parameter.getDateOfSaleMin() == 0) ? FormatUtils.formatDate(new Date(parameter.getDateOfSaleMin())) : "");
+        mBinding.activityParameterEdittextDateofsalemax.setText(!(parameter.getDateOfSaleMax() == 0) ? FormatUtils.formatDate(new Date(parameter.getDateOfSaleMax())) : "");
+        mBinding.activityParameterEdittextNbofpicturesmin.setText(String.valueOf(parameter.getNbOfPicturesMin()));
+        mBinding.activityParameterEdittextNbofpicturesmax.setText(String.valueOf(parameter.getNbOfPicturesMax()));
 
         switch (parameter.getSold()){
             case 0:
@@ -168,6 +176,7 @@ public class ParameterActivity extends AppCompatActivity {
 
             case 1:
                 mBinding.activityParameterRadiobuttonSold.setChecked(true);
+                mBinding.activityParameterLinearlayoutDateofsale.setVisibility(View.VISIBLE);
                 break;
 
             case 2:
@@ -194,6 +203,13 @@ public class ParameterActivity extends AppCompatActivity {
         parameter.setNbOfBedRoomsMin(!mBinding.activityParameterEdittextNbOfBedRoomsmin.getText().toString().equals("") ? Integer.parseInt(mBinding.activityParameterEdittextNbOfBedRoomsmin.getText().toString()) : 0);
         parameter.setNbOfBedRoomsMax(!mBinding.activityParameterEdittextNbOfBedRoomsmax.getText().toString().equals("") ? Integer.parseInt(mBinding.activityParameterEdittextNbOfBedRoomsmax.getText().toString()) : 0);
         parameter.setRealEstateAgent(!mBinding.activityParameterEdittextRealEstateAgent.getText().toString().equals("") ? mBinding.activityParameterEdittextRealEstateAgent.getText().toString() : null);
+        parameter.setCreatedAtMin(!mBinding.activityParameterEdittextCreatedatmin.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextCreatedatmin.getText().toString()).getTime() : 0);
+        parameter.setCreatedAtMax(!mBinding.activityParameterEdittextCreatedatmax.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextCreatedatmax.getText().toString()).getTime() : 0);
+        parameter.setDateOfSaleMin(!mBinding.activityParameterEdittextDateofsalemin.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextDateofsalemin.getText().toString()).getTime() : 0);
+        parameter.setDateOfSaleMax(!mBinding.activityParameterEdittextDateofsalemax.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextDateofsalemax.getText().toString()).getTime() : 0);
+        parameter.setNbOfPicturesMin(!mBinding.activityParameterEdittextNbofpicturesmin.getText().toString().equals("") ? Integer.parseInt(mBinding.activityParameterEdittextNbofpicturesmin.getText().toString()) : 0);
+        parameter.setNbOfPicturesMax(!mBinding.activityParameterEdittextNbofpicturesmax.getText().toString().equals("") ? Integer.parseInt(mBinding.activityParameterEdittextNbofpicturesmax.getText().toString()) : 0);
+
 
         if(mBinding.activityParameterRadiobuttonAvailable.isChecked()){
             parameter.setSold((byte) 0);

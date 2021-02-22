@@ -29,7 +29,7 @@ public class ActivityUtils {
     public static void createDatePickerDialog(Context context, EditText editText){
 
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, dayOfMonth) -> {
-            Date date1 = FormatUtils.formatStringFormattedToDate(dayOfMonth + "/" + month + "/" + year);
+            Date date1 = FormatUtils.formatStringFormattedToDate(dayOfMonth + "/" + (month + 1) + "/" + year);
             editText.setText(FormatUtils.formatDate(date1));
         };
 

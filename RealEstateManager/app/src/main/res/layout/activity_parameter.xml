@@ -165,6 +165,43 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <!--    NB OF PHOTOS     -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <!--    nbOfPhotos minimum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_nbofpicturesmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Photos min"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    nbOfPhotosMin maximum     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_nbofpicturesmax"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="nbOfPhotos max"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
         <!--    Created Date     -->
         <TextView
             android:layout_width="match_parent"
@@ -218,66 +255,6 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/activity_parameter_edittext_createdatmax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="A"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <!--    Date of sale     -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date de vente"
-            android:textAlignment="center"
-            android:textSize="22sp"
-            android:textStyle="bold"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <!--    Date of sale minimum     -->
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_dateofsalemin"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_baseline_date_range_24"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_dateofsalemin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="De"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--    Date of sale maximum     -->
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_dateofsalemax"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_baseline_date_range_24"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:layout_weight="1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_dateofsalemax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -372,6 +349,74 @@
                 android:textSize="22sp"/>
 
         </RadioGroup>
+
+        <!--    Date of sale     -->
+        <LinearLayout
+            android:id="@+id/activity_parameter_linearlayout_dateofsale"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date de vente"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <!--    Date of sale minimum     -->
+                <ImageView
+                    android:id="@+id/activity_parameter_imageview_dateofsalemin"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_baseline_date_range_24"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_parameter_edittext_dateofsalemin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="De"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--    Date of sale maximum     -->
+                <ImageView
+                    android:id="@+id/activity_parameter_imageview_dateofsalemax"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_baseline_date_range_24"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_parameter_edittext_dateofsalemax"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="A"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/activity_parameter_button_filter"

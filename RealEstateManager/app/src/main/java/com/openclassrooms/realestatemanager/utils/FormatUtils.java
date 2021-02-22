@@ -20,10 +20,6 @@ public class  FormatUtils {
         return formattedString;
     }
 
-    public static String formatDate(Date date){
-        return getSimpleFormatDate().format(date);
-    }
-
     public static String formatEditTextWithDevise(double amountInDollars, String deviseISO){
         double amountInDevise = Utils.convertDollarToDevise(amountInDollars, deviseISO);
 
@@ -46,6 +42,10 @@ public class  FormatUtils {
 
     public static double formatNumber(String number){
         return Double.parseDouble(removeAllSpaceChar(number));
+    }
+
+    public static String formatDate(Date date){
+        return getSimpleFormatDate().format(date);
     }
 
     public static Date formatStringFormattedToDate(String date) {

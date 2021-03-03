@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
+import com.openclassrooms.realestatemanager.utils.Constants;
+
 public class Parameter implements Parcelable {
 
     //todo: rajouter l'address et la PropertyType
@@ -26,46 +28,54 @@ public class Parameter implements Parcelable {
     private int nbOfPicturesMin;
     private int nbOfPicturesMax;
     private byte isSold; // 0 = display only unSold | 1 = display only Sold | 2 = display all
+    private long[] listNearbyPOI;
+    private Constants.OrderBy orderBy;
+    private Constants.SortDirection sortDirection;
 
     //    private String city;
 
     public Parameter() {
         this.priceMin = 0;
-        this.priceMax = 0;
+        this.priceMax = 999999999;
         this.nbOfRoomsMin = 0;
-        this.nbOfRoomsMax = 0;
+        this.nbOfRoomsMax = 999999999;
         this.nbOfBedRoomsMin = 0;
-        this.nbOfBedRoomsMax = 0;
+        this.nbOfBedRoomsMax = 999999999;
         this.areaMin = 0;
-        this.areaMax = 0;
+        this.areaMax = 999999999;
         this.createdAtMin = 0;
         this.createdAtMax = 0;
         this.dateOfSaleMin = 0;
         this.dateOfSaleMax = 0;
         this.nbOfPicturesMin = 0;
-        this.nbOfPicturesMax = 0;
+        this.nbOfPicturesMax = 999999999;
         this.isSold = 2;
+        this.orderBy = Constants.OrderBy.MARKETING_DATE;
+        this.sortDirection = Constants.SortDirection.DESCENDANT;
     }
 
 //   region ---- PARECELABLE METHODS ---
 
     protected Parameter(Parcel in) {
-        priceMin = in.readInt();
-        priceMax = in.readInt();
-        realEstateAgent = in.readString();
-        nbOfRoomsMin = in.readInt();
-        nbOfRoomsMax = in.readInt();
-        nbOfBedRoomsMin = in.readInt();
-        nbOfBedRoomsMax = in.readInt();
-        areaMin = in.readInt();
-        areaMax = in.readInt();
-        createdAtMin = in.readLong();
-        createdAtMax = in.readLong();
-        dateOfSaleMin = in.readLong();
-        dateOfSaleMax = in.readLong();
-        nbOfPicturesMin = in.readInt();
-        nbOfPicturesMax = in.readInt();
-        isSold = in.readByte();
+        this.priceMin = in.readInt();
+        this.priceMax = in.readInt();
+        this.realEstateAgent = in.readString();
+        this.nbOfRoomsMin = in.readInt();
+        this.nbOfRoomsMax = in.readInt();
+        this.nbOfBedRoomsMin = in.readInt();
+        this.nbOfBedRoomsMax = in.readInt();
+        this.areaMin = in.readInt();
+        this.areaMax = in.readInt();
+        this.createdAtMin = in.readLong();
+        this.createdAtMax = in.readLong();
+        this.dateOfSaleMin = in.readLong();
+        this.dateOfSaleMax = in.readLong();
+        this.nbOfPicturesMin = in.readInt();
+        this.nbOfPicturesMax = in.readInt();
+        this.isSold = in.readByte();
+        this.listNearbyPOI = in.createLongArray();
+        this.orderBy = Constants.OrderBy.valueOf(in.readString());
+        this.sortDirection = Constants.SortDirection.valueOf(in.readString());
     }
 
     public static final Creator<Parameter> CREATOR = new Creator<Parameter>() {
@@ -89,22 +99,25 @@ public class Parameter implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         //todo ajouter les attributs rajouter en haut !
 
-        dest.writeInt(priceMin);
-        dest.writeInt(priceMax);
-        dest.writeString(realEstateAgent);
-        dest.writeInt(nbOfRoomsMin);
-        dest.writeInt(nbOfRoomsMax);
-        dest.writeInt(nbOfBedRoomsMin);
-        dest.writeInt(nbOfBedRoomsMax);
-        dest.writeInt(areaMin);
-        dest.writeInt(areaMax);
-        dest.writeLong(createdAtMin);
-        dest.writeLong(createdAtMax);
-        dest.writeLong(dateOfSaleMin);
-        dest.writeLong(dateOfSaleMax);
-        dest.writeInt(nbOfPicturesMin);
-        dest.writeInt(nbOfPicturesMax);
-        dest.writeByte(isSold);
+        dest.writeInt(this.priceMin);
+        dest.writeInt(this.priceMax);
+        dest.writeString(this.realEstateAgent);
+        dest.writeInt(this.nbOfRoomsMin);
+        dest.writeInt(this.nbOfRoomsMax);
+        dest.writeInt(this.nbOfBedRoomsMin);
+        dest.writeInt(this.nbOfBedRoomsMax);
+        dest.writeInt(this.areaMin);
+        dest.writeInt(this.areaMax);
+        dest.writeLong(this.createdAtMin);
+        dest.writeLong(this.createdAtMax);
+        dest.writeLong(this.dateOfSaleMin);
+        dest.writeLong(this.dateOfSaleMax);
+        dest.writeInt(this.nbOfPicturesMin);
+        dest.writeInt(this.nbOfPicturesMax);
+        dest.writeByte(this.isSold);
+        dest.writeLongArray(this.listNearbyPOI);
+        dest.writeString(this.orderBy.name());
+        dest.writeString(this.sortDirection.name());
     }
 
 //    endregion
@@ -239,6 +252,30 @@ public class Parameter implements Parcelable {
         this.nbOfPicturesMax = nbOfPicturesMax;
     }
 
+    public long[] getListNearbyPOI() {
+        return listNearbyPOI;
+    }
+
+    public void setListNearbyPOI(long[] listNearbyPOI) {
+        this.listNearbyPOI = listNearbyPOI;
+    }
+
+    public Constants.OrderBy getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(Constants.OrderBy orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public Constants.SortDirection getSortDirection() {
+        return sortDirection;
+    }
+
+    public void setSortDirection(Constants.SortDirection sortDirection) {
+        this.sortDirection = sortDirection;
+    }
+
     //    endregion
 
     private String getIsFirstParams(Boolean isFirstParam){
@@ -256,10 +293,41 @@ public class Parameter implements Parcelable {
         else if(min > 0)
         {
             params += getIsFirstParams(isFirstParam);
-            params += tableName + " > " + min;
+            params += tableName + " >= " + min;
         }
 
         return params;
+    }
+
+    private String generateCharacterWithInt(int number){
+        //todo bloqué a 26 NearbyPOI
+//        String result = "";
+        String[] alphabet = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
+                "r","s","t","u","v","w","x","y","z"};
+
+//        int multipleOfAlphabet = number / alphabet.length;
+//
+//        // 0 < number < 26 = un caractere de a à z | ex: 5 = e
+//        // 27 < number < 52 = 2 caractere le premier a et le deuxieme entre a et z | ex: 38 = al | a + number modulo 26
+//        // 52 < number < 78 = 2 caractere le pemier b et le deuxieme entre a et z | ex: 60 = bh (2 et 8) | b + number modulo 26
+//
+//        for (int nbOfLetter = 0; nbOfLetter <= multipleOfAlphabet; nbOfLetter++){
+//            result += alphabet[number % alphabet.length];
+//        }
+//
+//        // 1
+//        int counter = 0;
+//        int puissanceMax = 1;
+//        while(puissanceMax < number){
+//            puissanceMax *= 26;
+//            counter++;
+//        }
+
+        // 1- nombre de lettre = nombre de puissance max possible
+        // 2- index de chaque lettre = number / 26
+        // 3- index de la derniere lettre = number modulo 26
+
+        return alphabet[number];
     }
 
     public SimpleSQLiteQuery getParamsFormatted(){
@@ -267,30 +335,46 @@ public class Parameter implements Parcelable {
         boolean isFirstParam = true;
         String params = "SELECT * FROM " + "Property";
 
+        // ===== JOINTURES =====
+
+        //todo: je pense qu'il y a mieu a faire
+        if (getListNearbyPOI() != null){
+            for (int i = 0; i < getListNearbyPOI().length; i++){
+                String asName = generateCharacterWithInt(i);
+                params += " INNER JOIN property_nearbypoi_join AS " + asName + " ON " + asName + ".propertyId = Property.id AND " + asName + ".nearbyPoiId = " + getListNearbyPOI()[i];
+            }
+        }
+
+        // todo Reste a filtrer par address
+
+        String nbOfPicturesQuery = queryMinMax(isFirstParam, "nbOfPictures", getNbOfPicturesMin(), getNbOfPicturesMax());
+        params += nbOfPicturesQuery;
+        if (!nbOfPicturesQuery.equals("")) isFirstParam = false;
+
         String priceQuery = queryMinMax(isFirstParam, "price", getPriceMin(), getPriceMax());
         params += priceQuery;
-        isFirstParam = priceQuery.equals("");
+        if (!priceQuery.equals("")) isFirstParam = false;
 
         String nbOfRoomsQuery = queryMinMax(isFirstParam, "nbOfRooms", getNbOfRoomsMin(), getNbOfRoomsMax());
         params += nbOfRoomsQuery;
-        isFirstParam = nbOfRoomsQuery.equals("");
+        if (!nbOfRoomsQuery.equals("")) isFirstParam = false;
 
         String nbOfBedRoomsQuery = queryMinMax(isFirstParam, "nbOfBedRooms", getNbOfBedRoomsMin(), getNbOfBedRoomsMax());
         params += nbOfBedRoomsQuery;
-        isFirstParam = nbOfBedRoomsQuery.equals("");
+        if (!nbOfBedRoomsQuery.equals("")) isFirstParam = false;
 
         String areaQuery = queryMinMax(isFirstParam, "area", getAreaMin(), getAreaMax());
         params += areaQuery;
-        isFirstParam = areaQuery.equals("");
+        if (!areaQuery.equals("")) isFirstParam = false;
 
         String createdAtQuery = queryMinMax(isFirstParam, "createdAt", getCreatedAtMin() - 1, getCreatedAtMax());
         params += createdAtQuery;
-        isFirstParam = createdAtQuery.equals("");
+        if (!createdAtQuery.equals("")) isFirstParam = false;
 
         if (getSold() == 1){
             String dateOfSaleQuery = queryMinMax(isFirstParam, "dateOfSale", getDateOfSaleMin() - 1, getDateOfSaleMax());
             params += dateOfSaleQuery;
-            isFirstParam = dateOfSaleQuery.equals("");
+            if (!dateOfSaleQuery.equals("")) isFirstParam = false;
         }
 
         if(getSold() != 2) {
@@ -308,30 +392,51 @@ public class Parameter implements Parcelable {
         }
 
 
-        //todo lancer une requete dans la table photos pour compter les photos de cette id
-        if(getNbOfPicturesMax() > 0)
-        {
-            params += getIsFirstParams(isFirstParam);
-            params += tableName + " BETWEEN " + getNbOfPicturesMin() + " AND " + getNbOfPicturesMax();
-            if (isFirstParam) isFirstParam = false;
+        // === ORDER BY ===
+        if (this.sortDirection != null && this.orderBy != null){
+            params += " ORDER BY ";
+
+            switch (this.orderBy){
+
+                case PRICE:
+                    params += "price";
+                    break;
+
+                case NB_OF_ROOMS:
+                    params += "nbOfRooms";
+                    break;
+
+                case NB_OF_BEDROOMS:
+                    params += "nbOfBedrooms";
+                    break;
+
+                case AREA:
+                    params += "area";
+                    break;
+
+                case MARKETING_DATE:
+                    params += "createdAt";
+                    break;
+
+                case DATE_OF_SALE:
+                    params += "dateOfSale";
+                    break;
+            }
+
+            switch (this.sortDirection){
+                case ASCENDANT:
+                    params += " ASC";
+                    break;
+                case DESCENDANT:
+                    params += " DESC";
+                    break;
+            }
+
         }
-        else if(getNbOfPicturesMin() > 0)
-        {
-            params += getIsFirstParams(isFirstParam);
-            params += tableName + " > " + getNbOfPicturesMin();
-            if (isFirstParam) isFirstParam = false;
-        }
 
 
-
-
-
-//        if(city != null){
-//            params += " city = '" + city + "'";
-//        }
 
         Log.i("TAG1", "getParamsFormatted: " + params);
         return new SimpleSQLiteQuery(params);
     }
-
 }

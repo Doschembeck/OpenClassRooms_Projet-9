@@ -3,10 +3,6 @@ package com.openclassrooms.realestatemanager.ui.activities;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Geocoder;
@@ -16,18 +12,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import com.google.android.material.snackbar.Snackbar;
-import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
@@ -47,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 public class EditPropertyActivity extends BaseActivity {
@@ -411,7 +401,8 @@ public class EditPropertyActivity extends BaseActivity {
             long addressId = mViewModel.createAddress(mAddress);
 
             // Créer la Property
-            long propertyId = mViewModel.createProperty(createProperty(addressId));
+            Property newProperty = createProperty(addressId);
+            long propertyId = mViewModel.createProperty(newProperty);
 
             // Créer les photos
             List<Photo> photoUrlList = mViewModel.propertyPictureListMutableLiveData.getValue();
@@ -436,7 +427,9 @@ public class EditPropertyActivity extends BaseActivity {
     private Property createProperty(long addressId) {
 
         //todo: obliger la completion des champs
-        String mainPictureUrl = mViewModel.propertyPictureListMutableLiveData.getValue().get(0).getUrlPicture();
+        List<Photo> photoList =  mViewModel.propertyPictureListMutableLiveData.getValue();
+        String mainPictureUrl =  photoList.get(0).getUrlPicture();
+        int nbOfPictures = photoList.size();
 
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();
         double price = Utils.convertDeviseToDollar(Double.parseDouble(binding.activityEditPropertyEdittextPrice.getText().toString()), Constants.LIST_OF_DEVISES_ISO[binding.activityEditPropertySpinnerDevise.getSelectedItemPosition()]);
@@ -450,7 +443,7 @@ public class EditPropertyActivity extends BaseActivity {
         Date dateOfSale = binding.activityEditPropertySwitchIssold.isChecked() ? date : null;
 
         return new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description,
-                addressId, rate, mAddress.getCity(), mainPictureUrl, getCurrentAgentId() , dateOfSale, date, date);
+                addressId, rate, mAddress.getCity(), mainPictureUrl, nbOfPictures, getCurrentAgentId() , dateOfSale, date, date);
     }
 
     // === Generators ===

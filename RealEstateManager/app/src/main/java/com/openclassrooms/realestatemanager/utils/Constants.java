@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 public class Constants {
 
+
+
     public static final String PREF_SHARED_KEY = "real_estate_manager_shared_preferences";
     public static final String PREF_CURRENCY_KEY = "currency";
     public static final String PREF_AGENT_ID_LOGGED_KEY = "agent_id";
@@ -57,5 +59,7 @@ public class Constants {
     public static final String[] ListPropertyType = {"Maison", "Appartement", "Loft", "Manoir", "Chateau"};
     public static final String[] ListNearbyPOI = {"Ecole maternelle", "Ecole primaire", "Collège", "Lycée", "Université", "Aeroport", "Gare",  "Bus", "Tramway", "Commerces", "Parc"};
 
+    public enum OrderBy { PRICE, NB_OF_ROOMS, NB_OF_BEDROOMS, AREA, MARKETING_DATE, DATE_OF_SALE }
+    public enum SortDirection{ ASCENDANT, DESCENDANT }
 
 }

@@ -16,14 +16,12 @@ import java.util.Locale;
 public class ActivityUtils {
 
     public static Geocoder setupAutoComplete(Context context) {
-        Geocoder geocoder = null;
 
         if (!Places.isInitialized()) {
             Places.initialize(context, "AIzaSyDKEy4YPdOH5ErxxEZ0SPFBUF4JNGf83kw"); //todo: Recuperer la clé depuis les ressources
-            geocoder = new Geocoder(context, Locale.getDefault());
         }
 
-        return geocoder;
+        return new Geocoder(context, Locale.getDefault());
     }
 
     public static void createDatePickerDialog(Context context, EditText editText){

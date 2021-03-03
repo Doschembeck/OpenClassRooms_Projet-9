@@ -37,6 +37,7 @@ public class Property implements Parcelable {
     private Float rate;
     private String city;
     private String mainPictureUrl;
+    private int nbOfPictures;
     @ColumnInfo(name = "agent_id", index = true)
     private long agentId; // The real estate agent in charge of this property.
     private Boolean isSold;
@@ -44,7 +45,7 @@ public class Property implements Parcelable {
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, Double pricePerSquareMeter, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, Float rate, String city, String mainPictureUrl, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, Double pricePerSquareMeter, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, Float rate, String city, String mainPictureUrl, int nbOfPictures, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -57,6 +58,7 @@ public class Property implements Parcelable {
         this.rate = rate;
         this.city = city;
         this.mainPictureUrl = mainPictureUrl;
+        this.nbOfPictures = nbOfPictures;
         this.agentId = agentId;
         this.isSold = dateOfSale != null;
         this.dateOfSale = dateOfSale;
@@ -200,6 +202,14 @@ public class Property implements Parcelable {
         this.pricePerSquareMeter = pricePerSquareMeter;
     }
 
+    public int getNbOfPictures() {
+        return nbOfPictures;
+    }
+
+    public void setNbOfPictures(int nbOfPictures) {
+        this.nbOfPictures = nbOfPictures;
+    }
+
 //   region ---- PARECELABLE METHODS ---
 
     protected Property(Parcel in) {
@@ -215,6 +225,7 @@ public class Property implements Parcelable {
         this.rate = in.readFloat();;
         this.city = in.readString();;
         this.mainPictureUrl = in.readString();;
+        this.nbOfPictures = in.readInt();
         this.agentId = in.readLong();;
         this.dateOfSale = new Date(in.readLong());
         this.isSold = this.dateOfSale != null;
@@ -256,6 +267,7 @@ public class Property implements Parcelable {
         dest.writeFloat(rate);
         dest.writeString(city);
         dest.writeString(mainPictureUrl);
+        dest.writeInt(nbOfPictures);
         dest.writeLong(agentId);
         dest.writeLong(dateOfSale.getTime());
         dest.writeLong(createdAt.getTime());

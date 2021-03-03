@@ -11,196 +11,406 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2196F3"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_ascendant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="24sp"
+                android:textColor="#ffff"
+                android:text="Croissant"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_descendant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="24sp"
+                android:textColor="#ffff"
+                android:text="Decroissant"/>
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/test_radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Prix"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_nbofrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Nombre de salles"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_nbofbedrooms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Nombre de chambres"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Surface"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_marketingdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Date de mise sur le marché"/>
+
+            <RadioButton
+                android:id="@+id/activity_parameter_radiobutton_dateofsale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Date de vente"/>
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
+
+        <!--    NB OF PHOTOS     -->
+
         <TextView
-            android:id="@+id/activity_parameter_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="Prix"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/activity_parameter_textview_pricemin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/activity_parameter_textview_pricemax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_price_min"
+                android:progressBackgroundTint="#2196F3"
+                android:thumbTint="#2196F3"
+                android:progressTint="#ffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="500000"/>
+
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_price_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumbTint="#2196F3"
+                android:progressTint="#2196F3"
+                android:progressBackgroundTint="#ffff"
+                android:max="500000"/>
+        </LinearLayout>
+
+    <!--        NbOfRooms -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center"
             android:textStyle="bold"
-            android:text="PARAMETER ACTIVITY"
-            android:textSize="50sp"/>
+            android:layout_gravity="center"
+            android:text="Nombre de salles"/>
 
-        <!--    Prix     -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:orientation="horizontal">
 
-            <!--    Prix minimum     -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/activity_parameter_textview_nbOfRoomsmin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_pricemin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Prix min"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--    Prix maximum     -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_pricemax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Prix max"/>
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/activity_parameter_textview_nbOfRoomsmax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
         </LinearLayout>
 
-        <!--    nbOfRooms     -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:orientation="vertical">
 
-            <!--    nbOfRooms minimum     -->
-            <com.google.android.material.textfield.TextInputLayout
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_nbOfRoomsMin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:progressBackgroundTint="#2196F3"
+                android:thumbTint="#2196F3"
+                android:progressTint="#ffff"
+                android:max="5"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_nbOfRoomsmin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="nbOfRooms min"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--    nbOfRooms maximum     -->
-            <com.google.android.material.textfield.TextInputLayout
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_nbOfRoomsMax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_nbOfRoomsmax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="nbOfRooms max"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:thumbTint="#2196F3"
+                android:progressTint="#2196F3"
+                android:progressBackgroundTint="#ffff"
+                android:max="5"/>
         </LinearLayout>
 
-        <!--    nbOfBedRooms     -->
+    <!--        NbOfBedRooms -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="Nombre de chambres"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:orientation="horizontal">
 
-            <!--    nbOfRooms minimum     -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/activity_parameter_textview_nbOfBedRoomsmin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="nbOfBedRooms min"/>
-            </com.google.android.material.textfield.TextInputLayout>
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"/>
 
-            <!--    nbOfBedRooms maximum     -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/activity_parameter_textview_nbOfBedRoomsmax"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_nbOfBedRoomsmax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="nbOfBedRooms max"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
         </LinearLayout>
 
-        <!--    area     -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:orientation="vertical">
 
-            <!--    area minimum     -->
-            <com.google.android.material.textfield.TextInputLayout
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_nbOfBedRoomsMin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:progressBackgroundTint="#2196F3"
+                android:thumbTint="#2196F3"
+                android:progressTint="#ffff"
+                android:max="5"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_areamin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="area min"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--    area maximum     -->
-            <com.google.android.material.textfield.TextInputLayout
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_nbOfBedRoomsMax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:thumbTint="#2196F3"
+                android:progressTint="#2196F3"
+                android:progressBackgroundTint="#ffff"
+                android:max="5"/>
+        </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_areamax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="area max"/>
-            </com.google.android.material.textfield.TextInputLayout>
+        <!--        area     -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="Surface"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/activity_parameter_textview_areamin"
+                android:layout_width="13dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="0"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/activity_parameter_textview_areamax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_areaMin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="#2196F3"
+                android:thumbTint="#2196F3"
+                android:progressTint="#ffff"
+                android:max="100"/>
+
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_areaMax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumbTint="#2196F3"
+                android:progressTint="#2196F3"
+                android:progressBackgroundTint="#ffff"/>
         </LinearLayout>
 
         <!--    NB OF PHOTOS     -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:text="Nombres de photos"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:orientation="horizontal">
 
-            <!--    nbOfPhotos minimum     -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/activity_parameter_textview_nbofpicturesmin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_nbofpicturesmin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="Photos min"/>
-            </com.google.android.material.textfield.TextInputLayout>
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"/>
 
-            <!--    nbOfPhotosMin maximum     -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/activity_parameter_textview_nbofpicturesmax"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_nbofpicturesmax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="nbOfPhotos max"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginHorizontal="10dp"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:text="0"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_nbof_pictures_min"
+                android:progressBackgroundTint="#2196F3"
+                android:thumbTint="#2196F3"
+                android:progressTint="#ffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"/>
+
+            <SeekBar
+                android:id="@+id/activity_parameter_seekbar_nbof_pictures_max"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:thumbTint="#2196F3"
+                android:progressTint="#2196F3"
+                android:progressBackgroundTint="#ffff"
+                android:max="10"/>
+        </LinearLayout>
 
         <!--    Created Date     -->
         <TextView
@@ -282,19 +492,20 @@
                 android:hint="Autour de cette address"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:text="A proximité de :"
+            android:gravity="center_horizontal" />
+
         <LinearLayout
             android:id="@+id/activity_parameter_linearlayout_nearbypoi"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:text="A proximité de :"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
 
         <!--    realEstateAgent     -->
@@ -362,7 +573,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Date de vente"
-                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:textSize="22sp"
                 android:textStyle="bold"/>
 

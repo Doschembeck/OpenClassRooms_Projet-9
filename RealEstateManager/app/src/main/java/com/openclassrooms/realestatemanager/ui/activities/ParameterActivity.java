@@ -82,11 +82,20 @@ public class ParameterActivity extends AppCompatActivity {
         mBinding.activityParameterSeekbarAreaMax.setOnSeekBarChangeListener(onSeekBarChangeAreaMax());
         mBinding.activityParameterSeekbarNbofPicturesMin.setOnSeekBarChangeListener(onSeekBarChangeNbOfPicturesMin());
         mBinding.activityParameterSeekbarNbofPicturesMax.setOnSeekBarChangeListener(onSeekBarChangeNbOfPicturesMax());
-
         mBinding.activityParameterSeekbarPriceMin.setOnSeekBarChangeListener(onSeekBarChangePriceMin());
         mBinding.activityParameterSeekbarPriceMax.setOnSeekBarChangeListener(onSeekBarChangePriceMax());
+        mBinding.activityParameterSeekbarDistanceaddressMin.setOnSeekBarChangeListener(onSeekBarChangeDistanceMin());
+        mBinding.activityParameterSeekbarDistanceaddressMax.setOnSeekBarChangeListener(onSeekBarChangeDistanceMax());
 
         mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPoi);
+    }
+
+    SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMin(){
+        return onSeekBarChangeMin(mBinding.activityParameterSeekbarDistanceaddressMax, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
+    }
+
+    SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMax(){
+        return onSeekBarChangeMax(mBinding.activityParameterSeekbarDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
     }
 
     private void startAutoComplete(View view) {
@@ -322,6 +331,10 @@ public class ParameterActivity extends AppCompatActivity {
 
     private void updateUI(Parameter parameter) {
 
+        if(parameter.getLatitude() != 999999999.0 && parameter.getLongitude() != 999999999.0){
+            getAddress(parameter.getLatitude(), parameter.getLongitude());
+        }
+
         mBinding.activityParameterSeekbarNbOfRoomsMin.setProgress(parameter.getNbOfRoomsMin());
         mBinding.activityParameterSeekbarNbOfRoomsMax.setProgress(parameter.getNbOfRoomsMax());
         mBinding.activityParameterSeekbarNbOfBedRoomsMin.setProgress(parameter.getNbOfBedRoomsMin());
@@ -332,12 +345,15 @@ public class ParameterActivity extends AppCompatActivity {
         mBinding.activityParameterSeekbarNbofPicturesMax.setProgress(parameter.getNbOfPicturesMax());
         mBinding.activityParameterSeekbarPriceMin.setProgress(parameter.getPriceMin());
         mBinding.activityParameterSeekbarPriceMax.setProgress(parameter.getPriceMax());
+        mBinding.activityParameterSeekbarDistanceaddressMin.setProgress(parameter.getDistanceAddressMin() / 1000);
+        mBinding.activityParameterSeekbarDistanceaddressMax.setProgress(parameter.getDistanceAddressMax() / 1000);
 
         updateTextview(mBinding.activityParameterSeekbarAreaMin, mBinding.activityParameterSeekbarAreaMax, mBinding.activityParameterTextviewAreamin,mBinding.activityParameterTextviewAreamax);
         updateTextview(mBinding.activityParameterSeekbarNbOfRoomsMin, mBinding.activityParameterSeekbarNbOfRoomsMax, mBinding.activityParameterTextviewNbOfRoomsmin,mBinding.activityParameterTextviewNbOfRoomsmax);
         updateTextview(mBinding.activityParameterSeekbarNbOfBedRoomsMin, mBinding.activityParameterSeekbarNbOfBedRoomsMax, mBinding.activityParameterTextviewNbOfBedRoomsmin,mBinding.activityParameterTextviewNbOfBedRoomsmax);
         updateTextview(mBinding.activityParameterSeekbarNbofPicturesMin, mBinding.activityParameterSeekbarNbofPicturesMax, mBinding.activityParameterTextviewNbofpicturesmin,mBinding.activityParameterTextviewNbofpicturesmax);
         updateTextview(mBinding.activityParameterSeekbarPriceMin, mBinding.activityParameterSeekbarPriceMax, mBinding.activityParameterTextviewPricemin,mBinding.activityParameterTextviewPricemax);
+        updateTextview(mBinding.activityParameterSeekbarDistanceaddressMin, mBinding.activityParameterSeekbarDistanceaddressMax, mBinding.activityParameterTextviewDistanceaddressMin,mBinding.activityParameterTextviewDistanceaddressMax);
 
         mBinding.activityParameterEdittextRealEstateAgent.setText(parameter.getRealEstateAgent());
         mBinding.activityParameterEdittextCreatedatmin.setText(!(parameter.getCreatedAtMin() == 0) ? FormatUtils.formatDate(new Date(parameter.getCreatedAtMin())) : "");
@@ -476,6 +492,16 @@ public class ParameterActivity extends AppCompatActivity {
             parameter.setSold((byte) 1);
         } else if(mBinding.activityParameterRadiobuttonAll.isChecked()){
             parameter.setSold((byte) 2);
+        }
+
+        if (mAddress != null){
+            parameter.setLatitude(mAddress.getLatitude());
+            parameter.setLongitude(mAddress.getLongitude());
+
+            int distanceProgressMax = mBinding.activityParameterSeekbarDistanceaddressMax.getMax();
+            int distanceRoomsMax = mBinding.activityParameterSeekbarDistanceaddressMax.getProgress();
+            parameter.setDistanceAddressMax(distanceRoomsMax == distanceProgressMax ? 999999999 : distanceRoomsMax * 1000);
+            parameter.setDistanceAddressMin(mBinding.activityParameterSeekbarDistanceaddressMin.getProgress() * 1000);
         }
 
         setResult(Activity.RESULT_OK, new Intent().putExtra("result", parameter));

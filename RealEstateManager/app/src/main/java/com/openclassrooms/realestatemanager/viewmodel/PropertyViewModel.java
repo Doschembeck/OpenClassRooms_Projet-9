@@ -34,7 +34,7 @@ public class PropertyViewModel extends ViewModel {
 
     // REPOSITORY
     private final PropertyDataRepository propertyDataRepository;
-    public final AddressDataRepository addressDataRepository; //todo: remettre en priver si pas utiliser ailleur
+    private final AddressDataRepository addressDataRepository;
     private final PhotoDataRepository photoDataRepository;
     private final AgentDataRepository agentDataRepository;
     private final NearbyPoiDataRepository nearbyPoiDataRepository;

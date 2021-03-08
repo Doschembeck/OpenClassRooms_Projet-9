@@ -269,7 +269,7 @@ public class Property implements Parcelable {
         dest.writeString(mainPictureUrl);
         dest.writeInt(nbOfPictures);
         dest.writeLong(agentId);
-        dest.writeLong(dateOfSale.getTime());
+        dest.writeLong(dateOfSale.getTime());// todo bug si aucune date de vente n'est donner
         dest.writeLong(createdAt.getTime());
         dest.writeLong(updatedAt.getTime());
     }

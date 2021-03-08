@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,13 +17,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
+import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
@@ -154,11 +158,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
                 }
+                
+                mViewModel.mListPropertyMutableLiveData.setValue(newList);
 
-                properties = newList;
+            } else {
+
+                // Filtrer par distance
+                if(parameter.getLatitude() != 999999999.0 && parameter.getLongitude() != 999999999.0){
+
+                    List<Property> newList = new ArrayList<>();
+
+                    Location referenceLocation = new Location("Ref");
+                    referenceLocation.setLatitude(parameter.getLatitude());
+                    referenceLocation.setLongitude(parameter.getLongitude());
+
+                    for (Property property : properties){
+                        mViewModel.getAddress(property.getAddressId()).observe(this, address -> {
+                            Location propertyLocation = new Location("Property");
+                            propertyLocation.setLatitude(address.getLatitude());
+                            propertyLocation.setLongitude(address.getLongitude());
+
+                            if(referenceLocation.distanceTo(propertyLocation) > parameter.getDistanceAddressMin() &&
+                                    referenceLocation.distanceTo(propertyLocation) < parameter.getDistanceAddressMax())
+                            {
+                                newList.add(property);
+                                mViewModel.mListPropertyMutableLiveData.setValue(newList);
+                            }
+                        });
+                    }
+
+                    mViewModel.mListPropertyMutableLiveData.setValue(newList);
+
+                } else {
+                    mViewModel.mListPropertyMutableLiveData.setValue(properties);
+                }
             }
-
-            mViewModel.mListPropertyMutableLiveData.setValue(properties);
         });
     }
 

@@ -110,15 +110,10 @@ public class ListViewFragment extends Fragment {
     // UPDATE UI
     // -------------------
 
-    private void updateUI(List<Property> users){
-
-        if (users == null){
-            Log.e("TAG1", "updateUI: La liste de Property est vide on ne met donc pas la vue a jour !");
-            return;
-        }
+    private void updateUI(List<Property> properties){
 
         mListProperty.clear();
-        mListProperty.addAll(users);
+        mListProperty.addAll(properties);
         mAdapter.notifyDataSetChanged();
     }
 

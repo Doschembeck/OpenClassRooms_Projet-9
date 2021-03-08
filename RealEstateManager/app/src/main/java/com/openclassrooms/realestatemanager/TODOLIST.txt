@@ -1,16 +1,13 @@
-
+//todo BUG : Lorsque je modifie une property qui n'a pas de date de vente
 //todo BUG : Lorsque je clique rapidement sur créer une propriété sa en créer plusieur
 //todo BUG : Affichage des images se fait uniquement sur l'activiter apres la creation ou le modif
 //todo BUG : Lors du lancement de l'app les sharedPreferences sont resets !
 //todo BUG : Modifier property ajout et suppression d'images
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 
-//todo: faire le moteur de recherche
-    - Filtrer par Lieu de reference
 //todo: parameterActivity ajouter les nearbyPOI dans le updateUI
 //todo: parameterActivity permettre de supprimer les dates
 //todo: parameterActivity mettre des seekbar avec 2 thumbs
-//todo: utiliser DataBinding
 
 //todo BONUS : activer le mode de comparaison
 //todo BONUS : gerer local ou online

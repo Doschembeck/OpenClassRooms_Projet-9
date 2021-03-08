@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.realestatemanager.utils.Constants;
 
 public class Parameter implements Parcelable {
@@ -31,6 +32,10 @@ public class Parameter implements Parcelable {
     private long[] listNearbyPOI;
     private Constants.OrderBy orderBy;
     private Constants.SortDirection sortDirection;
+    private Double latitude;
+    private Double longitude;
+    private int distanceAddressMin;
+    private int distanceAddressMax;
 
     //    private String city;
 
@@ -52,6 +57,10 @@ public class Parameter implements Parcelable {
         this.isSold = 2;
         this.orderBy = Constants.OrderBy.MARKETING_DATE;
         this.sortDirection = Constants.SortDirection.DESCENDANT;
+        this.latitude = 999999999.0;
+        this.longitude = 999999999.0;
+        this.distanceAddressMin = 0;
+        this.distanceAddressMax = 999999999;
     }
 
 //   region ---- PARECELABLE METHODS ---
@@ -76,6 +85,10 @@ public class Parameter implements Parcelable {
         this.listNearbyPOI = in.createLongArray();
         this.orderBy = Constants.OrderBy.valueOf(in.readString());
         this.sortDirection = Constants.SortDirection.valueOf(in.readString());
+        this.latitude = in.readDouble();
+        this.longitude = in.readDouble();
+        this.distanceAddressMin = in.readInt();
+        this.distanceAddressMax = in.readInt();
     }
 
     public static final Creator<Parameter> CREATOR = new Creator<Parameter>() {
@@ -118,6 +131,10 @@ public class Parameter implements Parcelable {
         dest.writeLongArray(this.listNearbyPOI);
         dest.writeString(this.orderBy.name());
         dest.writeString(this.sortDirection.name());
+        dest.writeDouble(this.latitude);
+        dest.writeDouble(this.longitude);
+        dest.writeInt(this.distanceAddressMin);
+        dest.writeInt(this.distanceAddressMax);
     }
 
 //    endregion
@@ -438,5 +455,37 @@ public class Parameter implements Parcelable {
 
         Log.i("TAG1", "getParamsFormatted: " + params);
         return new SimpleSQLiteQuery(params);
+    }
+
+    public int getDistanceAddressMin() {
+        return distanceAddressMin;
+    }
+
+    public void setDistanceAddressMin(int distanceAddressMin) {
+        this.distanceAddressMin = distanceAddressMin;
+    }
+
+    public int getDistanceAddressMax() {
+        return distanceAddressMax;
+    }
+
+    public void setDistanceAddressMax(int distanceAddressMax) {
+        this.distanceAddressMax = distanceAddressMax;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

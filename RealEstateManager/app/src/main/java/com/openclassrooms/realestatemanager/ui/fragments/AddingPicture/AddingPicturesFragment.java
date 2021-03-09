@@ -74,7 +74,7 @@ public class AddingPicturesFragment extends Fragment implements AddingPicturesAd
     private void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(binding.fragmentAddingpicturesRecyclerView, R.layout.fragment_addingpictures_item)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    //todo
+                    //todo BONUS gerer la selection de la main picture
                     String picture = mAdapter.getPicture(position).getUrlPicture();
                     Toast.makeText(getContext(), "You clicked on Picture : "+ picture, Toast.LENGTH_SHORT).show();
 

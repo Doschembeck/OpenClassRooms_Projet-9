@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
@@ -61,11 +62,19 @@ public class ParameterActivity extends AppCompatActivity {
 
         // LISTENERS
         mBinding.activityParameterButtonFilter.setOnClickListener(this::onClickFilterProperty);
-        mBinding.activityParameterButtonAddress.setOnClickListener(this::startAutoComplete);
+        mBinding.activityParameterImageviewAddress.setOnClickListener(this::startAutoComplete);
+        mBinding.activityParameterImageviewAddressdelete.setOnClickListener(view -> {
+            mBinding.activityParameterEdittextAddress.setText("");
+            mAddress = null;
+        });
         mBinding.activityParameterImageviewCreatedatmin.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextCreatedatmin));
         mBinding.activityParameterImageviewCreatedatmax.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextCreatedatmax));
         mBinding.activityParameterImageviewDateofsalemin.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextDateofsalemin));
         mBinding.activityParameterImageviewDateofsalemax.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextDateofsalemax));
+        mBinding.activityParameterButtonRemovedate.setOnClickListener(view -> {
+            mBinding.activityParameterEdittextCreatedatmin.setText("");
+            mBinding.activityParameterEdittextCreatedatmax.setText("");
+        });
         mBinding.activityParameterRadiobuttonSold.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b){
                 mBinding.activityParameterLinearlayoutDateofsale.setVisibility(View.VISIBLE);
@@ -331,6 +340,12 @@ public class ParameterActivity extends AppCompatActivity {
 
     private void updateUI(Parameter parameter) {
 
+        if (parameter.getListNearbyPOI() != null){
+            for (long id : parameter.getListNearbyPOI()){
+                mViewModel.getNearbyPOI(id).observe(this, nearbyPOI -> selectedNearbyPOI.add(nearbyPOI));
+            }
+        }
+
         if(parameter.getLatitude() != 999999999.0 && parameter.getLongitude() != 999999999.0){
             getAddress(parameter.getLatitude(), parameter.getLongitude());
         }
@@ -398,8 +413,6 @@ public class ParameterActivity extends AppCompatActivity {
                 mBinding.activityParameterRadiobuttonNbofbedrooms.setChecked(true);
                 break;
         }
-
-        //todo actualiser les nearbyPOI
 
         switch (parameter.getSold()){
             case 0:

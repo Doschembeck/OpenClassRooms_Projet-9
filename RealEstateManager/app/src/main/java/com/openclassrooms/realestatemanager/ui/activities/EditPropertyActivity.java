@@ -71,7 +71,7 @@ public class EditPropertyActivity extends BaseActivity {
         // --- Listeners ---
         binding.activityEditPropertyButtonCreatephotos.setOnClickListener(this::onClickButtonCreatePhotos);
         binding.activityEditPropertyButtonAddphotos.setOnClickListener(this::onClickButtonAddPhotos);
-        binding.activityEditPropertyButtonGeocoding.setOnClickListener(this::startAutoComplete);
+        binding.activityEditPropertyImageviewGeocoding.setOnClickListener(this::startAutoComplete);
         binding.activityEditPropertyToolbar.setOnClickListener(v -> onBackPressed());
         binding.activityEditPropertyButtonCreatepoi.setOnClickListener(this::onClickButtonCreateNearbyPoi);
         binding.activityEditPropertySwitchIssold.setOnCheckedChangeListener(this::onClickSwitchIsSold);
@@ -82,6 +82,7 @@ public class EditPropertyActivity extends BaseActivity {
         // UpdateUI
         binding.activityEditPropertyEdittextDateofsold.setText(Utils.getTodayDate());
 
+        // Check if this is a modification mode
         Property property = getIntent().getParcelableExtra("property");
         if (property != null){
             mEditProperty = property;
@@ -91,7 +92,6 @@ public class EditPropertyActivity extends BaseActivity {
             binding.activityEditPropertyToolbar.setTitle("Edit Property");
         }else {
             mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPOI);
-//            generateFakeInfoProperty(); //todo à supprimer
         }
 
     }
@@ -143,16 +143,9 @@ public class EditPropertyActivity extends BaseActivity {
         }else if (requestCode == RESULT_LOAD_IMG){
             if (resultCode == RESULT_OK) {
 
-                List<Photo> photoList1 = mEditListPhoto;
-                List<Photo> photoList2 = mViewModel.propertyPictureListMutableLiveData.getValue();
-
                 // Update ListPictures
                 List<Photo> currentPhotos = mViewModel.propertyPictureListMutableLiveData.getValue();
-                Photo photo = new Photo(0, 0, data.getData().toString(), FormatUtils.formatPOIName(binding.activityEditPropertyEdittextPicturedescription.getText().toString()));
-
-                //TODO BUG : LE PROBLEME VIENT DE LA LIGNE DE DESSOUS !!!
-                currentPhotos.add(photo);
-                Log.d("TAG", "onActivityResult: "); //todo TEST A SUPPRIMER
+                currentPhotos.add(new Photo(0, 0, data.getData().toString(), FormatUtils.formatPOIName(binding.activityEditPropertyEdittextPicturedescription.getText().toString())));
                 mViewModel.propertyPictureListMutableLiveData.setValue(currentPhotos);
 
                 binding.activityEditPropertyEdittextPicturedescription.setText("");
@@ -319,9 +312,25 @@ public class EditPropertyActivity extends BaseActivity {
 
     // === Update UI ===
 
-    private void updateUIWithProperty(){
+    private void updateUIWithPhotos(List<Photo> photos) {
 
-        //todo: les points d'interets
+        if (mEditListPhoto == null){
+            mEditListPhoto = new ArrayList<>();
+            mEditListPhoto.addAll(photos);
+        }
+
+        mViewModel.propertyPictureListMutableLiveData.setValue(photos);
+    }
+
+    private void updateUIWithAddress(Address address) {
+        binding.activityEditPropertyEdittextAddress.setText(address.getCompleteAddress());
+
+        if (mAddress == null){
+            mAddress = address;
+        }
+    }
+
+    private void updateUIWithProperty(){
 
         mViewModel.getAddress(mEditProperty.getAddressId()).observe(this, this::updateUIWithAddress);
         mViewModel.getPropertyForNearbyPoi(mEditProperty.getId()).observe(this, this::updateUIWithNearbyPOI);
@@ -333,8 +342,11 @@ public class EditPropertyActivity extends BaseActivity {
         binding.activityEditPropertyEdittextNbofrooms.setText(String.valueOf(mEditProperty.getNbOfRooms()));
         binding.activityEditPropertyEdittextNbofbedrooms.setText(String.valueOf(mEditProperty.getNbOfBedRooms()));
         binding.activityEditPropertyEdittextDescription.setText(mEditProperty.getDescription());
-        binding.activityEditPropertySwitchIssold.setChecked(mEditProperty.isSold());
-        binding.activityEditPropertyEdittextDateofsold.setText(FormatUtils.formatDate(mEditProperty.getDateOfSale()));
+
+        if (mEditProperty.isSold()){
+            binding.activityEditPropertySwitchIssold.setChecked(true);
+            binding.activityEditPropertyEdittextDateofsold.setText(FormatUtils.formatDate(mEditProperty.getDateOfSale()));
+        }
 
     }
 
@@ -440,32 +452,13 @@ public class EditPropertyActivity extends BaseActivity {
         double pricePerSquareMeter = price / area;
         float rate = ScriptsStats.getRateProperty(mViewModel, pricePerSquareMeter, mAddress.getCity());
         Date date = FormatUtils.formatStringFormattedToDate(binding.activityEditPropertyEdittextDateofsold.getText().toString());
-        Date dateOfSale = binding.activityEditPropertySwitchIssold.isChecked() ? date : null;
+        Date dateOfSale = binding.activityEditPropertySwitchIssold.isChecked() ? date : new Date(0);
 
         return new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description,
                 addressId, rate, mAddress.getCity(), mainPictureUrl, nbOfPictures, getCurrentAgentId() , dateOfSale, date, date);
     }
 
     // === Generators ===
-
-    private void updateUIWithPhotos(List<Photo> photos) {
-
-        if (mEditListPhoto == null){
-            mEditListPhoto = photos;
-        }
-
-        mViewModel.propertyPictureListMutableLiveData.setValue(photos);
-
-        Log.d("TAG", "updateUIWithPhotos: "); // todo TEST : a supprimer
-    }
-
-    private void updateUIWithAddress(Address address) {
-        binding.activityEditPropertyEdittextAddress.setText(address.getCompleteAddress());
-
-        if (mAddress == null){
-            mAddress = address;
-        }
-    }
 
     private void generateFakeInfoProperty() {
 

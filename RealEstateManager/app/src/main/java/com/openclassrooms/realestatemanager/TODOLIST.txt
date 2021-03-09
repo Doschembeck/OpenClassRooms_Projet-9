@@ -1,12 +1,14 @@
-//todo BUG : Lorsque je modifie une property qui n'a pas de date de vente
+
 //todo BUG : Lorsque je clique rapidement sur créer une propriété sa en créer plusieur
 //todo BUG : Affichage des images se fait uniquement sur l'activiter apres la creation ou le modif
 //todo BUG : Lors du lancement de l'app les sharedPreferences sont resets !
-//todo BUG : Modifier property ajout et suppression d'images
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 
-//todo: parameterActivity ajouter les nearbyPOI dans le updateUI
-//todo: parameterActivity permettre de supprimer les dates
+//todo: MapsFragment Ajouter un focus sur l'utilisateur (remplacer par getCenter)
+//todo: parameterActivity activer le filtre par type de biens
+//todo: faire un contentProvider
+//todo: editProperty forcer le remplissage des champs
+//todo: parameterActivity mettre une tabLayout pour separer les filtres et les tries
 //todo: parameterActivity mettre des seekbar avec 2 thumbs
 
 //todo BONUS : activer le mode de comparaison

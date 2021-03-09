@@ -270,7 +270,6 @@ public class DetailsActivity extends AppCompatActivity {
 
             case R.id.menu_details_activity_toolbar_editproperty :
 
-                //todo à améliorer envoyer la property actuel
                 startActivity(new Intent(this, EditPropertyActivity.class)
                         .putExtra("property", mCurrentProperty)
                 );

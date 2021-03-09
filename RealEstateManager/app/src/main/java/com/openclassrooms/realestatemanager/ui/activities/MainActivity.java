@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
                 }
-                
+
                 mViewModel.mListPropertyMutableLiveData.setValue(newList);
 
             } else {

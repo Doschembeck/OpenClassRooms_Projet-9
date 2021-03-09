@@ -11,6 +11,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Executor;
 
 /**
  * Created by Philippe on 21/02/2018.
@@ -111,13 +112,19 @@ public class Utils {
 
         if (isNetworkAvailable(context)) {
             try {
-                HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test"); urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500); urlc.connect(); return (urlc.getResponseCode() == 200);
-            } catch (IOException e) { Log.e(TAG, "Error checking internet connection", e);
+                HttpURLConnection urlc = (HttpURLConnection) (new URL("https://www.google.com").openConnection());
+                urlc.setRequestProperty("User-Agent", "Test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1500);
+                urlc.connect();
+                return (urlc.getResponseCode() == 200);
+
+            } catch (IOException e) {
+                Log.e(TAG, "Error checking internet connection", e);
             }
         } else {
             Log.d(TAG, "No network available!");
+
         } return false;
     }
 

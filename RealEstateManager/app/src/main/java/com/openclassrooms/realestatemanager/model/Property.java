@@ -60,7 +60,7 @@ public class Property implements Parcelable {
         this.mainPictureUrl = mainPictureUrl;
         this.nbOfPictures = nbOfPictures;
         this.agentId = agentId;
-        this.isSold = dateOfSale != null;
+        this.isSold = dateOfSale.getTime() != 0;
         this.dateOfSale = dateOfSale;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -226,9 +226,9 @@ public class Property implements Parcelable {
         this.city = in.readString();;
         this.mainPictureUrl = in.readString();;
         this.nbOfPictures = in.readInt();
-        this.agentId = in.readLong();;
+        this.agentId = in.readLong();
         this.dateOfSale = new Date(in.readLong());
-        this.isSold = this.dateOfSale != null;
+        this.isSold = this.dateOfSale.getTime() != 0;
         this.createdAt = new Date(in.readLong());
         this.updatedAt = new Date(in.readLong());
     }
@@ -269,7 +269,7 @@ public class Property implements Parcelable {
         dest.writeString(mainPictureUrl);
         dest.writeInt(nbOfPictures);
         dest.writeLong(agentId);
-        dest.writeLong(dateOfSale.getTime());// todo bug si aucune date de vente n'est donner
+        dest.writeLong(dateOfSale.getTime() != 0 ? dateOfSale.getTime() : 0);// todo bug si aucune date de vente n'est donner
         dest.writeLong(createdAt.getTime());
         dest.writeLong(updatedAt.getTime());
     }

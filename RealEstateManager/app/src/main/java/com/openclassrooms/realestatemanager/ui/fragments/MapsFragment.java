@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.ArraySet;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.List;
@@ -46,6 +48,7 @@ public class MapsFragment extends Fragment {
     private Context mContext;
     private FragmentMapsBinding binding;
     private SharedPreferences mSharedPreferences;
+    private float mZoom = 11;
 
     // DATA FOR CALCULATE CENTER
     int currentIndexProperty;
@@ -56,17 +59,25 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap mGoogleMap;
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private class MyTask extends AsyncTask<Void, Void, Void> {
+        Boolean result;
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
+        @Override
+        protected Void doInBackground(Void... voids) {
+            result = Utils.isInternetAvailable(mContext);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (!result){
+                binding.fragmentMapsNonetwork.setVisibility(View.VISIBLE);
+            }
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mGoogleMap = googleMap;
@@ -91,6 +102,8 @@ public class MapsFragment extends Fragment {
         View view = binding.getRoot();
         mContext = view.getContext();
         configureViewModel();
+
+        new MyTask().execute(); //todo test
 
         mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, Context.MODE_PRIVATE);
 
@@ -167,8 +180,8 @@ public class MapsFragment extends Fragment {
 
                 //Si c'est le dernier
                 if (properties.size() - 1 == currentIndexProperty){
-                    //todo: voir quelle niveau de zoom lui mettre et/ou voir pour faire deds clusters
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getCenter(), 0));
+                    //todo: voir quelle niveau de zoom lui mettre et/ou voir pour faire des clusters
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getCenter(), mZoom));
                 }
 
                 currentIndexProperty++;

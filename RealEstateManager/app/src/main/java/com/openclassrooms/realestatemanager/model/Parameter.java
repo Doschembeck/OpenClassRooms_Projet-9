@@ -9,6 +9,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.realestatemanager.utils.Constants;
 
+import java.util.ArrayList;
+
 public class Parameter implements Parcelable {
 
     //todo: rajouter l'address et la PropertyType

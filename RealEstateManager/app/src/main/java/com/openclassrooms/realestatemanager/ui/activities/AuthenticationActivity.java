@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import com.openclassrooms.realestatemanager.databinding.ActivityAuthenticationBinding;
@@ -14,6 +16,7 @@ import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private List<Agent> mListAgent = new ArrayList<>();
     private List<String> mListSpinner = new ArrayList<>();
+    ArrayAdapter<String> mAdapterSpinnerAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,17 @@ public class AuthenticationActivity extends AppCompatActivity {
         // Listeners
         binding.activityAuthenticationButtonRegistration.setOnClickListener(v -> startActivity(new Intent(mContext, EditAgentActivity.class)));
         binding.activityAuthenticationButtonLogin.setOnClickListener(v -> onClickButtonLogin());
+        binding.activityAuthenticationSpinnerAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mSharedPreferences.edit().putLong(Constants.PREF_AGENT_ID_LOGGED_KEY , mListAgent.get((int) binding.activityAuthenticationSpinnerAgent.getSelectedItemId()).getId()).apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         configureSpinnerAgent();
         initSharedPreferences();
@@ -61,9 +76,9 @@ public class AuthenticationActivity extends AppCompatActivity {
     }
 
     private void configureSpinnerAgent(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListSpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.activityAuthenticationSpinnerAgent.setAdapter(adapter);
+        mAdapterSpinnerAgent= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListSpinner);
+        mAdapterSpinnerAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.activityAuthenticationSpinnerAgent.setAdapter(mAdapterSpinnerAgent);
     }
 
     private void updateUIWithAgent(List<Agent> agentList){
@@ -78,18 +93,15 @@ public class AuthenticationActivity extends AppCompatActivity {
             newList.add(agent.getLastname().toUpperCase() + " " + agent.getFirstname());
         }
 
+        mListSpinner.clear();
+        mListAgent.clear();
         mListSpinner.addAll(newList);
         mListAgent.addAll(agentList);
 
     }
 
     private void initSharedPreferences(){
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
-
-        if(Constants.PREF_CURRENCY_DEFVALUE.equals(mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, Constants.PREF_CURRENCY_DEFVALUE))){
-            mSharedPreferences.edit().putString(Constants.PREF_CURRENCY_KEY, "$").apply();
-        }
-
+        mSharedPreferences = Utils.getSharedPreferences(this);
     }
 
     private void getRealEstateAgentSaved(){

@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.utils;
 
+import com.openclassrooms.realestatemanager.model.Devise;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,19 +22,19 @@ public class  FormatUtils {
         return formattedString;
     }
 
-    public static String formatEditTextWithDevise(double amountInDollars, String deviseISO){
-        double amountInDevise = Utils.convertDollarToDevise(amountInDollars, deviseISO);
+    public static String formatEditTextWithDevise(double amountInDollars, Devise devise){
+        double amountInDevise = devise.convertDollarToDevise(amountInDollars);
 
-        return String.format("%s %s", formatNumberToString((long) amountInDevise), Utils.getSymbolDevise(deviseISO));
+        return String.format("%s %s", formatNumberToString((long) amountInDevise), devise.getSymbole());
     }
 
-    public static String formatEditTextWithNotDevise(double amountInDollars, String deviseISO){
-        double amountInDevise = Utils.convertDollarToDevise(amountInDollars, deviseISO);
+    public static String formatEditTextWithNotDevise(double amountInDollars, Devise devise){
+        double amountInDevise = devise.convertDollarToDevise(amountInDollars);
 
-        return removeAllSpaceChar(formatNumberToString((long) amountInDevise)) ;
+        return removeAllSpaceChar(formatNumberToString((long) amountInDevise));
     }
 
-    public static String formatNumberToString(long number){
+    public static String formatNumberToString(double number){
         return NumberFormat.getInstance(Locale.FRANCE).format(number);
     }
 

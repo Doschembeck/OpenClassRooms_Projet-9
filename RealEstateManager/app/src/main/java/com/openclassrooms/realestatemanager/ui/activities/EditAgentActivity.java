@@ -29,7 +29,6 @@ public class EditAgentActivity extends AppCompatActivity {
 
         initListeners();
 
-
     }
 
     private void initOnCreate(){

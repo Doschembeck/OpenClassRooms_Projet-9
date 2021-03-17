@@ -95,6 +95,31 @@
             android:layout_height="2dp"
             android:background="?android:attr/listDivider" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Type de propriété :"/>
+            <Spinner
+                android:id="@+id/activity_parameter_spinner_propertytype"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/activity_parameter_button_mylocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Me localiser"/>
+
         <!--    Address     -->
         <LinearLayout
             android:layout_width="match_parent"

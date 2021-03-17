@@ -6,18 +6,17 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewItemBinding;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
-import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
-import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.Set;
 
@@ -29,15 +28,15 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
     SharedPreferences mSharedPreferences;
     private Context mContext;
 
-    private String devise;
+    private Devise mDevise;
 
     public PropertyViewHolder(FragmentListviewItemBinding itemBinding) {
         super(itemBinding.getRoot());
         this.itemBinding = itemBinding;
         this.mContext = itemBinding.getRoot().getContext();
 
-        mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
-        devise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
+        mSharedPreferences = Utils.getSharedPreferences(mContext);
+        mDevise = Utils.getCurrentDevise(mSharedPreferences);
 
     }
 
@@ -120,7 +119,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         updateRate(property.getRate());
 
         itemBinding.fragmentListviewItemTextviewCity.setText(property.getCity());
-        itemBinding.fragmentListviewItemTextviewPrice.setText(FormatUtils.formatEditTextWithDevise(property.getPrice(), devise));
+        itemBinding.fragmentListviewItemTextviewPrice.setText(FormatUtils.formatEditTextWithDevise(property.getPrice(), mDevise));
         itemBinding.fragmentListviewItemTextviewRooms.setText(property.getNbOfRooms() + " Pièces");
         itemBinding.fragmentListviewItemTextviewBedrooms.setText(property.getNbOfBedRooms() + " Chambres");
         itemBinding.fragmentListviewItemTextviewArea.setText(property.getArea() + "m²");

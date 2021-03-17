@@ -1,40 +1,32 @@
 package com.openclassrooms.realestatemanager.ui.fragments.ListView;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.FragmentListviewBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
-import com.openclassrooms.realestatemanager.model.Parameter;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 import com.r2te.codehelper.utils.ItemClickSupport;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ListViewFragment extends Fragment {
 
@@ -43,7 +35,7 @@ public class ListViewFragment extends Fragment {
     private Context mContext;
     private PropertyViewModel mViewModel;
 
-    private String actualDevise;
+    private Devise mDevise;
     private List<Property> mListProperty;
     private PropertyAdapter mAdapter;
 
@@ -63,8 +55,8 @@ public class ListViewFragment extends Fragment {
         // 2 - Calling the method that configuring click on RecyclerView
         this.configureOnClickRecyclerView();
 
-        mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
-        actualDevise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
+        mSharedPreferences = Utils.getSharedPreferences(mContext);
+        mDevise = Utils.getCurrentDevise(mSharedPreferences);
 
         mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(), this::updateUI);
 

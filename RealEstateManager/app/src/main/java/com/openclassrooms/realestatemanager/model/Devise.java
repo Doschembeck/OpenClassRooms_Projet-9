@@ -14,6 +14,7 @@ public class Devise {
         this.rateChangeDollarToDevise = rateChangeDollarToDevise;
     }
 
+    //region GETTERS / SETTERS
     public String getIso() {
         return iso;
     }
@@ -45,4 +46,15 @@ public class Devise {
     public void setName(String name) {
         this.name = name;
     }
+
+    //endregion
+
+    public double convertDeviseToDollar(double amountInDevise){
+        return amountInDevise / this.rateChangeDollarToDevise;
+    }
+
+    public double convertDollarToDevise(double amountInDollar){
+        return amountInDollar * this.rateChangeDollarToDevise;
+    }
+
 }

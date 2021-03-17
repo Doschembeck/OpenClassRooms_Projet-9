@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -24,11 +25,13 @@ import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Agent;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.text.SimpleDateFormat;
@@ -43,7 +46,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ContentDetailsBinding includeBinding;
     private PropertyViewModel mViewModel;
     SharedPreferences mSharedPreferences;
-    private String devise;
+    private Devise mDevise;
     private int currentIndexPicture = 0;
     private List<Photo> mPictureList = new ArrayList<>();
     private Property mCurrentProperty;
@@ -57,8 +60,8 @@ public class DetailsActivity extends AppCompatActivity {
         includeBinding = binding.activityDetailsIncludeContentDetails;
         setContentView(binding.getRoot());
 
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
-        devise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
+        mSharedPreferences = Utils.getSharedPreferences(this);
+        mDevise = Utils.getCurrentDevise(mSharedPreferences);
 
         long propertyId = getIntent().getLongExtra("property_id", 0);
 
@@ -204,8 +207,8 @@ public class DetailsActivity extends AppCompatActivity {
         includeBinding.contentDetailTextviewNbofrooms.setText("" + property.getNbOfRooms());
         includeBinding.contentDetailTextviewNbofbedrooms.setText("" + property.getNbOfBedRooms());
         includeBinding.contentDetailTextviewArea.setText(property.getArea() + " m²");
-        includeBinding.contentDetailTextviewPrice.setText(FormatUtils.formatEditTextWithDevise(property.getPrice(), devise));
-        includeBinding.contentDetailTextviewPricepersquaremeter.setText(FormatUtils.formatEditTextWithDevise(property.getPrice() / property.getArea(), devise) + "/m²");
+        includeBinding.contentDetailTextviewPrice.setText(FormatUtils.formatEditTextWithDevise(property.getPrice(), mDevise));
+        includeBinding.contentDetailTextviewPricepersquaremeter.setText(FormatUtils.formatEditTextWithDevise(property.getPrice() / property.getArea(), mDevise) + "/m²");
         includeBinding.contentDetailTextviewDescription.setText(property.getDescription());
         if (property.isSold()){
             includeBinding.contentDetailLinearlayoutDateofsale.setVisibility(View.VISIBLE);

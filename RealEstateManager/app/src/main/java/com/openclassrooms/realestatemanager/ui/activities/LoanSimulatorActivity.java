@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.SeekBar;
 import com.openclassrooms.realestatemanager.databinding.ActivityLoanSimulatorBinding;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.utils.SimulatorUtils;
@@ -21,7 +22,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
     private SharedPreferences mSharedPreferences;
     private final int INTERVAL_SEEKBAR = 1000;
 
-    String devise = "€";
+    Devise devise;
     int costProperty = 210000;
     int amountContribution = 0;
     int amountLoan = 0;
@@ -42,8 +43,8 @@ public class LoanSimulatorActivity extends AppCompatActivity {
         binding = ActivityLoanSimulatorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
-        devise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
+        mSharedPreferences = Utils.getSharedPreferences(this);
+        devise = Utils.getCurrentDevise(mSharedPreferences);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("amount_property")){
@@ -130,7 +131,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
                 try {
                     costProperty = Integer.parseInt(binding.activityLoanSimulatorEdittextAmountContribution.getText().toString()
                             .replaceAll("\\s", "")
-                            .replaceAll(devise, "")) + amountContribution;
+                            .replaceAll(devise.getSymbole(), "")) + amountContribution;
 
                 } catch (NumberFormatException e) {
                     costProperty = 10000;
@@ -144,7 +145,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
                 try {
                     amountContribution = Integer.parseInt(binding.activityLoanSimulatorEdittextAmountContribution.getText().toString()
                             .replaceAll("\\s", "")
-                            .replaceAll(devise, ""));
+                            .replaceAll(devise.getSymbole(), ""));
 
                 } catch (NumberFormatException e) {
                     amountContribution = 0;
@@ -159,7 +160,7 @@ public class LoanSimulatorActivity extends AppCompatActivity {
                 try {
                     costProperty = Integer.parseInt(binding.activityLoanSimulatorEdittextCostProperty.getText().toString()
                             .replaceAll("\\s", "")
-                            .replaceAll(devise, ""));
+                            .replaceAll(devise.getSymbole(), ""));
 
                 } catch (NumberFormatException e) {
                     costProperty = 10000;

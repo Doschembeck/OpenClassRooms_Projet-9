@@ -28,8 +28,14 @@ public interface PropertyDao {
     @Delete
     int deleteProperty(Property property);
 
+    @Query("DELETE FROM Property WHERE id = :propertyId")
+    int deleteProperty(long propertyId);
+
     @Query("SELECT * FROM Property WHERE id = :propertyId")
     LiveData<Property> getProperty(long propertyId);
+
+    @Query("SELECT * FROM Property WHERE id = :propertyId")
+    Cursor getPropertyWithCursor(long propertyId);
 
     @Query("SELECT * FROM Property")
     LiveData<List<Property>> getAllLiveDataProperty();

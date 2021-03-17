@@ -19,6 +19,7 @@ import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.ScriptsStats;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.util.HashMap;
@@ -44,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         mContext = this;
 
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
+        mSharedPreferences = Utils.getSharedPreferences(this);
 
         configureSpinnerCurrency();
 
@@ -63,16 +64,16 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void configureSpinnerCurrency(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.LIST_OF_DEVISES_NAME);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Utils.getAllNameOfDevises());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.activitySettingsSpinnerCurrency.setAdapter(adapter);
+        binding.activitySettingsSpinnerCurrency.setSelection(Utils.getCurrentDeviseId(mSharedPreferences));
 
         binding.activitySettingsSpinnerCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSharedPreferences.edit().putString(Constants.PREF_CURRENCY_KEY, Constants.LIST_OF_DEVISES_ISO[position]).apply(); //todo: doit gerer les liveDate (Observables)
+                mSharedPreferences.edit().putInt(Constants.PREF_CURRENCY_KEY, position).apply();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 

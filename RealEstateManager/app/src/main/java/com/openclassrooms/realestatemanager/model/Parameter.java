@@ -15,6 +15,7 @@ public class Parameter implements Parcelable {
 
     //todo: rajouter l'address et la PropertyType
 
+    private int typeOfProperty;
     private int priceMin;
     private int priceMax;
     private String realEstateAgent;
@@ -42,6 +43,7 @@ public class Parameter implements Parcelable {
     //    private String city;
 
     public Parameter() {
+        this.typeOfProperty = 999999999;
         this.priceMin = 0;
         this.priceMax = 999999999;
         this.nbOfRoomsMin = 0;
@@ -68,6 +70,7 @@ public class Parameter implements Parcelable {
 //   region ---- PARECELABLE METHODS ---
 
     protected Parameter(Parcel in) {
+        this.typeOfProperty = in.readInt();
         this.priceMin = in.readInt();
         this.priceMax = in.readInt();
         this.realEstateAgent = in.readString();
@@ -112,8 +115,7 @@ public class Parameter implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        //todo ajouter les attributs rajouter en haut !
-
+        dest.writeInt(this.typeOfProperty);
         dest.writeInt(this.priceMin);
         dest.writeInt(this.priceMax);
         dest.writeString(this.realEstateAgent);
@@ -295,6 +297,14 @@ public class Parameter implements Parcelable {
         this.sortDirection = sortDirection;
     }
 
+    public int getTypeOfProperty() {
+        return typeOfProperty;
+    }
+
+    public void setTypeOfProperty(int typeOfProperty) {
+        this.typeOfProperty = typeOfProperty;
+    }
+
     //    endregion
 
     private String getIsFirstParams(Boolean isFirstParam){
@@ -364,7 +374,11 @@ public class Parameter implements Parcelable {
             }
         }
 
-        // todo Reste a filtrer par address
+        if (typeOfProperty != 999999999){
+            params += getIsFirstParams(isFirstParam);
+            params += "property_type_id" + " = " + this.typeOfProperty;
+            if (isFirstParam) isFirstParam = false;
+        }
 
         String nbOfPicturesQuery = queryMinMax(isFirstParam, "nbOfPictures", getNbOfPicturesMin(), getNbOfPicturesMax());
         params += nbOfPicturesQuery;

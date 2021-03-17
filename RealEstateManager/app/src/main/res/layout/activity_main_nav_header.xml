@@ -16,6 +16,17 @@
         android:layout_height="match_parent"
         android:background="#66000000"/>
 
+    <TextView
+        android:id="@+id/activity_main_nav_header_textview_agentname"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:text="Thomas DESCHOMBECK"
+        android:textSize="22sp"
+        android:textColor="#ffff"
+        android:textStyle="bold"
+        android:layout_margin="30dp"/>
+
 <!--    todo : à améliorer + rendre dynamique-->
 
 </RelativeLayout>

@@ -2,19 +2,27 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -23,8 +31,10 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.openclassrooms.realestatemanager.databinding.ActivityParameterBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Parameter;
+import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
@@ -43,6 +53,7 @@ public class ParameterActivity extends AppCompatActivity {
     private List<NearbyPOI> selectedNearbyPOI = new ArrayList<>();
     private Geocoder mGeocoder;
     private Address mAddress;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,8 @@ public class ParameterActivity extends AppCompatActivity {
 
         // --- INIT ---
         mGeocoder = ActivityUtils.setupAutoComplete(this);
+        configureSpinnerPropertyType();
+        initLocation();
 
         Parameter parameter = getIntent().getParcelableExtra("parameter");
 
@@ -63,6 +76,7 @@ public class ParameterActivity extends AppCompatActivity {
         // LISTENERS
         mBinding.activityParameterButtonFilter.setOnClickListener(this::onClickFilterProperty);
         mBinding.activityParameterImageviewAddress.setOnClickListener(this::startAutoComplete);
+        mBinding.activityParameterButtonMylocation.setOnClickListener(this::onClickMyLocation);
         mBinding.activityParameterImageviewAddressdelete.setOnClickListener(view -> {
             mBinding.activityParameterEdittextAddress.setText("");
             mAddress = null;
@@ -99,11 +113,47 @@ public class ParameterActivity extends AppCompatActivity {
         mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPoi);
     }
 
-    SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMin(){
+    private void initLocation(){
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    private void onClickMyLocation(View view) {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // Si les permissions ne sont pas acceptées
+        } else {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener((Activity) this, location -> {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            Log.d("TAG1", "LA LOCALISATION EST : " + location.getLatitude() + " | " + location.getLongitude());
+
+                            getAddress(location.getLatitude(), location.getLongitude());
+
+                        }
+                    });
+        }
+
+    }
+
+    private void configureSpinnerPropertyType(){
+        List<String> listPropertyType = new ArrayList<>();
+        listPropertyType.add("Tout les types");
+        listPropertyType.addAll(Arrays.asList(Constants.ListPropertyType));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listPropertyType);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBinding.activityParameterSpinnerPropertytype.setAdapter(adapter);
+    }
+
+    private SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMin(){
         return onSeekBarChangeMin(mBinding.activityParameterSeekbarDistanceaddressMax, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
     }
 
-    SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMax(){
+    private SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMax(){
         return onSeekBarChangeMax(mBinding.activityParameterSeekbarDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
     }
 
@@ -350,6 +400,10 @@ public class ParameterActivity extends AppCompatActivity {
             getAddress(parameter.getLatitude(), parameter.getLongitude());
         }
 
+        if(parameter.getTypeOfProperty() != 999999999.0){
+            mBinding.activityParameterSpinnerPropertytype.setSelection(parameter.getTypeOfProperty() + 1);
+        }
+
         mBinding.activityParameterSeekbarNbOfRoomsMin.setProgress(parameter.getNbOfRoomsMin());
         mBinding.activityParameterSeekbarNbOfRoomsMax.setProgress(parameter.getNbOfRoomsMax());
         mBinding.activityParameterSeekbarNbOfBedRoomsMin.setProgress(parameter.getNbOfBedRoomsMin());
@@ -438,6 +492,12 @@ public class ParameterActivity extends AppCompatActivity {
     private void onClickFilterProperty(View view){
 
         Parameter parameter = new Parameter();
+
+
+        int propertyType = (int) mBinding.activityParameterSpinnerPropertytype.getSelectedItemId();
+        if (propertyType != 0){
+            parameter.setTypeOfProperty(propertyType - 1);
+        }
 
         int areaProgressMax = mBinding.activityParameterSeekbarAreaMax.getMax();
         int areaMax = mBinding.activityParameterSeekbarAreaMax.getProgress();

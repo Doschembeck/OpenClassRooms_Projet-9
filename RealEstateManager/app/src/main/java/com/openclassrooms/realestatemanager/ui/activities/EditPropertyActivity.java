@@ -9,11 +9,13 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.util.Util;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
@@ -22,6 +24,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.openclassrooms.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
@@ -51,7 +54,7 @@ public class EditPropertyActivity extends BaseActivity {
     private List<Photo> mEditListPhoto;
     private List<NearbyPOI> mEditListNearbyPOI;
     private Address mAddress;
-    private String mDevise;
+    private Devise mDevise;
     private Geocoder mGeocoder;
     private List<NearbyPOI> selectedNearbyPOI = new ArrayList<>();
 
@@ -78,6 +81,17 @@ public class EditPropertyActivity extends BaseActivity {
         binding.activityEditPropertyButtonAddnearbypoi.setOnClickListener(this::onClickButtonAddNearbyPOI);
         binding.activityEditPropertyImageviewDateofsale.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, binding.activityEditPropertyEdittextDateofsold));
         binding.activityEditPropertyAddproperty.setOnClickListener(this::onClickButtonAddProperty);
+        binding.activityEditPropertySpinnerDevise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                mDevise = Constants.LIST_OF_DEVISES[i];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         // UpdateUI
         binding.activityEditPropertyEdittextDateofsold.setText(Utils.getTodayDate());
@@ -204,7 +218,39 @@ public class EditPropertyActivity extends BaseActivity {
 
     }
 
+    private Boolean checkIfFormIsValid(){
+        List<Photo> photoList =  mViewModel.propertyPictureListMutableLiveData.getValue();
+
+        String price = binding.activityEditPropertyEdittextPrice.getText().toString();
+        String area = binding.activityEditPropertyEdittextArea.getText().toString();
+        String nbOfRooms = binding.activityEditPropertyEdittextNbofrooms.getText().toString();
+        String nbOfBedRooms = binding.activityEditPropertyEdittextNbofbedrooms.getText().toString();
+
+        if (photoList.size() == 0){
+            Toast.makeText(this, "Merci de bien vouloir ajouter une photo", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (price.equals("")){
+            Toast.makeText(this, "Merci de bien vouloir ajouter un prix", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (area.equals("")){
+            Toast.makeText(this, "Merci de bien vouloir ajouter une surface", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(nbOfRooms.equals("")){
+            Toast.makeText(this, "Merci de bien vouloir ajouter un nombre de pièces", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (nbOfBedRooms.equals("")) {
+            Toast.makeText(this, "Merci de bien vouloir ajouter un nombre de chambre", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
     private void onClickButtonAddProperty(View v){
+
+        if (!checkIfFormIsValid()) {
+            return;
+        }
 
         // UPDATE
         if (mEditProperty != null){
@@ -336,6 +382,7 @@ public class EditPropertyActivity extends BaseActivity {
         mViewModel.getPropertyForNearbyPoi(mEditProperty.getId()).observe(this, this::updateUIWithNearbyPOI);
         mViewModel.getAllPropertyPhoto(mEditProperty.getId()).observe(this, this::updateUIWithPhotos);
 
+        binding.activityEditPropertySpinnerDevise.setSelection(Utils.getCurrentDeviseId(mSharedPreferences));
         binding.activityEditPropertySpinnerPropertytype.setSelection(mEditProperty.getPropertyTypeId());
         binding.activityEditPropertyEdittextPrice.setText(FormatUtils.formatEditTextWithNotDevise(mEditProperty.getPrice(), mDevise));
         binding.activityEditPropertyEdittextArea.setText(String.valueOf(mEditProperty.getArea()));
@@ -389,18 +436,9 @@ public class EditPropertyActivity extends BaseActivity {
     }
 
     private void updateUIWithSharedPreferences(){
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
-        mDevise = mSharedPreferences.getString(Constants.PREF_CURRENCY_KEY, "ERROR_CURRENCY");
-
-        int positionDevise = 0;
-        for (int i = 0; i < Constants.LIST_OF_DEVISES_ISO.length; i++){
-            if (mDevise.equals(Constants.LIST_OF_DEVISES_ISO[i])){
-                positionDevise = i;
-                break;
-            }
-        }
-
-        binding.activityEditPropertySpinnerDevise.setSelection(positionDevise);
+        mSharedPreferences = Utils.getSharedPreferences(this);
+        mDevise = Utils.getCurrentDevise(mSharedPreferences);
+        binding.activityEditPropertySpinnerDevise.setSelection(Utils.getCurrentDeviseId(mSharedPreferences));
     }
 
     // === Process ===
@@ -444,7 +482,7 @@ public class EditPropertyActivity extends BaseActivity {
         int nbOfPictures = photoList.size();
 
         int propertyType = (int) binding.activityEditPropertySpinnerPropertytype.getSelectedItemId();
-        double price = Utils.convertDeviseToDollar(Double.parseDouble(binding.activityEditPropertyEdittextPrice.getText().toString()), Constants.LIST_OF_DEVISES_ISO[binding.activityEditPropertySpinnerDevise.getSelectedItemPosition()]);
+        double price = mDevise.convertDeviseToDollar(Double.parseDouble(binding.activityEditPropertyEdittextPrice.getText().toString()));
         float area = Float.parseFloat(binding.activityEditPropertyEdittextArea.getText().toString());
         int nbOfRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofrooms.getText().toString());
         int nbOfBedRooms = Integer.parseInt(binding.activityEditPropertyEdittextNbofbedrooms.getText().toString());
@@ -507,13 +545,13 @@ public class EditPropertyActivity extends BaseActivity {
     // === Configuration ===
 
     private void configureSpinnerDevise(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.LIST_OF_DEVISES_NAME);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Utils.getAllNameOfDevises());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.activityEditPropertySpinnerDevise.setAdapter(adapter);
     }
 
     private void configureSpinnerPropertyType(){
-        ArrayAdapter<String>adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.ListPropertyType);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.ListPropertyType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.activityEditPropertySpinnerPropertytype.setAdapter(adapter);
     }

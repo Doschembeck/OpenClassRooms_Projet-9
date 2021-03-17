@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.model;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -212,6 +213,10 @@ public class Property implements Parcelable {
 
 //   region ---- PARECELABLE METHODS ---
 
+    private Property(){
+
+    };
+
     protected Property(Parcel in) {
         this.id = in.readLong();
         this.propertyTypeId = in.readInt();
@@ -272,6 +277,32 @@ public class Property implements Parcelable {
         dest.writeLong(dateOfSale.getTime() != 0 ? dateOfSale.getTime() : 0);// todo bug si aucune date de vente n'est donner
         dest.writeLong(createdAt.getTime());
         dest.writeLong(updatedAt.getTime());
+    }
+
+    // --- UTILS ---
+    public static Property fromContentValues(ContentValues values) {
+
+        final Property property = new Property();
+        if (values.containsKey("id")) property.setId(values.getAsLong("id"));
+        if (values.containsKey("property_type_id")) property.setPropertyTypeId(values.getAsInteger("property_type_id"));
+        if (values.containsKey("price")) property.setPrice(values.getAsDouble("price"));
+        if (values.containsKey("pricePerSquareMeter")) property.setPricePerSquareMeter(values.getAsDouble("pricePerSquareMeter"));
+        if (values.containsKey("area")) property.setArea(values.getAsFloat("area"));
+        if (values.containsKey("nbOfRooms")) property.setNbOfRooms(values.getAsInteger("nbOfRooms"));
+        if (values.containsKey("nbOfBedRooms")) property.setNbOfBedRooms(values.getAsInteger("nbOfBedRooms"));
+        if (values.containsKey("description")) property.setDescription(values.getAsString("description"));
+        if (values.containsKey("address_id")) property.setAddressId(values.getAsLong("address_id"));
+        if (values.containsKey("rate")) property.setRate(values.getAsFloat("rate"));
+        if (values.containsKey("city")) property.setCity(values.getAsString("city"));
+        if (values.containsKey("mainPictureUrl")) property.setMainPictureUrl(values.getAsString("mainPictureUrl"));
+        if (values.containsKey("nbOfPictures")) property.setNbOfPictures(values.getAsInteger("nbOfPictures"));
+        if (values.containsKey("agent_id")) property.setAgentId(values.getAsLong("agent_id"));
+        if (values.containsKey("isSold")) property.setSold(values.getAsBoolean("isSold"));
+        if (values.containsKey("dateOfSale")) property.setDateOfSale(DateConverter.toDate(values.getAsLong("dateOfSale")));
+        if (values.containsKey("createdAt")) property.setCreatedAt(DateConverter.toDate(values.getAsLong("createdAt")));
+        if (values.containsKey("updatedAt")) property.setUpdatedAt(DateConverter.toDate(values.getAsLong("updatedAt")));
+
+        return property;
     }
 
 //    endregion

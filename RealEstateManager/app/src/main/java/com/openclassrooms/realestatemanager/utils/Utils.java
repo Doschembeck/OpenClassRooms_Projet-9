@@ -1,17 +1,24 @@
 package com.openclassrooms.realestatemanager.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+import com.openclassrooms.realestatemanager.model.Devise;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executor;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Philippe on 21/02/2018.
@@ -21,76 +28,26 @@ public class Utils {
 
     private final static String  TAG = "TAG1";
 
-    public static double convertDollarToDevise(double amountInDollars, String deviseAfterConvert){
-
-        switch (deviseAfterConvert){
-
-            case Constants.DEVISE_EUR_ISO:
-                return amountInDollars * Constants.DEVISE_EUR_RATE_CHANGE_FROM_USD;
-
-            case Constants.DEVISE_GBP_ISO:
-                return amountInDollars * Constants.DEVISE_GBP_RATE_CHANGE_FROM_USD;
-
-            case Constants.DEVISE_JPY_ISO:
-                return amountInDollars * Constants.DEVISE_JPY_RATE_CHANGE_FROM_USD;
-
-            case Constants.DEVISE_KRW_ISO:
-                return amountInDollars * Constants.DEVISE_KRW_RATE_CHANGE_FROM_USD;
-
-            case Constants.DEVISE_CHF_ISO:
-                return amountInDollars * Constants.DEVISE_CHF_RATE_CHANGE_FROM_USD;
-
-            default:
-                return amountInDollars;
-        }
+    public static SharedPreferences getSharedPreferences(Context context){
+        return context.getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
     }
 
-    public static double convertDeviseToDollar(double amountInDevise, String deviseBeforeConvert){
-
-        switch (deviseBeforeConvert){
-
-            case Constants.DEVISE_EUR_ISO:
-                return (int) (amountInDevise / Constants.DEVISE_EUR_RATE_CHANGE_FROM_USD);
-
-            case Constants.DEVISE_GBP_ISO:
-                return (int) (amountInDevise / Constants.DEVISE_GBP_RATE_CHANGE_FROM_USD);
-
-            case Constants.DEVISE_JPY_ISO:
-                return (int) (amountInDevise / Constants.DEVISE_JPY_RATE_CHANGE_FROM_USD);
-
-            case Constants.DEVISE_KRW_ISO:
-                return (int) (amountInDevise / Constants.DEVISE_KRW_RATE_CHANGE_FROM_USD);
-
-            case Constants.DEVISE_CHF_ISO:
-                return (int) (amountInDevise / Constants.DEVISE_CHF_RATE_CHANGE_FROM_USD);
-
-            default:
-                return (int) (amountInDevise);
-        }
+    public static int getCurrentDeviseId(SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt(Constants.PREF_CURRENCY_KEY, Constants.PREF_CURRENCY_DEFVALUE);
     }
 
-    public static String getSymbolDevise(String deviseISO){
+    public static Devise getCurrentDevise(SharedPreferences sharedPreferences){
+        return Constants.LIST_OF_DEVISES[getCurrentDeviseId(sharedPreferences)];
+    }
 
-        switch (deviseISO){
+    public static List<String> getAllNameOfDevises(){
+        List<String> listOfName = new ArrayList<>();
 
-            case Constants.DEVISE_EUR_ISO:
-                return Constants.DEVISE_EUR_SYMBOL;
-
-            case Constants.DEVISE_GBP_ISO:
-                return Constants.DEVISE_GBP_SYMBOL;
-
-            case Constants.DEVISE_JPY_ISO:
-                return Constants.DEVISE_JPY_SYMBOL;
-
-            case Constants.DEVISE_KRW_ISO:
-                return Constants.DEVISE_KRW_SYMBOL;
-
-            case Constants.DEVISE_CHF_ISO:
-                return Constants.DEVISE_CHF_SYMBOL;
-
-            default:
-                return Constants.DEVISE_USD_SYMBOL;
+        for (Devise devise : Constants.LIST_OF_DEVISES){
+            listOfName.add(devise.getName());
         }
+
+        return listOfName;
     }
 
     /**
@@ -133,4 +90,15 @@ public class Utils {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
     }
+
+    public static Double convertStringToDouble(String str){
+        if (str.equals("")) return 0.0;
+        return Double.parseDouble(str);
+    }
+
+    public static int convertStringToInt(String str){
+        if (str.equals("")) return 0;
+        return Integer.parseInt(str);
+    }
+
 }

@@ -1,38 +1,57 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
 import com.openclassrooms.realestatemanager.ui.fragments.MapsFragment;
+import com.openclassrooms.realestatemanager.utils.ComPermissions;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.LocationUtils;
+import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PropertyViewModel mViewModel;
     private ActivityMainBinding binding;
     private SharedPreferences mSharedPreferences;
+    private Activity mActivity;
 
     private int currentFragment = 1;
     private final int ID_FRAGMENT_LIST = 1;
@@ -51,14 +71,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment fragmentList;
     private Fragment fragmentMaps;
 
+    private TextView mTextviewAgentName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         configureViewModel();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        mActivity = this;
 
-        mSharedPreferences = getSharedPreferences(Constants.PREF_SHARED_KEY, MODE_PRIVATE);
+        mSharedPreferences = Utils.getSharedPreferences(this);
+
+        ComPermissions.checkPermissionLocation(this);
 
         // --- LISTENERS ---
         binding.activityMainToolbar.setNavigationOnClickListener(view -> {
@@ -66,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 binding.activityMainDrawerLayout.closeDrawer(GravityCompat.START);
             }else {
                 binding.activityMainDrawerLayout.openDrawer(GravityCompat.START);
+                updateUI();
             }
         });
         binding.activityMainToolbar.setOnMenuItemClickListener(item -> {
@@ -103,6 +129,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         showListFragment();
 
         searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
+
+    }
+
+    private void updateUI() {
+        long agentId = Utils.getSharedPreferences(this).getLong(Constants.PREF_AGENT_ID_LOGGED_KEY, -1);
+
+        mViewModel.getAgent(agentId).observe(this, (Observer<Agent>) agent -> {
+            if (mTextviewAgentName == null){
+                mTextviewAgentName = (TextView) findViewById(R.id.activity_main_nav_header_textview_agentname);
+            }
+
+            if (mTextviewAgentName != null){
+                mTextviewAgentName.setText( agent.getFirstname() + " " + agent.getLastname().toUpperCase());
+            }
+        });
 
     }
 

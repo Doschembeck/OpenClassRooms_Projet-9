@@ -1,11 +1,13 @@
 
-//todo BUG : bug insert dans le PropertyContentProviderTest
 //todo BUG : Lorsque je clique rapidement sur créer une propriété sa en créer plusieur
 //todo BUG : AuthentificationActivity probleme affichage agent
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
+//todo BUG : contentProvider à améliorer
 
-//todo: faire un contentProvider
 //todo: gerer l'affichage pour tablette
+    // debuger detailsActivity et detailsFragment
+    // integrer dans detailFragment en mode tablette
+//todo: demander autorisation de stockage (a voir pas obliger)
 //todo: parameterActivity mettre une tabLayout pour separer les filtres et les tries
 //todo: parameterActivity mettre des seekbar avec 2 thumbs
 

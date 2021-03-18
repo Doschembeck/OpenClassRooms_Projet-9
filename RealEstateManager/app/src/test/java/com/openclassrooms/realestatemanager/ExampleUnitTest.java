@@ -5,6 +5,8 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 
 import org.junit.Test;
 
+import java.net.InetAddress;
+
 import static org.junit.Assert.*;
 
 /**

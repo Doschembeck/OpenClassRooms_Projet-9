@@ -14,99 +14,13 @@
         app:title="Details Property"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/activity_details_coordinator"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:elevation="1dp"
-                        android:layout_alignParentTop="true"
-                        android:background="#68000000"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/activity_details_textview_picturedescription"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"/>
-
-                        <TextView
-                            android:id="@+id/activity_details_textview_currentindexpicture"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="#ffff"/>
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/activity_details_button_picturearrowback"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:background="#ffff"
-                        android:elevation="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_baseline_arrow_back_24"/>
-
-                    <ImageView
-                        android:id="@+id/activity_details_button_picturearrowforward"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:background="#ffff"
-                        android:elevation="1dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="20dp"
-                        android:src="@drawable/ic_baseline_arrow_forward_24"/>
+   <FrameLayout
+       android:id="@+id/activity_details_frame_layout"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_below="@id/toolbar">
 
 
-                    <ImageView
-                        android:id="@+id/activity_details_photolist"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/app_bar_height"/>
-                </RelativeLayout>
-
-                <include
-                    android:id="@+id/activity_details_include_content_details"
-                    layout="@layout/content_details" />
-            </LinearLayout>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/activity_details_fab_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                app:layout_anchor="@id/activity_details_photolist"
-                app:layout_anchorGravity="bottom|end"
-                app:backgroundTint="#ffff"
-                android:backgroundTint="#ffff"
-                android:src="@drawable/ic_baseline_star_outline_24" />
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    </ScrollView>
+   </FrameLayout>
 
 </RelativeLayout>

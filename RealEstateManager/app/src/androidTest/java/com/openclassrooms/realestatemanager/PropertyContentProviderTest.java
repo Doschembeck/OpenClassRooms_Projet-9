@@ -24,11 +24,14 @@ import static org.junit.Assert.assertThat;
 @RunWith(AndroidJUnit4.class)
 public class PropertyContentProviderTest {
 
+    //TODO NEED CONDITIONS : (addressId = 1 && agentId = 1) EXISTS && (PROPERTY_ID = 999999) !EXIST.
+    // Mieu si la property créee est supprimer apres !
+
     // FOR DATA
     private ContentResolver mContentResolver;
 
     // DATA SET FOR TEST
-    private static long PROPERTY_ID = 1;
+    private static long PROPERTY_ID = 999999;
 
     @Before
     public void setUp() {
@@ -56,6 +59,7 @@ public class PropertyContentProviderTest {
         assertThat(cursor, notNullValue());
         assertThat(cursor.getCount(), is(1));
         assertThat(cursor.moveToFirst(), is(true));
+        //assertThat(cursor.moveToNext(), is(true));
         assertThat(cursor.getString(cursor.getColumnIndexOrThrow("description")), is("Visite cet endroit de rêve !"));
     }
 
@@ -63,11 +67,26 @@ public class PropertyContentProviderTest {
 
     private ContentValues generateItem(){
         final ContentValues values = new ContentValues();
-        values.put("description", "Visite cet endroit de rêve !");
+
+        values.put("id", "999999");
+        values.put("property_type_id", "1");
         values.put("price", "150000");
-        values.put("id", "999");
-        values.put("address_id", "11");
+        values.put("pricePerSquareMeter", "150");
+        values.put("area", "180");
+        values.put("nbOfRooms", "4");
+        values.put("nbOfBedRooms", "1");
+        values.put("description", "Visite cet endroit de rêve !");
+        values.put("address_id", "1");
+        values.put("rate", "1");
+        values.put("city", "Lyon");
+        values.put("mainPictureUrl", "");
+        values.put("nbOfPictures", "1");
         values.put("agent_id", "1");
+        values.put("isSold", "true");
+        values.put("dateOfSale", "0");
+        values.put("createdAt", "0");
+        values.put("updatedAt", "0");
+
         return values;
     }
 

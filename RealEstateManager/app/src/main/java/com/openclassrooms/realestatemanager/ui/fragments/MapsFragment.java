@@ -77,24 +77,6 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap mGoogleMap;
 
-    private class MyTask extends AsyncTask<Void, Void, Void> {
-        Boolean result;
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            result = Utils.isInternetAvailable(mContext);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if (!result) {
-                binding.fragmentMapsNonetwork.setVisibility(View.VISIBLE);
-            }
-            super.onPostExecute(aVoid);
-        }
-    }
-
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -122,7 +104,9 @@ public class MapsFragment extends Fragment {
         configureViewModel();
 
 
-        new MyTask().execute();
+        if (!Utils.isInternetAvailable()) {
+            binding.fragmentMapsNonetwork.setVisibility(View.VISIBLE);
+        }
 
         mSharedPreferences = mContext.getSharedPreferences(Constants.PREF_SHARED_KEY, Context.MODE_PRIVATE);
 

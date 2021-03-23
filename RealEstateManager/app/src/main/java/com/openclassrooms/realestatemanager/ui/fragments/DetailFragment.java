@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.ui.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,8 +33,10 @@ import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
+import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.ui.activities.EditPropertyActivity;
 import com.openclassrooms.realestatemanager.ui.activities.LoanSimulatorActivity;
+import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
@@ -71,12 +76,22 @@ public class DetailFragment extends Fragment {
 
         getCurrentDevise();
 
-        // todo
-        // Si on est dans detailsActivity
-        mCurrentPropertyId = this.getArguments().getLong("property_id", 0);
-        // Sinon recuperer autrement
+        if (ActivityUtils.isInDetailsActivity(this)){
+            mCurrentPropertyId = this.getArguments().getLong("property_id", 0);
+            mViewModel.getProperty(mCurrentPropertyId).observe(getViewLifecycleOwner(), this::updateUIWithProperty);
 
-        mViewModel.getProperty(mCurrentPropertyId).observe(getViewLifecycleOwner(), this::updateUIWithProperty);
+        } else if (ActivityUtils.isInMainActivity(this)){
+            mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(), properties -> {
+                if (properties.size() > 0){
+                    mViewModel.mCurrentPropertyIdSelected.setValue(properties.get(0).getId());
+                }
+            });
+
+            mViewModel.mCurrentPropertyIdSelected.observe(getViewLifecycleOwner(), aLong -> {
+                mCurrentPropertyId = aLong;
+                mViewModel.getProperty(mCurrentPropertyId).observe(getViewLifecycleOwner(), DetailFragment.this::updateUIWithProperty);
+            });
+        }
 
         // Listeners
         binding.activityDetailsButtonPicturearrowback.setOnClickListener(v -> {

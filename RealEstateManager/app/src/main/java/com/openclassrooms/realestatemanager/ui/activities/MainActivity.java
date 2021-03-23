@@ -2,6 +2,7 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -43,8 +45,10 @@ import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Property;
+import com.openclassrooms.realestatemanager.ui.fragments.DetailFragment;
 import com.openclassrooms.realestatemanager.ui.fragments.ListView.ListViewFragment;
 import com.openclassrooms.realestatemanager.ui.fragments.MapsFragment;
+import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.ComPermissions;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.LocationUtils;
@@ -70,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final int ID_FRAGMENT_MAP = 2;
     private Fragment fragmentList;
     private Fragment fragmentMaps;
-
+    private DetailFragment detailFragment;
+    private Property mCurrentProperty;
     private TextView mTextviewAgentName;
 
     @Override
@@ -81,9 +86,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(binding.getRoot());
         mActivity = this;
 
+        configureToolBar();
+
         mSharedPreferences = Utils.getSharedPreferences(this);
 
         ComPermissions.checkPermissionLocation(this);
+
+        // --- Observers ---
+        mViewModel.mCurrentPropertyIdSelected.observe(this, aLong -> mViewModel.getProperty(aLong).observe(this, property -> mCurrentProperty = property));
 
         // --- LISTENERS ---
         binding.activityMainToolbar.setNavigationOnClickListener(view -> {
@@ -95,14 +105,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         binding.activityMainToolbar.setOnMenuItemClickListener(item -> {
-
             switch (item.getItemId()){
 
                 case R.id.menu_toolbar_item_switchview:
                     switch (currentFragment){
+
                         case ID_FRAGMENT_LIST:
                             showMapFragment();
                         break;
+
                         case ID_FRAGMENT_MAP:
                             showListFragment();
                             break;
@@ -116,6 +127,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .putExtra("parameter", mViewModel.mCurrentParameterMutableLiveData.getValue()),
                             Constants.LAUNCH_PARAMETER_ACTIVITY);
                     break;
+
+                case R.id.menu_details_activity_toolbar_compare :
+                    //todo
+                    break;
+
+                case R.id.menu_details_activity_toolbar_loansimulate :
+                    Intent intent = new Intent(this, LoanSimulatorActivity.class);
+                    intent.putExtra("amount_property", mCurrentProperty.getPrice());
+                    startActivity(intent);
+                    break;
+
+                case R.id.menu_details_activity_toolbar_editproperty :
+
+                    startActivity(new Intent(this, EditPropertyActivity.class)
+                            .putExtra("property", mCurrentProperty)
+                    );
+
+                    break;
+
+                case R.id.menu_details_activity_toolbar_deleteproperty :
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Etes vous sur de vouloir supprimer cette propriété ?");
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Oui", (dialog, which) -> {
+                        if (mCurrentProperty != null){
+                            mViewModel.deleteProperty(mCurrentProperty);
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                    break;
+
                 default:
                     break;
             }
@@ -126,10 +171,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Configuration
         binding.activityMainNavView.setNavigationItemSelectedListener(this);
 
+        configureAndShowDetailFragment();
         showListFragment();
 
         searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
 
+    }
+
+    private void configureToolBar(){
+        setSupportActionBar(binding.activityMainToolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+
+        if(!ActivityUtils.isTablet(this)){
+            menu.setGroupVisible(R.id.menu_toolbar_group_detail, false);
+        }
+
+        return true;
     }
 
     private void updateUI() {
@@ -237,9 +298,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-
     // 4 - Create each fragment page and show it
-
     private void showMapFragment(){
         if (this.fragmentMaps == null) this.fragmentMaps = MapsFragment.newInstance();
         this.startTransactionFragment(this.fragmentMaps);
@@ -252,18 +311,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (this.fragmentList == null) this.fragmentList = ListViewFragment.newInstance();
         this.startTransactionFragment(this.fragmentList);
 
-        binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_map_24);
+        //todo binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_map_24);
         currentFragment = ID_FRAGMENT_LIST;
     }
 
-    // ---
-
     // 3 - Generic method that will replace and show a fragment inside the MainActivity Frame Layout
     private void startTransactionFragment(Fragment fragment){
-        if (!fragment.isVisible()){
+        int frameLayoutId = 0;
+
+        // Si on est en mode tablette
+        if (ActivityUtils.isTablet(this)){
+            frameLayoutId = R.id.activity_main_frame_layout_main;
+        } else {
+            frameLayoutId = R.id.activity_main_frame_layout;
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(frameLayoutId, fragment)
+                .commit();
+    }
+
+    private void configureAndShowDetailFragment(){
+        detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.activity_details_frame_layout);
+
+        // Si on est en mode tablette
+        if (detailFragment == null && ActivityUtils.isTablet(this)){
+            detailFragment = new DetailFragment();
+
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.activity_main_frame_layout, fragment)
+                    .replace(R.id.activity_main_frame_layout_detail, detailFragment)
                     .commit();
         }
     }
@@ -317,6 +395,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchProperties(mViewModel.mCurrentParameterMutableLiveData.getValue());
 
                 break;
+
             default:
                 break;
         }

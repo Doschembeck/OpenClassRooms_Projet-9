@@ -30,6 +30,7 @@ public class PropertyViewModel extends ViewModel {
     public MutableLiveData<List<Photo>> propertyPictureListMutableLiveData = new MutableLiveData<>(new ArrayList<>());
     public MutableLiveData<List<Property>> mListPropertyMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<Parameter> mCurrentParameterMutableLiveData = new MutableLiveData<>(new Parameter());
+    public MutableLiveData<Long> mCurrentPropertyIdSelected = new MutableLiveData<>();
     public boolean onlyFavorites = false;
 
     // REPOSITORY
@@ -42,7 +43,6 @@ public class PropertyViewModel extends ViewModel {
     private final Executor executor;
 
     // --- CONSTRUCTOR ---
-
     public PropertyViewModel(PropertyDataRepository propertyDataRepository, AddressDataRepository addressDataRepository, PhotoDataRepository photoDataRepository, AgentDataRepository agentDataRepository, NearbyPoiDataRepository nearbyPoiDataRepository, PropertyNearbyPoiJoinDataRepository propertyNearbyPoiJoinDataRepository, Executor executor) {
         this.propertyDataRepository = propertyDataRepository;
         this.addressDataRepository = addressDataRepository;

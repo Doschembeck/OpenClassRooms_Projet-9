@@ -20,6 +20,7 @@ import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
+import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -70,9 +71,13 @@ public class ListViewFragment extends Fragment {
         ItemClickSupport.addTo(binding.fragmentListviewRecyclerView, R.layout.fragment_listview_item).setOnItemClickListener((recyclerView, position, v) -> {
                     Property property = mAdapter.getProperty(position);
 
-                    getActivity().startActivityForResult(new Intent(mContext, DetailsActivity.class)
-                            .putExtra("property_id", property.getId()),
-                            Constants.LAUNCH_DETAILS_ACTIVITY);
+                    if (ActivityUtils.isTablet(getActivity())){
+                        mViewModel.mCurrentPropertyIdSelected.setValue(property.getId());
+                    } else {
+                        getActivity().startActivityForResult(new Intent(mContext, DetailsActivity.class)
+                                        .putExtra("property_id", property.getId()),
+                                Constants.LAUNCH_DETAILS_ACTIVITY);
+                    }
                 });
     }
 

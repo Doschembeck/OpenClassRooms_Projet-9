@@ -65,6 +65,7 @@ public class DetailsActivity extends AppCompatActivity {
         configureAndShowDetailsFragment();
 
         configureToolBar();
+
     }
 
     private void updateCurrentproperty(Property property) {
@@ -92,7 +93,8 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_details_activity_toolbar, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        menu.setGroupVisible(R.id.menu_toolbar_group_main, false);
         return true;
     }
 

@@ -51,6 +51,7 @@ import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.ui.activities.DetailsActivity;
 import com.openclassrooms.realestatemanager.ui.activities.MainActivity;
+import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.ComPermissions;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.LocationUtils;
@@ -84,8 +85,13 @@ public class MapsFragment extends Fragment {
 
             mGoogleMap.setOnInfoWindowClickListener(marker -> {
 
-                getActivity().startActivityForResult(new Intent(mContext, DetailsActivity.class)
-                        .putExtra("property_id", Long.parseLong(marker.getTag().toString())), Constants.LAUNCH_DETAILS_ACTIVITY);
+                if (ActivityUtils.isTablet(getActivity())){
+                    mViewModel.mCurrentPropertyIdSelected.setValue(Long.parseLong(marker.getTag().toString()));
+                } else {
+                    getActivity().startActivityForResult(new Intent(mContext, DetailsActivity.class)
+                                    .putExtra("property_id", Long.parseLong(marker.getTag().toString())),
+                            Constants.LAUNCH_DETAILS_ACTIVITY);
+                }
             });
 
             mViewModel.mListPropertyMutableLiveData.observe(getViewLifecycleOwner(), MapsFragment.this::updateUI);
@@ -103,8 +109,7 @@ public class MapsFragment extends Fragment {
         mContext = view.getContext();
         configureViewModel();
 
-
-        if (!Utils.isInternetAvailable()) {
+        if (Utils.isInternetAvailable()) {
             binding.fragmentMapsNonetwork.setVisibility(View.VISIBLE);
         }
 

@@ -4,13 +4,13 @@
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 //todo BUG : contentProvider à améliorer
 
-//todo: gerer l'affichage pour tablette
-    // debuger detailsActivity et detailsFragment
-    // integrer dans detailFragment en mode tablette
+//todo: parameterActivity mettre des seekbar avec 2 thumbs
+//todo changer la visionneuse d'image dans detailProperty (utiliser Glide)
 //todo: demander autorisation de stockage (a voir pas obliger)
 //todo: parameterActivity mettre une tabLayout pour separer les filtres et les tries
-//todo: parameterActivity mettre des seekbar avec 2 thumbs
+//todo faire les tests unitaires et instrumentés
 
+//todo: actualiser list et maps apres ajout en favoris dans detail
 //todo BONUS : activer le mode de comparaison
 //todo BONUS : automatisé la recherche de points d'interets
 //todo BONUS : gerer local ou online

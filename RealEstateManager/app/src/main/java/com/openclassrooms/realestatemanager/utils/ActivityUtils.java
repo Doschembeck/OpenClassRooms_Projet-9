@@ -1,19 +1,37 @@
 package com.openclassrooms.realestatemanager.utils;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.location.Geocoder;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.textfield.TextInputEditText;
+import com.openclassrooms.realestatemanager.R;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 public class ActivityUtils {
+
+    public static Boolean isInMainActivity(Fragment fragment){
+        return fragment.getActivity().findViewById(R.id.activity_main_drawer_layout) != null;
+    }
+
+    public static Boolean isInDetailsActivity(Fragment fragment){
+        return fragment.getActivity().findViewById(R.id.activity_details) != null;
+    }
+
+    public static Boolean isTablet(Activity activity){
+        return activity.findViewById(R.id.activity_main_frame_layout_detail) != null;
+    }
 
     public static Geocoder setupAutoComplete(Context context) {
 

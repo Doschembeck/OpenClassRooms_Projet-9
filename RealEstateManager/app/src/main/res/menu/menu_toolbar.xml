@@ -3,20 +3,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.openclassrooms.realestatemanager.ui.activities.DetailsActivity">
 
-    <item
-        android:id="@+id/menu_toolbar_item_switchview"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_baseline_map_24"
-        android:iconTint="#ffff"
-        android:title="menu_drawer"
-        app:showAsAction="always" />
+    <group
+        android:id="@+id/menu_toolbar_group_main">
+        <item
+            android:id="@+id/menu_toolbar_item_switchview"
+            android:orderInCategory="100"
+            android:icon="@drawable/ic_baseline_map_24"
+            android:iconTint="#ffff"
+            android:title="menu_drawer"
+            app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_toolbar_item_filter"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_baseline_filter_alt_24"
-        android:iconTint="#ffff"
-        android:title=""
-        app:showAsAction="always" />
+        <item
+            android:id="@+id/menu_toolbar_item_filter"
+            android:orderInCategory="100"
+            android:icon="@drawable/ic_baseline_filter_alt_24"
+            android:iconTint="#ffff"
+            android:title=""
+            app:showAsAction="always" />
+    </group>
+
+
+    <group
+        android:id="@+id/menu_toolbar_group_detail">
+        <item
+            android:id="@+id/menu_details_activity_toolbar_compare"
+            android:orderInCategory="100"
+            android:title="Comparer"
+            android:enabled="false"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_loansimulate"
+            android:orderInCategory="100"
+            android:title="Simuler un pret"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_editproperty"
+            android:orderInCategory="100"
+            android:title="Modifier"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/menu_details_activity_toolbar_deleteproperty"
+            android:orderInCategory="100"
+            android:title="Supprimer"
+            app:showAsAction="never" />
+
+    </group>
 
 </menu>

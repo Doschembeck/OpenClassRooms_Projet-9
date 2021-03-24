@@ -114,12 +114,6 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/activity_parameter_button_mylocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Me localiser"/>
-
         <!--    Address     -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -133,6 +127,13 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_baseline_search_24"/>
+
+            <ImageView
+                android:id="@+id/activity_parameter_imageview_mylocation"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_my_location_24"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
@@ -156,15 +157,6 @@
                 android:src="@drawable/ic_baseline_delete_24"/>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Distance depuis l'adresse"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -182,7 +174,12 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Distance depuis l'adresse"/>
 
             <TextView
                 android:id="@+id/activity_parameter_textview_distanceaddress_max"
@@ -194,29 +191,13 @@
                 android:text="0"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/activity_parameter_range_seek_bar_distance"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_distanceaddress_min"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="100"
-                android:progressBackgroundTint="#2196F3"
-                android:progressTint="#ffff"
-                android:thumbTint="#2196F3" />
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_distanceaddress_max"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#2196F3"
-                android:progressBackgroundTint="#ffff"
-                android:max="100"/>
-        </LinearLayout>
+            android:valueFrom="0.0"
+            android:valueTo="100.0"
+            app:values="@array/initial_slider_values" />
 
         <TextView
             android:layout_width="match_parent"
@@ -258,29 +239,13 @@
                 android:text="0"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/activity_parameter_range_seek_bar_price"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_price_min"
-                android:progressBackgroundTint="#2196F3"
-                android:thumbTint="#2196F3"
-                android:progressTint="#ffff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="500000"/>
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_price_max"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#2196F3"
-                android:progressBackgroundTint="#ffff"
-                android:max="500000"/>
-        </LinearLayout>
+            android:valueFrom="0.0"
+            android:valueTo="500000.0"
+            app:values="@array/initial_slider_values" />
 
     <!--        NbOfRooms -->
         <TextView
@@ -321,29 +286,13 @@
                 android:text="0"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/activity_parameter_range_seek_bar_nbofroom"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_nbOfRoomsMin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:progressBackgroundTint="#2196F3"
-                android:thumbTint="#2196F3"
-                android:progressTint="#ffff"
-                android:max="5"/>
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_nbOfRoomsMax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#2196F3"
-                android:progressBackgroundTint="#ffff"
-                android:max="5"/>
-        </LinearLayout>
+            android:valueFrom="0.0"
+            android:valueTo="5.0"
+            app:values="@array/initial_slider_values" />
 
     <!--        NbOfBedRooms -->
         <TextView
@@ -384,29 +333,13 @@
                 android:text="0"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/activity_parameter_range_seek_bar_nbofbedroom"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_nbOfBedRoomsMin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:progressBackgroundTint="#2196F3"
-                android:thumbTint="#2196F3"
-                android:progressTint="#ffff"
-                android:max="5"/>
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_nbOfBedRoomsMax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#2196F3"
-                android:progressBackgroundTint="#ffff"
-                android:max="5"/>
-        </LinearLayout>
+            android:valueFrom="0.0"
+            android:valueTo="5.0"
+            app:values="@array/initial_slider_values" />
 
         <!--        area     -->
         <TextView
@@ -447,29 +380,13 @@
                 android:text="0"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/activity_parameter_range_seek_bar_area"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_areaMin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:progressBackgroundTint="#2196F3"
-                android:thumbTint="#2196F3"
-                android:progressTint="#ffff"
-                android:max="500"/>
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_areaMax"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#2196F3"
-                android:max="500"
-                android:progressBackgroundTint="#ffff"/>
-        </LinearLayout>
+            android:valueFrom="0.0"
+            android:valueTo="500.0"
+            app:values="@array/initial_slider_values" />
 
         <!--    NB OF PHOTOS     -->
         <TextView
@@ -510,29 +427,13 @@
                 android:text="0"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/activity_parameter_range_seek_bar_nbofpictures"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_nbof_pictures_min"
-                android:progressBackgroundTint="#2196F3"
-                android:thumbTint="#2196F3"
-                android:progressTint="#ffff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="10"/>
-
-            <SeekBar
-                android:id="@+id/activity_parameter_seekbar_nbof_pictures_max"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:thumbTint="#2196F3"
-                android:progressTint="#2196F3"
-                android:progressBackgroundTint="#ffff"
-                android:max="10"/>
-        </LinearLayout>
+            android:valueFrom="0.0"
+            android:valueTo="10.0"
+            app:values="@array/initial_slider_values" />
 
         <!--    Created Date     -->
         <TextView

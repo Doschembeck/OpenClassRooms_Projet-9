@@ -3,7 +3,6 @@ package com.openclassrooms.realestatemanager.ui.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
@@ -22,23 +21,23 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.slider.RangeSlider;
 import com.openclassrooms.realestatemanager.databinding.ActivityParameterBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
-import com.openclassrooms.realestatemanager.model.Devise;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Parameter;
-import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class ParameterActivity extends AppCompatActivity {
         // LISTENERS
         mBinding.activityParameterButtonFilter.setOnClickListener(this::onClickFilterProperty);
         mBinding.activityParameterImageviewAddress.setOnClickListener(this::startAutoComplete);
-        mBinding.activityParameterButtonMylocation.setOnClickListener(this::onClickMyLocation);
+        mBinding.activityParameterImageviewMylocation.setOnClickListener(this::onClickMyLocation);
         mBinding.activityParameterImageviewAddressdelete.setOnClickListener(view -> {
             mBinding.activityParameterEdittextAddress.setText("");
             mAddress = null;
@@ -97,20 +96,19 @@ public class ParameterActivity extends AppCompatActivity {
             }
         });
 
-        mBinding.activityParameterSeekbarNbOfRoomsMin.setOnSeekBarChangeListener(onSeekBarChangeNbOfRoomsMin());
-        mBinding.activityParameterSeekbarNbOfRoomsMax.setOnSeekBarChangeListener(onSeekBarChangeNbOfRoomsMax());
-        mBinding.activityParameterSeekbarNbOfBedRoomsMin.setOnSeekBarChangeListener(onSeekBarChangeNbOfBedRoomsMin());
-        mBinding.activityParameterSeekbarNbOfBedRoomsMax.setOnSeekBarChangeListener(onSeekBarChangeNbOfBedRoomsMax());
-        mBinding.activityParameterSeekbarAreaMin.setOnSeekBarChangeListener(onSeekBarChangeAreaMin());
-        mBinding.activityParameterSeekbarAreaMax.setOnSeekBarChangeListener(onSeekBarChangeAreaMax());
-        mBinding.activityParameterSeekbarNbofPicturesMin.setOnSeekBarChangeListener(onSeekBarChangeNbOfPicturesMin());
-        mBinding.activityParameterSeekbarNbofPicturesMax.setOnSeekBarChangeListener(onSeekBarChangeNbOfPicturesMax());
-        mBinding.activityParameterSeekbarPriceMin.setOnSeekBarChangeListener(onSeekBarChangePriceMin());
-        mBinding.activityParameterSeekbarPriceMax.setOnSeekBarChangeListener(onSeekBarChangePriceMax());
-        mBinding.activityParameterSeekbarDistanceaddressMin.setOnSeekBarChangeListener(onSeekBarChangeDistanceMin());
-        mBinding.activityParameterSeekbarDistanceaddressMax.setOnSeekBarChangeListener(onSeekBarChangeDistanceMax());
+        initRangeSlider(mBinding.activityParameterRangeSeekBarNbofroom, mBinding.activityParameterTextviewNbOfRoomsmin, mBinding.activityParameterTextviewNbOfRoomsmax);
+        initRangeSlider(mBinding.activityParameterRangeSeekBarNbofbedroom, mBinding.activityParameterTextviewNbOfBedRoomsmin, mBinding.activityParameterTextviewNbOfBedRoomsmax);
+        initRangeSlider(mBinding.activityParameterRangeSeekBarArea, mBinding.activityParameterTextviewAreamin, mBinding.activityParameterTextviewAreamax);
+        initRangeSlider(mBinding.activityParameterRangeSeekBarNbofpictures, mBinding.activityParameterTextviewNbofpicturesmin, mBinding.activityParameterTextviewNbofpicturesmax);
+        initRangeSlider(mBinding.activityParameterRangeSeekBarPrice, mBinding.activityParameterTextviewPricemin, mBinding.activityParameterTextviewPricemax);
+        initRangeSlider(mBinding.activityParameterRangeSeekBarDistance, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
 
         mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPoi);
+    }
+
+    private void initRangeSlider(RangeSlider rangeSlider, TextView textViewMin, TextView textViewMax){
+        rangeSlider.setLabelFormatter(value -> String.valueOf((int) value));
+        rangeSlider.addOnChangeListener((slider, value, fromUser) -> updateTextview(slider, textViewMin, textViewMax));
     }
 
     private void initLocation(){
@@ -149,14 +147,6 @@ public class ParameterActivity extends AppCompatActivity {
         mBinding.activityParameterSpinnerPropertytype.setAdapter(adapter);
     }
 
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMin(){
-        return onSeekBarChangeMin(mBinding.activityParameterSeekbarDistanceaddressMax, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeDistanceMax(){
-        return onSeekBarChangeMax(mBinding.activityParameterSeekbarDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
-    }
-
     private void startAutoComplete(View view) {
 
         startActivityForResult(
@@ -177,149 +167,18 @@ public class ParameterActivity extends AppCompatActivity {
         }
     }
 
-    private void updateTextview(SeekBar seekBarMin, SeekBar seekBarMax, TextView textViewMin, TextView textViewMax){
-        String max = "";
-        if (seekBarMax.getProgress() >= seekBarMax.getMax()){
-            max += "+";
+    private void updateTextview(RangeSlider slider, TextView textViewMin, TextView textViewMax){
+        int min = Math.round(slider.getValues().get(0));
+        int max = Math.round(slider.getValues().get(1));
+        int sliderMax = Math.round(slider.getValueTo());
+
+        String plusMax = "";
+        if (max >= sliderMax){
+            plusMax += "+";
         }
 
-        textViewMax.setText(max + formatNumberSeek(seekBarMax.getProgress()));
-        textViewMin.setText(formatNumberSeek(seekBarMin.getProgress()));
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeMin(SeekBar seekBarMax, TextView textViewMin, TextView textViewMax){
-        return new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                if(progress > seekBarMax.getProgress()){
-                    seekBarMax.setProgress(progress);
-                }
-
-                updateTextview(seekBar, seekBarMax, textViewMin, textViewMax);
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        };
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeMax(SeekBar seekBarMin, TextView textViewMin, TextView textViewMax){
-        return new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                if(progress < seekBarMin.getProgress()){
-                    seekBarMin.setProgress(progress);
-                }
-
-                updateTextview(seekBarMin , seekBar, textViewMin, textViewMax);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        };
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangePriceMin(){
-        return onSeekBarChangeMin(mBinding.activityParameterSeekbarPriceMax, mBinding.activityParameterTextviewPricemin, mBinding.activityParameterTextviewPricemax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangePriceMax(){
-        return onSeekBarChangeMax(mBinding.activityParameterSeekbarPriceMin, mBinding.activityParameterTextviewPricemin, mBinding.activityParameterTextviewPricemax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeNbOfRoomsMin(){
-        return onSeekBarChangeMin(mBinding.activityParameterSeekbarNbOfRoomsMax, mBinding.activityParameterTextviewNbOfRoomsmin, mBinding.activityParameterTextviewNbOfRoomsmax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeNbOfRoomsMax(){
-        return new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                SeekBar seekBarMin = mBinding.activityParameterSeekbarNbOfRoomsMin;
-
-                if(progress < seekBarMin.getProgress()){
-                    seekBarMin.setProgress(progress);
-                }
-
-                if (progress < mBinding.activityParameterSeekbarNbOfBedRoomsMax.getProgress()){
-                    mBinding.activityParameterSeekbarNbOfBedRoomsMax.setProgress(progress);
-                }
-
-                updateTextview(seekBarMin , seekBar, mBinding.activityParameterTextviewNbOfRoomsmin, mBinding.activityParameterTextviewNbOfRoomsmax);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        };
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeNbOfBedRoomsMin(){
-        return onSeekBarChangeMin(mBinding.activityParameterSeekbarNbOfBedRoomsMax, mBinding.activityParameterTextviewNbOfBedRoomsmin, mBinding.activityParameterTextviewNbOfBedRoomsmax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeNbOfBedRoomsMax(){
-        return new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                SeekBar seekBarMin = mBinding.activityParameterSeekbarNbOfBedRoomsMin;
-
-                if(progress < seekBarMin.getProgress()){
-                    seekBarMin.setProgress(progress);
-                }
-
-                if (progress > mBinding.activityParameterSeekbarNbOfRoomsMax.getProgress()){
-                    mBinding.activityParameterSeekbarNbOfRoomsMax.setProgress(progress);
-                }
-
-                updateTextview(seekBarMin , seekBar, mBinding.activityParameterTextviewNbOfBedRoomsmin, mBinding.activityParameterTextviewNbOfBedRoomsmax);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        };
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeAreaMin(){
-        return onSeekBarChangeMin(mBinding.activityParameterSeekbarAreaMax, mBinding.activityParameterTextviewAreamin, mBinding.activityParameterTextviewAreamax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeAreaMax(){
-        return onSeekBarChangeMax(mBinding.activityParameterSeekbarAreaMin, mBinding.activityParameterTextviewAreamin, mBinding.activityParameterTextviewAreamax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeNbOfPicturesMin(){
-        return onSeekBarChangeMin(mBinding.activityParameterSeekbarNbofPicturesMax, mBinding.activityParameterTextviewNbofpicturesmin, mBinding.activityParameterTextviewNbofpicturesmax);
-    }
-
-    private SeekBar.OnSeekBarChangeListener onSeekBarChangeNbOfPicturesMax(){
-        return onSeekBarChangeMax(mBinding.activityParameterSeekbarNbofPicturesMin, mBinding.activityParameterTextviewNbofpicturesmin, mBinding.activityParameterTextviewNbofpicturesmax);
+        textViewMax.setText(String.format("%s%s", plusMax, formatNumberSeek(max)));
+        textViewMin.setText(formatNumberSeek(min));
     }
 
     @Override
@@ -388,6 +247,17 @@ public class ParameterActivity extends AppCompatActivity {
         }
     }
 
+    private void updateRangeSlider(int parameterMin, int parameterMax, RangeSlider slider, TextView textViewMin, TextView textViewMax){
+        float sliderMax = slider.getValueTo();
+
+        List<Float> listDistance = new ArrayList<>();
+        listDistance.add((float) (Math.min(parameterMin, (int) sliderMax)));
+        listDistance.add((float) (Math.min(parameterMax, (int) sliderMax)));
+
+        slider.setValues(listDistance);
+        updateTextview(slider, textViewMin, textViewMax);
+    }
+
     private void updateUI(Parameter parameter) {
 
         if (parameter.getListNearbyPOI() != null){
@@ -404,25 +274,12 @@ public class ParameterActivity extends AppCompatActivity {
             mBinding.activityParameterSpinnerPropertytype.setSelection(parameter.getTypeOfProperty() + 1);
         }
 
-        mBinding.activityParameterSeekbarNbOfRoomsMin.setProgress(parameter.getNbOfRoomsMin());
-        mBinding.activityParameterSeekbarNbOfRoomsMax.setProgress(parameter.getNbOfRoomsMax());
-        mBinding.activityParameterSeekbarNbOfBedRoomsMin.setProgress(parameter.getNbOfBedRoomsMin());
-        mBinding.activityParameterSeekbarNbOfBedRoomsMax.setProgress(parameter.getNbOfBedRoomsMax());
-        mBinding.activityParameterSeekbarAreaMin.setProgress(parameter.getAreaMin());
-        mBinding.activityParameterSeekbarAreaMax.setProgress(parameter.getAreaMax());
-        mBinding.activityParameterSeekbarNbofPicturesMin.setProgress(parameter.getNbOfPicturesMin());
-        mBinding.activityParameterSeekbarNbofPicturesMax.setProgress(parameter.getNbOfPicturesMax());
-        mBinding.activityParameterSeekbarPriceMin.setProgress(parameter.getPriceMin());
-        mBinding.activityParameterSeekbarPriceMax.setProgress(parameter.getPriceMax());
-        mBinding.activityParameterSeekbarDistanceaddressMin.setProgress(parameter.getDistanceAddressMin() / 1000);
-        mBinding.activityParameterSeekbarDistanceaddressMax.setProgress(parameter.getDistanceAddressMax() / 1000);
-
-        updateTextview(mBinding.activityParameterSeekbarAreaMin, mBinding.activityParameterSeekbarAreaMax, mBinding.activityParameterTextviewAreamin,mBinding.activityParameterTextviewAreamax);
-        updateTextview(mBinding.activityParameterSeekbarNbOfRoomsMin, mBinding.activityParameterSeekbarNbOfRoomsMax, mBinding.activityParameterTextviewNbOfRoomsmin,mBinding.activityParameterTextviewNbOfRoomsmax);
-        updateTextview(mBinding.activityParameterSeekbarNbOfBedRoomsMin, mBinding.activityParameterSeekbarNbOfBedRoomsMax, mBinding.activityParameterTextviewNbOfBedRoomsmin,mBinding.activityParameterTextviewNbOfBedRoomsmax);
-        updateTextview(mBinding.activityParameterSeekbarNbofPicturesMin, mBinding.activityParameterSeekbarNbofPicturesMax, mBinding.activityParameterTextviewNbofpicturesmin,mBinding.activityParameterTextviewNbofpicturesmax);
-        updateTextview(mBinding.activityParameterSeekbarPriceMin, mBinding.activityParameterSeekbarPriceMax, mBinding.activityParameterTextviewPricemin,mBinding.activityParameterTextviewPricemax);
-        updateTextview(mBinding.activityParameterSeekbarDistanceaddressMin, mBinding.activityParameterSeekbarDistanceaddressMax, mBinding.activityParameterTextviewDistanceaddressMin,mBinding.activityParameterTextviewDistanceaddressMax);
+        updateRangeSlider(parameter.getNbOfRoomsMin(), parameter.getNbOfRoomsMax(), mBinding.activityParameterRangeSeekBarNbofroom, mBinding.activityParameterTextviewNbOfRoomsmin, mBinding.activityParameterTextviewNbOfRoomsmax);
+        updateRangeSlider(parameter.getNbOfBedRoomsMin(), parameter.getNbOfBedRoomsMax(), mBinding.activityParameterRangeSeekBarNbofbedroom, mBinding.activityParameterTextviewNbOfBedRoomsmin, mBinding.activityParameterTextviewNbOfBedRoomsmax);
+        updateRangeSlider(parameter.getAreaMin(), parameter.getAreaMax(), mBinding.activityParameterRangeSeekBarArea, mBinding.activityParameterTextviewAreamin, mBinding.activityParameterTextviewAreamax);
+        updateRangeSlider(parameter.getNbOfPicturesMin(), parameter.getNbOfPicturesMax(), mBinding.activityParameterRangeSeekBarNbofpictures, mBinding.activityParameterTextviewNbofpicturesmin, mBinding.activityParameterTextviewNbofpicturesmax);
+        updateRangeSlider(parameter.getPriceMin(), parameter.getPriceMax(), mBinding.activityParameterRangeSeekBarPrice, mBinding.activityParameterTextviewPricemin, mBinding.activityParameterTextviewPricemax);
+        updateRangeSlider(parameter.getDistanceAddressMin() / 1000, parameter.getDistanceAddressMax() / 1000, mBinding.activityParameterRangeSeekBarDistance, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
 
         mBinding.activityParameterEdittextRealEstateAgent.setText(parameter.getRealEstateAgent());
         mBinding.activityParameterEdittextCreatedatmin.setText(!(parameter.getCreatedAtMin() == 0) ? FormatUtils.formatDate(new Date(parameter.getCreatedAtMin())) : "");
@@ -499,30 +356,30 @@ public class ParameterActivity extends AppCompatActivity {
             parameter.setTypeOfProperty(propertyType - 1);
         }
 
-        int areaProgressMax = mBinding.activityParameterSeekbarAreaMax.getMax();
-        int areaMax = mBinding.activityParameterSeekbarAreaMax.getProgress();
-        parameter.setAreaMax(areaMax == areaProgressMax ? 999999999 : areaMax);
-        parameter.setAreaMin(mBinding.activityParameterSeekbarAreaMin.getProgress());
+        float areaProgressMax = mBinding.activityParameterRangeSeekBarArea.getValueTo();
+        float areaMax = mBinding.activityParameterRangeSeekBarArea.getValues().get(1);
+        parameter.setAreaMax(Math.round(areaMax == areaProgressMax ? 999999999 : areaMax));
+        parameter.setAreaMin(Math.round(mBinding.activityParameterRangeSeekBarArea.getValues().get(0)) );
 
-        int nbOfRoomsProgressMax = mBinding.activityParameterSeekbarNbOfRoomsMax.getMax();
-        int nbOfRoomsMax = mBinding.activityParameterSeekbarNbOfRoomsMax.getProgress();
-        parameter.setNbOfRoomsMax(nbOfRoomsMax == nbOfRoomsProgressMax ? 999999999 : nbOfRoomsMax);
-        parameter.setNbOfRoomsMin(mBinding.activityParameterSeekbarNbOfRoomsMin.getProgress());
+        float nbOfRoomsProgressMax = mBinding.activityParameterRangeSeekBarNbofroom.getValueTo();
+        float nbOfRoomsMax = mBinding.activityParameterRangeSeekBarNbofroom.getValues().get(1);
+        parameter.setNbOfRoomsMax(Math.round(nbOfRoomsMax == nbOfRoomsProgressMax ? 999999999 : nbOfRoomsMax));
+        parameter.setNbOfRoomsMin(Math.round(mBinding.activityParameterRangeSeekBarNbofroom.getValues().get(0)) );
 
-        int nbOfBedRoomsProgressMax = mBinding.activityParameterSeekbarNbOfBedRoomsMax.getMax();
-        int nbOfBedRoomsMax = mBinding.activityParameterSeekbarNbOfBedRoomsMax.getProgress();
-        parameter.setNbOfBedRoomsMax(nbOfBedRoomsMax == nbOfBedRoomsProgressMax ? 999999999 : nbOfBedRoomsMax);
-        parameter.setNbOfBedRoomsMin(mBinding.activityParameterSeekbarNbOfBedRoomsMin.getProgress());
+        float nbOfBedRoomsProgressMax = mBinding.activityParameterRangeSeekBarNbofbedroom.getValueTo();
+        float nbOfBedRoomsMax = mBinding.activityParameterRangeSeekBarNbofbedroom.getValues().get(1);
+        parameter.setNbOfBedRoomsMax(Math.round(nbOfBedRoomsMax == nbOfBedRoomsProgressMax ? 999999999 : nbOfBedRoomsMax));
+        parameter.setNbOfBedRoomsMin(Math.round(mBinding.activityParameterRangeSeekBarNbofbedroom.getValues().get(0)));
 
-        int nbOfNbOfPicturesProgressMax = mBinding.activityParameterSeekbarNbofPicturesMax.getMax();
-        int nbOfNbOfPicturesMax = mBinding.activityParameterSeekbarNbofPicturesMax.getProgress();
-        parameter.setNbOfPicturesMax(nbOfNbOfPicturesMax == nbOfNbOfPicturesProgressMax ? 999999999 : nbOfNbOfPicturesMax);
-        parameter.setNbOfPicturesMin(mBinding.activityParameterSeekbarNbofPicturesMin.getProgress());
+        float nbOfNbOfPicturesProgressMax = mBinding.activityParameterRangeSeekBarNbofpictures.getValueTo();
+        float nbOfNbOfPicturesMax = mBinding.activityParameterRangeSeekBarNbofpictures.getValues().get(1);
+        parameter.setNbOfPicturesMax(Math.round(nbOfNbOfPicturesMax == nbOfNbOfPicturesProgressMax ? 999999999 : nbOfNbOfPicturesMax));
+        parameter.setNbOfPicturesMin(Math.round(mBinding.activityParameterRangeSeekBarNbofpictures.getValues().get(0)));
 
-        int priceProgressMax = mBinding.activityParameterSeekbarPriceMax.getMax();
-        int priceMax = mBinding.activityParameterSeekbarPriceMax.getProgress();
-        parameter.setPriceMax(priceMax == priceProgressMax ? 999999999 : priceMax);
-        parameter.setPriceMin(mBinding.activityParameterSeekbarPriceMin.getProgress());
+        float priceProgressMax = mBinding.activityParameterRangeSeekBarPrice.getValueTo();
+        float priceMax = mBinding.activityParameterRangeSeekBarPrice.getValues().get(1);
+        parameter.setPriceMax(Math.round(priceMax == priceProgressMax ? 999999999 : priceMax));
+        parameter.setPriceMin(Math.round(mBinding.activityParameterRangeSeekBarPrice.getValues().get(0)));
 
         parameter.setRealEstateAgent(!mBinding.activityParameterEdittextRealEstateAgent.getText().toString().equals("") ? mBinding.activityParameterEdittextRealEstateAgent.getText().toString() : null);
         parameter.setCreatedAtMin(!mBinding.activityParameterEdittextCreatedatmin.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextCreatedatmin.getText().toString()).getTime() : 0);
@@ -571,10 +428,10 @@ public class ParameterActivity extends AppCompatActivity {
             parameter.setLatitude(mAddress.getLatitude());
             parameter.setLongitude(mAddress.getLongitude());
 
-            int distanceProgressMax = mBinding.activityParameterSeekbarDistanceaddressMax.getMax();
-            int distanceRoomsMax = mBinding.activityParameterSeekbarDistanceaddressMax.getProgress();
-            parameter.setDistanceAddressMax(distanceRoomsMax == distanceProgressMax ? 999999999 : distanceRoomsMax * 1000);
-            parameter.setDistanceAddressMin(mBinding.activityParameterSeekbarDistanceaddressMin.getProgress() * 1000);
+            float distanceProgressMax = mBinding.activityParameterRangeSeekBarDistance.getValueTo();
+            float distanceRoomsMax = mBinding.activityParameterRangeSeekBarDistance.getValues().get(1);
+            parameter.setDistanceAddressMax(Math.round(distanceRoomsMax == distanceProgressMax ? 999999999 : distanceRoomsMax * 1000));
+            parameter.setDistanceAddressMin(Math.round(mBinding.activityParameterRangeSeekBarDistance.getValues().get(0) * 1000));
         }
 
         setResult(Activity.RESULT_OK, new Intent().putExtra("result", parameter));

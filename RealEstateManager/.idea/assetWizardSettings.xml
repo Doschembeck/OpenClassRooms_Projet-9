@@ -300,7 +300,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/delete/baseline_delete_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/my_location/baseline_my_location_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -310,7 +310,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_delete_24" />
+                            <entry key="outputName" value="ic_baseline_my_location_24" />
                             <entry key="sourceFile" value="E:\Programmation\Android_Studio\OpenClassRooms\Projet9\RealEstateManager" />
                           </map>
                         </option>

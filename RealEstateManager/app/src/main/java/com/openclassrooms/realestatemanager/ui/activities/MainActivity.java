@@ -17,31 +17,18 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
-import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Property;
@@ -51,14 +38,10 @@ import com.openclassrooms.realestatemanager.ui.fragments.MapsFragment;
 import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.ComPermissions;
 import com.openclassrooms.realestatemanager.utils.Constants;
-import com.openclassrooms.realestatemanager.utils.LocationUtils;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -311,7 +294,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (this.fragmentList == null) this.fragmentList = ListViewFragment.newInstance();
         this.startTransactionFragment(this.fragmentList);
 
-        //todo binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_map_24);
+        if(binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview) != null){
+            binding.activityMainToolbar.getMenu().findItem(R.id.menu_toolbar_item_switchview).setIcon(R.drawable.ic_baseline_map_24);
+        }
         currentFragment = ID_FRAGMENT_LIST;
     }
 

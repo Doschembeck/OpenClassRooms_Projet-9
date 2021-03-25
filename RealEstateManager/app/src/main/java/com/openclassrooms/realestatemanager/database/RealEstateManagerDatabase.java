@@ -49,7 +49,7 @@ public abstract class RealEstateManagerDatabase extends RoomDatabase {
             synchronized (RealEstateManagerDatabase.class){
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    RealEstateManagerDatabase.class, "REMDatabase.db") //todo: supprimer "REMDatabase.db" / "REMDatabase2.db" puis le remettre
+                    RealEstateManagerDatabase.class, "REMDatabase.db")
                             .allowMainThreadQueries()
                             .build();
                 }

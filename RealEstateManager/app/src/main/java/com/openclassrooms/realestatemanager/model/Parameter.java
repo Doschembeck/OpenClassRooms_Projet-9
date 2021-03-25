@@ -13,8 +13,6 @@ import java.util.ArrayList;
 
 public class Parameter implements Parcelable {
 
-    //todo: rajouter l'address et la PropertyType
-
     private int typeOfProperty;
     private int priceMin;
     private int priceMax;

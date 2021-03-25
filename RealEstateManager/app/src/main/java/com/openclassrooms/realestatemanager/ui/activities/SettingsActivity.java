@@ -51,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         binding.toolbarOnlyback.setOnClickListener(view -> onBackPressed());
         binding.activitySettingsButtonReset.setOnClickListener(v -> deleteAllProperty());
-        binding.activitySettingsButtonScriptrate.setOnClickListener(v -> ScriptsStats.scriptStatsAllRate(mViewModel));
 
     }
 

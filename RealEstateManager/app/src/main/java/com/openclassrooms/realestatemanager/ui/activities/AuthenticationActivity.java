@@ -16,6 +16,7 @@ import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
@@ -41,6 +42,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         binding = ActivityAuthenticationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         mContext = this;
+
+        ScriptsStats.scriptStatsAllRate(mViewModel);
 
         // Listeners
         binding.activityAuthenticationButtonRegistration.setOnClickListener(v -> startActivity(new Intent(mContext, EditAgentActivity.class)));
@@ -76,7 +79,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     }
 
     private void configureSpinnerAgent(){
-        mAdapterSpinnerAgent= new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListSpinner);
+        mAdapterSpinnerAgent= new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mListSpinner);
         mAdapterSpinnerAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.activityAuthenticationSpinnerAgent.setAdapter(mAdapterSpinnerAgent);
     }
@@ -98,6 +101,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         mListSpinner.addAll(newList);
         mListAgent.addAll(agentList);
 
+        configureSpinnerAgent();
     }
 
     private void initSharedPreferences(){
@@ -107,11 +111,10 @@ public class AuthenticationActivity extends AppCompatActivity {
     private void getRealEstateAgentSaved(){
 
         //todo
-
 //        long agentId = mSharedPreferences.getLong(Constants.PREF_AGENT_ID_LOGGED_KEY, -1);
 //
 //        if (agentId != -1){
-//            binding.activityAuthenticationEdittextRealEstateAgentName.setText(realEstateAgentName);
+//            binding.activityAuthenticationSpinnerAgent.setSelection(mListSpinner.ge); setText(realEstateAgentName);
 //        }
     }
 

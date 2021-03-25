@@ -74,7 +74,12 @@ public class EditPropertyActivity extends BaseActivity {
         // --- Listeners ---
         binding.activityEditPropertyButtonCreatephotos.setOnClickListener(this::onClickButtonCreatePhotos);
         binding.activityEditPropertyButtonAddphotos.setOnClickListener(this::onClickButtonAddPhotos);
-        binding.activityEditPropertyImageviewGeocoding.setOnClickListener(this::startAutoComplete);
+        binding.activityEditPropertyEdittextAddress.setOnFocusChangeListener((view, b) -> {
+            if(b){
+                view.clearFocus();
+                startAutoComplete(view);
+            }
+        });
         binding.activityEditPropertyToolbar.setOnClickListener(v -> onBackPressed());
         binding.activityEditPropertyButtonCreatepoi.setOnClickListener(this::onClickButtonCreateNearbyPoi);
         binding.activityEditPropertySwitchIssold.setOnCheckedChangeListener(this::onClickSwitchIsSold);
@@ -444,7 +449,6 @@ public class EditPropertyActivity extends BaseActivity {
     // === Process ===
 
     private boolean createCompleteProperty(){
-        //todo: faire une creation complete
 
         if (mAddress != null){
             // Créer l'address
@@ -476,7 +480,6 @@ public class EditPropertyActivity extends BaseActivity {
 
     private Property createProperty(long addressId) {
 
-        //todo: obliger la completion des champs
         List<Photo> photoList =  mViewModel.propertyPictureListMutableLiveData.getValue();
         String mainPictureUrl =  photoList.get(0).getUrlPicture();
         int nbOfPictures = photoList.size();

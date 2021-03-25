@@ -1,14 +1,13 @@
 
-//todo BUG : Lorsque je clique rapidement sur créer une propriété sa en créer plusieur
-//todo BUG : AuthentificationActivity probleme affichage agent
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 //todo BUG : contentProvider à améliorer
 
+//todo: faire les tests unitaires et instrumentés
+//todo: traduire
 //todo: mettre un message quand aucune property n'est a affiché
-//todo changer la visionneuse d'image dans detailProperty (utiliser Glide)
+//todo: changer la image slider dans detailProperty (utiliser Glide)
 //todo: demander autorisation de stockage (a voir pas obliger)
-//todo: parameterActivity mettre un spinner pour separer les filtres et les tries
-//todo faire les tests unitaires et instrumentés
+//todo: parameterActivity mettre un spinner pour les agents
 
 //todo: actualiser list et maps apres ajout en favoris dans detail
 //todo BONUS : activer le mode de comparaison

@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.utils;
 import com.openclassrooms.realestatemanager.model.Devise;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Constants {
 
@@ -30,6 +31,7 @@ public class Constants {
     public static final String[] ListPropertyType = {"Maison", "Appartement", "Loft", "Manoir", "Chateau"};
     //public static final String[] ListNearbyPOI = {"Ecole maternelle", "Ecole primaire", "Collège", "Lycée", "Université", "Aeroport", "Gare",  "Bus", "Tramway", "Commerces", "Parc"};
 
+    public static String[] arrayOrderBy = { "Prix", "Pièces", "Chambres", "Surface", "Date de disponnibilité", "Date de vente"};
     public enum OrderBy { PRICE, NB_OF_ROOMS, NB_OF_BEDROOMS, AREA, MARKETING_DATE, DATE_OF_SALE }
     public enum SortDirection{ ASCENDANT, DESCENDANT }
 

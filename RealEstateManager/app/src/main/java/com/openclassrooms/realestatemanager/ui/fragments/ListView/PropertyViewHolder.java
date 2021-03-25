@@ -68,7 +68,7 @@ public class PropertyViewHolder extends RecyclerView.ViewHolder {
         if (mainPictureUrl != null){
             Glide.with(mContext)
                     .load(mainPictureUrl)
-                    .error(R.drawable.image_not_found_scaled) //todo: tombe en error lors de l'affichage d'un url local
+                    .error(R.drawable.image_not_found_scaled)
                     .centerCrop()
                     .into(itemBinding.fragmentListviewItemImageviewPhoto);
         }else {

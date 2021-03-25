@@ -1,603 +1,425 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.activities.ParameterActivity">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main_activity_toolbar_backgroundcolor"
+        android:elevation="10dp"
+        app:title="Filter"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"/>
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#2196F3"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_ascendant"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textSize="24sp"
-                android:textColor="#ffff"
-                android:text="Croissant"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_descendant"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textSize="24sp"
-                android:textColor="#ffff"
-                android:text="Decroissant"/>
-        </RadioGroup>
-
-        <RadioGroup
-            android:id="@+id/test_radiogroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Prix"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_nbofrooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Nombre de salles"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_nbofbedrooms"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Nombre de chambres"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Surface"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_marketingdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Date de mise sur le marché"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_dateofsale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Date de vente"/>
-
-        </RadioGroup>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Type de propriété :"/>
-            <Spinner
-                android:id="@+id/activity_parameter_spinner_propertytype"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-        </LinearLayout>
-
-        <!--    Address     -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_address"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_search_24"/>
-
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_mylocation"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_my_location_24"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Autour de cette address"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_addressdelete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_delete_24"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_distanceaddress_min"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:text="Distance depuis l'adresse"/>
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_distanceaddress_max"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-        </LinearLayout>
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/activity_parameter_range_seek_bar_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:valueFrom="0.0"
-            android:valueTo="100.0"
-            app:values="@array/initial_slider_values" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Prix"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_pricemin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_pricemax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-        </LinearLayout>
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/activity_parameter_range_seek_bar_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:valueFrom="0.0"
-            android:valueTo="500000.0"
-            app:values="@array/initial_slider_values" />
-
-    <!--        NbOfRooms -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Nombre de salles"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_nbOfRoomsmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_nbOfRoomsmax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-        </LinearLayout>
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/activity_parameter_range_seek_bar_nbofroom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:valueFrom="0.0"
-            android:valueTo="5.0"
-            app:values="@array/initial_slider_values" />
-
-    <!--        NbOfBedRooms -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Nombre de chambres"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_nbOfBedRoomsmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-
-           <TextView
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_nbOfBedRoomsmax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-        </LinearLayout>
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/activity_parameter_range_seek_bar_nbofbedroom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:valueFrom="0.0"
-            android:valueTo="5.0"
-            app:values="@array/initial_slider_values" />
-
-        <!--        area     -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Surface"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_areamin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:text="0"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_areamax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-        </LinearLayout>
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/activity_parameter_range_seek_bar_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:valueFrom="0.0"
-            android:valueTo="500.0"
-            app:values="@array/initial_slider_values" />
-
-        <!--    NB OF PHOTOS     -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Nombres de photos"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_nbofpicturesmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-
-           <TextView
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/activity_parameter_textview_nbofpicturesmax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:text="0"/>
-        </LinearLayout>
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/activity_parameter_range_seek_bar_nbofpictures"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:valueFrom="0.0"
-            android:valueTo="10.0"
-            app:values="@array/initial_slider_values" />
-
-        <!--    Created Date     -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mise sur le marché"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <!--    Created Date minimum     -->
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_createdatmin"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_baseline_date_range_24"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_createdatmin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="De"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!--    Created Date maximum     -->
-            <ImageView
-                android:id="@+id/activity_parameter_imageview_createdatmax"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_baseline_date_range_24"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:layout_weight="1">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_parameter_edittext_createdatmax"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:hint="A"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/activity_parameter_button_removedate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Supprimer les dates"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:text="A proximité de :"
-            android:gravity="center_horizontal" />
-
-        <LinearLayout
-            android:id="@+id/activity_parameter_linearlayout_nearbypoi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-
-
-        <!--    realEstateAgent     -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_parameter_edittext_realEstateAgent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="realEstateAgent"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!--    isSold     -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Affiché les propriétés:"
-            android:textStyle="bold"
-            android:textSize="18sp"/>
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_sold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Vendu"
-                android:textSize="18sp"/>
-
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_available"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Disponnible"
-                android:textSize="18sp"/>
-            <RadioButton
-                android:id="@+id/activity_parameter_radiobutton_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Tous"
-                android:textSize="18sp"/>
-
-        </RadioGroup>
-
-        <!--    Date of sale     -->
-        <LinearLayout
-            android:id="@+id/activity_parameter_linearlayout_dateofsale"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Date de vente"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp">
+                android:layout_marginHorizontal="10dp"
+                android:orientation="horizontal">
 
-                <!--    Date of sale minimum     -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Trier par :"/>
+
+                <Spinner
+                    android:id="@+id/activity_parameter_spinner_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/activity_parameter_radiobutton_ascendant"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:textSize="24sp"
+                        android:text="C"/>
+
+                    <RadioButton
+                        android:id="@+id/activity_parameter_radiobutton_descendant"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:textSize="24sp"
+                        android:text="D"/>
+                </RadioGroup>
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Type de propriété :"/>
+                <Spinner
+                    android:id="@+id/activity_parameter_spinner_propertytype"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <!--    Address     -->
+            <LinearLayout
+                android:id="@+id/activity_parameter_linear_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
                 <ImageView
-                    android:id="@+id/activity_parameter_imageview_dateofsalemin"
+                    android:id="@+id/activity_parameter_imageview_mylocation"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_my_location_24"/>
+
+                <EditText
+                    android:id="@+id/activity_parameter_edittext_address"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="Selectionner une adresse"/>
+
+                <ImageView
+                    android:id="@+id/activity_parameter_imageview_addressdelete"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_delete_24"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_distanceaddress_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:text="Distance depuis l'adresse"/>
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_distanceaddress_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/activity_parameter_range_seek_bar_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="100.0"
+                app:values="@array/initial_slider_values" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Prix"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_pricemin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_pricemax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/activity_parameter_range_seek_bar_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="500000.0"
+                app:values="@array/initial_slider_values" />
+
+            <!--        NbOfRooms -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Nombre de salles"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_nbOfRoomsmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_nbOfRoomsmax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/activity_parameter_range_seek_bar_nbofroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="5.0"
+                app:values="@array/initial_slider_values" />
+
+            <!--        NbOfBedRooms -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Nombre de chambres"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_nbOfBedRoomsmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_nbOfBedRoomsmax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/activity_parameter_range_seek_bar_nbofbedroom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="5.0"
+                app:values="@array/initial_slider_values" />
+
+            <!--        area     -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Surface"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_areamin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="0"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_areamax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/activity_parameter_range_seek_bar_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="500.0"
+                app:values="@array/initial_slider_values" />
+
+            <!--    NB OF PHOTOS     -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Nombres de photos"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_nbofpicturesmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/activity_parameter_textview_nbofpicturesmax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:text="0"/>
+            </LinearLayout>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/activity_parameter_range_seek_bar_nbofpictures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:valueFrom="0.0"
+                android:valueTo="10.0"
+                app:values="@array/initial_slider_values" />
+
+            <!--    Created Date     -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mise sur le marché"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <!--    Created Date minimum     -->
+                <ImageView
+                    android:id="@+id/activity_parameter_imageview_createdatmin"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -611,16 +433,16 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_parameter_edittext_dateofsalemin"
+                        android:id="@+id/activity_parameter_edittext_createdatmin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:hint="De"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!--    Date of sale maximum     -->
+                <!--    Created Date maximum     -->
                 <ImageView
-                    android:id="@+id/activity_parameter_imageview_dateofsalemax"
+                    android:id="@+id/activity_parameter_imageview_createdatmax"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -633,23 +455,172 @@
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_parameter_edittext_dateofsalemax"
+                        android:id="@+id/activity_parameter_edittext_createdatmax"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:hint="A"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/activity_parameter_button_removedate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Supprimer les dates"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:text="A proximité de :"
+                android:gravity="center_horizontal" />
+
+            <LinearLayout
+                android:id="@+id/activity_parameter_linearlayout_nearbypoi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+
+            <!--    realEstateAgent     -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_parameter_edittext_realEstateAgent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="realEstateAgent"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--    isSold     -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Affiché les propriétés:"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/activity_parameter_radiobutton_sold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vendu"
+                    android:textSize="18sp"/>
+
+                <RadioButton
+                    android:id="@+id/activity_parameter_radiobutton_available"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disponnible"
+                    android:textSize="18sp"/>
+                <RadioButton
+                    android:id="@+id/activity_parameter_radiobutton_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Toutes"
+                    android:textSize="18sp"/>
+
+            </RadioGroup>
+
+            <!--    Date of sale     -->
+            <LinearLayout
+                android:id="@+id/activity_parameter_linearlayout_dateofsale"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date de vente"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp">
+
+                    <!--    Date of sale minimum     -->
+                    <ImageView
+                        android:id="@+id/activity_parameter_imageview_dateofsalemin"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_baseline_date_range_24"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/activity_parameter_edittext_dateofsalemin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:hint="De"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--    Date of sale maximum     -->
+                    <ImageView
+                        android:id="@+id/activity_parameter_imageview_dateofsalemax"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_baseline_date_range_24"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/activity_parameter_edittext_dateofsalemax"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:hint="A"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/activity_parameter_button_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="FILTRER"
+                android:textStyle="bold"
+                android:textSize="30sp"/>
         </LinearLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/activity_parameter_button_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="FILTRER"
-            android:textStyle="bold"
-            android:textSize="30sp"/>
-    </LinearLayout>
 
-</ScrollView>
+
+</LinearLayout>

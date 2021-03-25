@@ -257,9 +257,6 @@ public class Property implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        //todo ajouter les attributs rajouter en haut !
-
-        //todo: regler probleme si il n'y a pas de date de vente
         dest.writeLong(id);
         dest.writeInt(propertyTypeId);
         dest.writeDouble(price);
@@ -274,7 +271,7 @@ public class Property implements Parcelable {
         dest.writeString(mainPictureUrl);
         dest.writeInt(nbOfPictures);
         dest.writeLong(agentId);
-        dest.writeLong(dateOfSale.getTime() != 0 ? dateOfSale.getTime() : 0);// todo bug si aucune date de vente n'est donner
+        dest.writeLong(dateOfSale.getTime() != 0 ? dateOfSale.getTime() : 0);
         dest.writeLong(createdAt.getTime());
         dest.writeLong(updatedAt.getTime());
     }

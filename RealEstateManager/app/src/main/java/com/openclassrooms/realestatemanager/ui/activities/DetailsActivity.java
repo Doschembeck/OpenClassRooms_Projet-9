@@ -49,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ContentDetailsBinding includeBinding;
     private PropertyViewModel mViewModel;
     private Devise mDevise;
-    private Property mCurrentProperty; // todo recuperer le current property
+    private Property mCurrentProperty;
     private long mCurrentPropertyId;
 
     @Override

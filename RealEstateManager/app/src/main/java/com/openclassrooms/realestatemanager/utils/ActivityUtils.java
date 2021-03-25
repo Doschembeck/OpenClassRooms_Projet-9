@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.textfield.TextInputEditText;
+import com.openclassrooms.realestatemanager.BuildConfig;
 import com.openclassrooms.realestatemanager.R;
 
 import java.util.Calendar;
@@ -36,7 +37,7 @@ public class ActivityUtils {
     public static Geocoder setupAutoComplete(Context context) {
 
         if (!Places.isInitialized()) {
-            Places.initialize(context, "AIzaSyDKEy4YPdOH5ErxxEZ0SPFBUF4JNGf83kw"); //todo: Recuperer la clé depuis les ressources
+            Places.initialize(context, BuildConfig.GoogleMapsKey);
         }
 
         return new Geocoder(context, Locale.getDefault());

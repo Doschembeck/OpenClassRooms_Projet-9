@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +37,7 @@ import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
+import com.openclassrooms.realestatemanager.utils.PermissionGps;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import org.w3c.dom.Text;
@@ -64,6 +67,7 @@ public class ParameterActivity extends AppCompatActivity {
         // --- INIT ---
         mGeocoder = ActivityUtils.setupAutoComplete(this);
         configureSpinnerPropertyType();
+        configureSpinnerFilter();
         initLocation();
 
         Parameter parameter = getIntent().getParcelableExtra("parameter");
@@ -73,8 +77,14 @@ public class ParameterActivity extends AppCompatActivity {
         }
 
         // LISTENERS
+        mBinding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
         mBinding.activityParameterButtonFilter.setOnClickListener(this::onClickFilterProperty);
-        mBinding.activityParameterImageviewAddress.setOnClickListener(this::startAutoComplete);
+        mBinding.activityParameterEdittextAddress.setOnFocusChangeListener((view, b) -> {
+            if(b){
+                view.clearFocus();
+                startAutoComplete(view);
+            }
+        });
         mBinding.activityParameterImageviewMylocation.setOnClickListener(this::onClickMyLocation);
         mBinding.activityParameterImageviewAddressdelete.setOnClickListener(view -> {
             mBinding.activityParameterEdittextAddress.setText("");
@@ -122,19 +132,32 @@ public class ParameterActivity extends AppCompatActivity {
         {
             // Si les permissions ne sont pas acceptées
         } else {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener((Activity) this, location -> {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                            Log.d("TAG1", "LA LOCALISATION EST : " + location.getLatitude() + " | " + location.getLongitude());
 
-                            getAddress(location.getLatitude(), location.getLongitude());
+            /** Récupère le locationManager qui gère la localisation */
+            LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            /** Test si le gps est activé ou non */
+            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                /** on lance notre activity (qui est une dialog) */
+//                Intent localIntent = new Intent(this, PermissionGps.class);
+//                localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(localIntent);
+                startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
 
-                        }
-                    });
+            } else {
+                fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        // Logic to handle location object
+                        Log.d("TAG1", "LA LOCALISATION EST : " + location.getLatitude() + " | " + location.getLongitude());
+
+                        getAddress(location.getLatitude(), location.getLongitude());
+
+                    } else {
+                        Toast.makeText(this, "Localisation non disponnible veuillez faire une recherche manuel", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
-
     }
 
     private void configureSpinnerPropertyType(){
@@ -145,6 +168,12 @@ public class ParameterActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, listPropertyType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBinding.activityParameterSpinnerPropertytype.setAdapter(adapter);
+    }
+
+    private void configureSpinnerFilter(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.arrayOrderBy);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBinding.activityParameterSpinnerFilter.setAdapter(adapter);
     }
 
     private void startAutoComplete(View view) {
@@ -298,31 +327,12 @@ public class ParameterActivity extends AppCompatActivity {
                 break;
         }
 
-        switch (parameter.getOrderBy())
-        {
-            case PRICE:
-                mBinding.activityParameterRadiobuttonPrice.setChecked(true);
-                break;
-
-            case NB_OF_ROOMS:
-                mBinding.activityParameterRadiobuttonNbofrooms.setChecked(true);
-                break;
-
-            case NB_OF_BEDROOMS:
-                mBinding.activityParameterRadiobuttonDateofsale.setChecked(true);
-                break;
-
-            case AREA:
-                mBinding.activityParameterRadiobuttonArea.setChecked(true);
-                break;
-
-            case MARKETING_DATE:
-                mBinding.activityParameterRadiobuttonMarketingdate.setChecked(true);
-                break;
-
-            case DATE_OF_SALE:
-                mBinding.activityParameterRadiobuttonNbofbedrooms.setChecked(true);
-                break;
+        Constants.OrderBy orderBy = parameter.getOrderBy();
+        Constants.OrderBy[] listOrderBy = Constants.OrderBy.values();
+        for (int i = 0; i < listOrderBy.length; i++){
+            if(listOrderBy[i] == orderBy){
+                mBinding.activityParameterSpinnerFilter.setSelection(i);
+            }
         }
 
         switch (parameter.getSold()){
@@ -393,20 +403,7 @@ public class ParameterActivity extends AppCompatActivity {
             parameter.setSortDirection(Constants.SortDirection.DESCENDANT);
         }
 
-        if(mBinding.activityParameterRadiobuttonPrice.isChecked()){
-          parameter.setOrderBy(Constants.OrderBy.PRICE);
-        } else if(mBinding.activityParameterRadiobuttonArea.isChecked()){
-            parameter.setOrderBy(Constants.OrderBy.AREA);
-        } else if(mBinding.activityParameterRadiobuttonNbofrooms.isChecked()){
-            parameter.setOrderBy(Constants.OrderBy.NB_OF_ROOMS);
-        } else if(mBinding.activityParameterRadiobuttonNbofbedrooms.isChecked()){
-            parameter.setOrderBy(Constants.OrderBy.NB_OF_BEDROOMS);
-        } else if(mBinding.activityParameterRadiobuttonMarketingdate.isChecked()) {
-            parameter.setOrderBy(Constants.OrderBy.MARKETING_DATE);
-        } else if(mBinding.activityParameterRadiobuttonDateofsale.isChecked()) {
-            parameter.setOrderBy(Constants.OrderBy.DATE_OF_SALE);
-        }
-
+        parameter.setOrderBy(Constants.OrderBy.values()[(int)mBinding.activityParameterSpinnerFilter.getSelectedItemId()]);
 
         if (selectedNearbyPOI.size() != 0){
             long[] listIdNearbyPOI = new long[selectedNearbyPOI.size()];

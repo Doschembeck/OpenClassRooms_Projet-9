@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.openclassrooms.realestatemanager.BuildConfig;
 import com.openclassrooms.realestatemanager.R;
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailsBinding;
 import com.openclassrooms.realestatemanager.databinding.ContentDetailsBinding;
@@ -129,7 +130,7 @@ public class DetailFragment extends Fragment {
         String size = "300x300";
         String maptype = "roadmap";
         String markers = center;
-        String key = "AIzaSyDKEy4YPdOH5ErxxEZ0SPFBUF4JNGf83kw"; // TODO : utiliser la clé de maniére securiser
+        String key = BuildConfig.GoogleMapsKey;
         String url = "https://maps.googleapis.com/maps/api/staticmap" + "?center=" + center + "&zoom=" + zoom + "&size=" + size + "&maptype=" + maptype + "&markers=" + markers + "&key=" + key;
 
         Glide.with(this)
@@ -155,7 +156,6 @@ public class DetailFragment extends Fragment {
 
         if (currentIndexPicture <= mPictureList.size()){
 
-            //todo : tombe dans error
             Glide.with(this)
                     .load(mPictureList.get(currentIndexPicture).getUrlPicture())
                     .error(R.drawable.image_not_found_scaled)

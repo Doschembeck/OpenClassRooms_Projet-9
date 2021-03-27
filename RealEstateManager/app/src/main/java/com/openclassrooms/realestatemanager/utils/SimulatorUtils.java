@@ -3,7 +3,7 @@ package com.openclassrooms.realestatemanager.utils;
 public class SimulatorUtils {
 
     // Retourne le montant mensuel credit + banque
-    private static double calculateMonthlyPaymentBank(double amountLoan, double annualRateBank, int nbOfMonthlyPayment){
+    public static double calculateMonthlyPaymentBank(double amountLoan, double annualRateBank, int nbOfMonthlyPayment){
         // Source : https://www.younited-credit.com/projets/pret-personnel/calculs/calculer-remboursement-pret
         double J = annualRateBank / 12; // Taux d'interet effectif = taux annuel / 12
 
@@ -21,7 +21,7 @@ public class SimulatorUtils {
     }
 
     // Retourne le montant credit uniquement (sans taux)
-    private static double calculateMonthlyPaymentWithNotRate(double amountLoan, int nbOfMonthlyPayment){
+    public static double calculateMonthlyPaymentWithNotRate(double amountLoan, int nbOfMonthlyPayment){
         return amountLoan / nbOfMonthlyPayment;
     }
 
@@ -35,7 +35,7 @@ public class SimulatorUtils {
 
 
     // Calculate cout total
-    private static double calculateCostTotal(double amountLoan, double annualRateBank, double annualRateInsurance, int nbOfMonthlyPayment){
+    public static double calculateCostTotal(double amountLoan, double annualRateBank, double annualRateInsurance, int nbOfMonthlyPayment){
         return (calculateMonthlyPaymentInterestBankOnly(amountLoan, annualRateBank, nbOfMonthlyPayment)
                 + calculateMonthlyPaymentInsuranceOnly(amountLoan, annualRateInsurance))
                 * nbOfMonthlyPayment;

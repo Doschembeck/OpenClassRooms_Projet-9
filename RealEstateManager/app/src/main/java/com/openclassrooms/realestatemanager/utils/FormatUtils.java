@@ -16,7 +16,7 @@ public class  FormatUtils {
 
     public static String formatPOIName(String poiName){
 
-        String formattedString = poiName.replaceAll("\\s", "");
+        String formattedString = removeAllSpaceChar(poiName);
         formattedString = formattedString.substring(0, 1).toUpperCase() + formattedString.substring(1);
 
         return formattedString;
@@ -34,7 +34,7 @@ public class  FormatUtils {
         return removeAllSpaceChar(formatNumberToString((long) amountInDevise));
     }
 
-    public static String formatNumberToString(double number){
+    private static String formatNumberToString(double number){
         return NumberFormat.getInstance(Locale.FRANCE).format(number);
     }
 

@@ -2,7 +2,7 @@
 //todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
 //todo BUG : contentProvider à améliorer
 
-//todo: faire les tests unitaires et instrumentés
+//todo: faire les tests instrumentés
 //todo: traduire
 //todo: mettre un message quand aucune property n'est a affiché
 //todo: changer la image slider dans detailProperty (utiliser Glide)

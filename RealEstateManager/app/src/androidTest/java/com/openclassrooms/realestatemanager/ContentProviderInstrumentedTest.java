@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(AndroidJUnit4.class)
-public class PropertyContentProviderTest {
+public class ContentProviderInstrumentedTest {
 
     //TODO NEED CONDITIONS : (addressId = 1 && agentId = 1) EXISTS && (PROPERTY_ID = 999999) !EXIST.
     // Mieu si la property créee est supprimer apres !

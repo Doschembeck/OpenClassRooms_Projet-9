@@ -29,6 +29,10 @@ public class PropertyNearbyPoiJoinDataRepository {
         return this.propertyNearbyPoiJoinDao.deletePropertyNearbyPoi(propertyNearbyPoiJoin);
     }
 
+    public long deletePropertyNearbyPoiJoinWithPropertyId(long propertyId){
+        return this.propertyNearbyPoiJoinDao.deletePropertyNearbyPoiWithPropertyId(propertyId);
+    }
+
     // GET ALL NearbyPOI link with a Property
     public LiveData<List<Property> > getPropertyForNearbyPoi(final long nearbyId){
         return this.propertyNearbyPoiJoinDao.getPropertyForNearbyPoi(nearbyId);

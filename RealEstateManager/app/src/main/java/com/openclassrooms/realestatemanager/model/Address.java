@@ -1,15 +1,25 @@
 package com.openclassrooms.realestatemanager.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 
-@Entity
+@Entity(foreignKeys = {
+        @ForeignKey(entity = Property.class,
+                parentColumns = "id",
+                childColumns = "property_id",
+                onDelete = ForeignKey.CASCADE
+        )
+})
 public class Address {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+    @ColumnInfo(name = "property_id", index = true)
+    private long propertyId;
     private String streetNumber;
     private String streetName;
     private String city;
@@ -18,8 +28,9 @@ public class Address {
     private double latitude;
     private double longitude;
 
-    public Address(long id, String streetNumber, String streetName, String city, String zipCode, String country, double latitude, double longitude) {
+    public Address(long id, long propertyId, String streetNumber, String streetName, String city, String zipCode, String country, double latitude, double longitude) {
         this.id = id;
+        this.propertyId = propertyId;
         this.streetNumber = streetNumber;
         this.streetName = streetName;
         this.city = city;
@@ -105,5 +116,13 @@ public class Address {
 
     public String getCompleteAddress(){
         return streetNumber  + " " + streetName + ", " + city + " " + zipCode + ", " + country;
+    }
+
+    public long getPropertyId() {
+        return propertyId;
+    }
+
+    public void setPropertyId(long propertyId) {
+        this.propertyId = propertyId;
     }
 }

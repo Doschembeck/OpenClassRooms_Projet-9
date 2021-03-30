@@ -146,6 +146,12 @@ public class PropertyViewModel extends ViewModel {
         });
     }
 
+    public void deletePropertyNearbyPoiJoinWithPropertyId(long propertyId){
+        executor.execute(() -> {
+            this.propertyNearbyPoiJoinDataRepository.deletePropertyNearbyPoiJoinWithPropertyId(propertyId);
+        });
+    }
+
     // GET ALL Property with a NearbyPOI
     public LiveData<List<Property>> getNearbyPoiForProperty(final long nearbyPOI){
         return this.propertyNearbyPoiJoinDataRepository.getPropertyForNearbyPoi(nearbyPOI);
@@ -232,6 +238,10 @@ public class PropertyViewModel extends ViewModel {
     // GET ADDRESS
     public LiveData<Address> getAddress(long addressId){
         return this.addressDataRepository.getAddress(addressId);
+    }
+
+    public LiveData<Address> getAddressWithPropertyId(long propertyId){
+        return this.addressDataRepository.getAddressWithPropertyId(propertyId);
     }
 
     // CREATE ADDRESS

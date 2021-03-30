@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,10 +36,7 @@ import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.utils.ActivityUtils;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.FormatUtils;
-import com.openclassrooms.realestatemanager.utils.PermissionGps;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -235,7 +231,7 @@ public class ParameterActivity extends AppCompatActivity {
 
                 if (addresses != null && addresses.size() > 0) {
                     android.location.Address address = addresses.get(0);
-                    mAddress = new Address(0, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
+                    mAddress = new Address(0, 0, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
                     mBinding.activityParameterEdittextAddress.setText(mAddress.getCompleteAddress());
                 }
             } else {

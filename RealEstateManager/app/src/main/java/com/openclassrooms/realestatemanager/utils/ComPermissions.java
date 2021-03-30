@@ -25,6 +25,10 @@ public class ComPermissions {
         checkPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
+    public static void checkPermissionStorage(Context context){
+        checkPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
     private static void checkPermission(Context context, String permission){
         Dexter.withContext(context)
                 .withPermission(permission)

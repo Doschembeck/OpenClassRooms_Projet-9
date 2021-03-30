@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,12 +14,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.bumptech.glide.util.Util;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.resources.CancelableFontCallback;
 import com.openclassrooms.realestatemanager.databinding.ActivityEditPropertyBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
@@ -112,7 +111,6 @@ public class EditPropertyActivity extends BaseActivity {
         }else {
             mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPOI);
         }
-
     }
 
     private void onClickButtonAddPhotos(View view) {
@@ -185,7 +183,16 @@ public class EditPropertyActivity extends BaseActivity {
 
                 if (addresses != null && addresses.size() > 0) {
                     android.location.Address address = addresses.get(0);
-                    mAddress = new Address(0, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
+                    long addressId = 0;
+                    long propertyId = 0;
+
+                    if (mAddress != null){
+                        addressId = mAddress.getId();
+                        propertyId = mAddress.getPropertyId();
+                    }
+
+                    mAddress = new Address(addressId, propertyId, address.getFeatureName(), address.getThoroughfare(), address.getLocality(), address.getPostalCode(), address.getCountryName(), address.getLatitude(), address.getLongitude());
+
                     binding.activityEditPropertyEdittextAddress.setText(mAddress.getCompleteAddress());
                 }
             } else {
@@ -278,7 +285,7 @@ public class EditPropertyActivity extends BaseActivity {
     private Boolean updateProperty(){
 
         // 1- Update l'address
-        mAddress.setId(mEditProperty.getAddressId());
+        mAddress.setPropertyId(mEditProperty.getId());
         mViewModel.updateAddress(mAddress);
 
         // 2- Update Photos
@@ -318,7 +325,7 @@ public class EditPropertyActivity extends BaseActivity {
         }
 
         // 3- Update Property
-        Property currentProperty = createProperty(mEditProperty.getAddressId());
+        Property currentProperty = createProperty();
         currentProperty.setId(mEditProperty.getId());
         currentProperty.setCity(mAddress.getCity());
 
@@ -382,8 +389,7 @@ public class EditPropertyActivity extends BaseActivity {
     }
 
     private void updateUIWithProperty(){
-
-        mViewModel.getAddress(mEditProperty.getAddressId()).observe(this, this::updateUIWithAddress);
+        mViewModel.getAddressWithPropertyId(mEditProperty.getId()).observe(this, this::updateUIWithAddress);
         mViewModel.getPropertyForNearbyPoi(mEditProperty.getId()).observe(this, this::updateUIWithNearbyPOI);
         mViewModel.getAllPropertyPhoto(mEditProperty.getId()).observe(this, this::updateUIWithPhotos);
 
@@ -451,12 +457,12 @@ public class EditPropertyActivity extends BaseActivity {
     private boolean createCompleteProperty(){
 
         if (mAddress != null){
-            // Créer l'address
-            long addressId = mViewModel.createAddress(mAddress);
-
             // Créer la Property
-            Property newProperty = createProperty(addressId);
-            long propertyId = mViewModel.createProperty(newProperty);
+            long propertyId = mViewModel.createProperty(createProperty());
+
+            // Créer l'address
+            mAddress.setPropertyId(propertyId);
+            mViewModel.createAddress(mAddress);
 
             // Créer les photos
             List<Photo> photoUrlList = mViewModel.propertyPictureListMutableLiveData.getValue();
@@ -478,7 +484,7 @@ public class EditPropertyActivity extends BaseActivity {
         return true;
     }
 
-    private Property createProperty(long addressId) {
+    private Property createProperty() {
 
         List<Photo> photoList =  mViewModel.propertyPictureListMutableLiveData.getValue();
         String mainPictureUrl =  photoList.get(0).getUrlPicture();
@@ -495,8 +501,7 @@ public class EditPropertyActivity extends BaseActivity {
         Date date = FormatUtils.formatStringFormattedToDate(binding.activityEditPropertyEdittextDateofsold.getText().toString());
         Date dateOfSale = binding.activityEditPropertySwitchIssold.isChecked() ? date : new Date(0);
 
-        return new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description,
-                addressId, rate, mAddress.getCity(), mainPictureUrl, nbOfPictures, getCurrentAgentId() , dateOfSale, date, date);
+        return new Property(0,propertyType,price, pricePerSquareMeter, area,nbOfRooms,nbOfBedRooms,description, rate, mAddress.getCity(), mainPictureUrl, nbOfPictures, getCurrentAgentId() , dateOfSale, date, date);
     }
 
     // === Generators ===

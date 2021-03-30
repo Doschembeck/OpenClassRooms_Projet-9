@@ -18,6 +18,10 @@ public class AddressDataRepository {
         return this.addressDao.getAddress(addressId);
     }
 
+    public LiveData<Address> getAddressWithPropertyId(long propertyId){
+        return this.addressDao.getAddressWithPropertyId(propertyId);
+    }
+
     // CREATE
     public long createAddress(Address address){
         return this.addressDao.createAddress(address);

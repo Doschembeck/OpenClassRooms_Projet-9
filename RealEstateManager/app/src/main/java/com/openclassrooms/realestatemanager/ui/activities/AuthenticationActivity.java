@@ -15,6 +15,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivityAuthenticationBi
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Agent;
+import com.openclassrooms.realestatemanager.utils.ComPermissions;
 import com.openclassrooms.realestatemanager.utils.Constants;
 import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
@@ -42,6 +43,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         binding = ActivityAuthenticationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         mContext = this;
+
+        ComPermissions.checkPermissionStorage(this);
 
         ScriptsStats.scriptStatsAllRate(mViewModel);
 

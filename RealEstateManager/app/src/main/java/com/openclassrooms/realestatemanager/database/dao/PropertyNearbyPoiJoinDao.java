@@ -30,4 +30,7 @@ public interface PropertyNearbyPoiJoinDao {
     @Delete
     int deletePropertyNearbyPoi(PropertyNearbyPoiJoin propertyForNearbyPoi);
 
+    @Query("DELETE FROM property_nearbypoi_join WHERE propertyId = :propertyId")
+    int deletePropertyNearbyPoiWithPropertyId(long propertyId);
+
 }

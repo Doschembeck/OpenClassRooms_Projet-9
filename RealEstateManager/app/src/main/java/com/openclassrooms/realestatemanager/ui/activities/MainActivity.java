@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     referenceLocation.setLongitude(parameter.getLongitude());
 
                     for (Property property : properties){
-                        mViewModel.getAddress(property.getAddressId()).observe(this, address -> {
+                        mViewModel.getAddressWithPropertyId(property.getId()).observe(this, address -> {
                             Location propertyLocation = new Location("Property");
                             propertyLocation.setLatitude(address.getLatitude());
                             propertyLocation.setLongitude(address.getLongitude());

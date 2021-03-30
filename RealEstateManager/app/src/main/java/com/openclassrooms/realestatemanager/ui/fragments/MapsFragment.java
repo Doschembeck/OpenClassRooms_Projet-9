@@ -122,7 +122,7 @@ public class MapsFragment extends Fragment {
         for (int i = 0; i < properties.size(); i++){
             Property property = properties.get(i);
 
-            mViewModel.getAddress(property.getAddressId()).observe(this, address -> {
+            mViewModel.getAddressWithPropertyId(property.getId()).observe(this, address -> {
 
                 // Si c'est le premier
                 if (currentIndexProperty == 0){

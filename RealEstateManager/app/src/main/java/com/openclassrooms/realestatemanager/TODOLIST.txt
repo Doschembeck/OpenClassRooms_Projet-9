@@ -1,13 +1,13 @@
 
-//todo BUG : Supprimer l'address quand la property est supprimer (CASCADE INVERSER)
-//todo BUG : contentProvider à améliorer
-
 //todo: faire les tests instrumentés
+    CRUD TEST METTRE LES TESTS DANS L'ORDRE
+    FILTER TEST A FAIRE
+    test contentProvider à améliorer
 //todo: traduire
 //todo: mettre un message quand aucune property n'est a affiché
 //todo: changer la image slider dans detailProperty (utiliser Glide)
-//todo: demander autorisation de stockage (a voir pas obliger)
 //todo: parameterActivity mettre un spinner pour les agents
+//todo: ajout de la photo de l'agent via une photo de l'appareil
 
 //todo: actualiser list et maps apres ajout en favoris dans detail
 //todo BONUS : activer le mode de comparaison

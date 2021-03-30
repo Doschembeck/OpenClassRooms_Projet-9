@@ -12,10 +12,6 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity(foreignKeys = {
-            @ForeignKey(entity = Address.class,
-                    parentColumns = "id",
-                    childColumns = "address_id"
-            ),
             @ForeignKey(entity = Agent.class,
                     parentColumns = "id",
                     childColumns = "agent_id"
@@ -33,8 +29,6 @@ public class Property implements Parcelable {
     private int nbOfRooms;
     private int nbOfBedRooms;
     private String description; // The full description of the property;
-    @ColumnInfo(name = "address_id", index = true)
-    private long addressId;
     private Float rate;
     private String city;
     private String mainPictureUrl;
@@ -46,7 +40,7 @@ public class Property implements Parcelable {
     private Date createdAt;
     private Date updatedAt;
 
-    public Property(long id, int propertyTypeId, Double price, Double pricePerSquareMeter, float area, int nbOfRooms, int nbOfBedRooms, String description, long addressId, Float rate, String city, String mainPictureUrl, int nbOfPictures, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
+    public Property(long id, int propertyTypeId, Double price, Double pricePerSquareMeter, float area, int nbOfRooms, int nbOfBedRooms, String description, Float rate, String city, String mainPictureUrl, int nbOfPictures, Long agentId, Date dateOfSale, Date createdAt, Date updatedAt) {
         this.id = id;
         this.propertyTypeId = propertyTypeId;
         this.price = price;
@@ -55,7 +49,6 @@ public class Property implements Parcelable {
         this.nbOfRooms = nbOfRooms;
         this.nbOfBedRooms = nbOfBedRooms;
         this.description = description;
-        this.addressId = addressId;
         this.rate = rate;
         this.city = city;
         this.mainPictureUrl = mainPictureUrl;
@@ -105,14 +98,6 @@ public class Property implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public long getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(long addressId) {
-        this.addressId = addressId;
     }
 
     public long getAgentId() {
@@ -226,7 +211,6 @@ public class Property implements Parcelable {
         this.nbOfRooms = in.readInt();;
         this.nbOfBedRooms = in.readInt();;
         this.description = in.readString();;
-        this.addressId = in.readLong();;
         this.rate = in.readFloat();;
         this.city = in.readString();;
         this.mainPictureUrl = in.readString();;
@@ -265,7 +249,6 @@ public class Property implements Parcelable {
         dest.writeInt(nbOfRooms);
         dest.writeInt(nbOfBedRooms);
         dest.writeString(description);
-        dest.writeLong(addressId);
         dest.writeFloat(rate);
         dest.writeString(city);
         dest.writeString(mainPictureUrl);
@@ -288,7 +271,6 @@ public class Property implements Parcelable {
         if (values.containsKey("nbOfRooms")) property.setNbOfRooms(values.getAsInteger("nbOfRooms"));
         if (values.containsKey("nbOfBedRooms")) property.setNbOfBedRooms(values.getAsInteger("nbOfBedRooms"));
         if (values.containsKey("description")) property.setDescription(values.getAsString("description"));
-        if (values.containsKey("address_id")) property.setAddressId(values.getAsLong("address_id"));
         if (values.containsKey("rate")) property.setRate(values.getAsFloat("rate"));
         if (values.containsKey("city")) property.setCity(values.getAsString("city"));
         if (values.containsKey("mainPictureUrl")) property.setMainPictureUrl(values.getAsString("mainPictureUrl"));

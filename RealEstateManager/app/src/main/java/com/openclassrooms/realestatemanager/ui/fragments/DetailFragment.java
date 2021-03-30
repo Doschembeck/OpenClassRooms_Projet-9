@@ -123,6 +123,8 @@ public class DetailFragment extends Fragment {
     }
 
     private void updateUIWithAddress(Address address){
+        if (address == null) return;
+
         includeBinding.contentDetailTextviewAddress.setText(address.getCompleteAddress());
 
         String center = address.getLatitude() + "," + address.getLongitude();
@@ -203,7 +205,7 @@ public class DetailFragment extends Fragment {
         checkIfPropertyIsFavorite();
 
         // updateUIWith...
-        mViewModel.getAddress(property.getAddressId()).observe(this, this::updateUIWithAddress);
+        mViewModel.getAddressWithPropertyId(property.getId()).observe(this, this::updateUIWithAddress);
         mViewModel.getAllPropertyPhoto(property.getId()).observe(this, photoList -> {
             if (!(photoList.size() == 0)){
                 mPictureList = photoList;

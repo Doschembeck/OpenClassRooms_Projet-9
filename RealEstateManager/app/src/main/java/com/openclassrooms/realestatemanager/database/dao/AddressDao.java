@@ -16,6 +16,9 @@ public interface AddressDao {
     @Query("SELECT * FROM Address WHERE id = :addressId")
     LiveData<Address> getAddress(long addressId);
 
+    @Query("SELECT * FROM Address WHERE property_id = :propertyId")
+    LiveData<Address> getAddressWithPropertyId(long propertyId);
+
     @Insert
     long createAddress(Address address);
 

@@ -77,4 +77,6 @@ dependencies {
     // My Librairie CodeHelperLib
     implementation 'com.github.Doschembeck:CodeHelperLib:1.0.1'
 
+    // TESTING
+    androidTestCompile "android.arch.core:core-testing:1.1.0"
 }

@@ -9,6 +9,7 @@ import com.openclassrooms.realestatemanager.database.RealEstateManagerDatabase;
 import com.openclassrooms.realestatemanager.model.Address;
 import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
+import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.model.Property;
 import com.openclassrooms.realestatemanager.model.PropertyNearbyPoiJoin;
@@ -35,30 +36,25 @@ public class CRUDInstrumentedTest {
     private RealEstateManagerDatabase database;
 
     // DATA SET FOR TEST
-    private static long AGENT_ID = 999989799;
-    private static Agent AGENT_DEMO = new Agent(AGENT_ID, "Thomas", "Deschombeck", "url//picture");
-
-    private static long PROPERTY_ID = 999979799;
-    private static Property PROPERTY_DEMO = new Property(PROPERTY_ID, 1, 100000.0, 1000.0, 100, 7, 2, "description", 1f, "Lyon", "url//mainPicture", 2, AGENT_ID, new Date(), new Date(), new Date());
-
-    private static long ADDRESS_ID = 999969799;
-    private static Address ADDRESS_DEMO = new Address(ADDRESS_ID, PROPERTY_ID, "2", "Rue de la Rouette", "Massieux", "01600", "France", 10.0, 10.0);
-
-    private static long PHOTO_ID = 999959799;
-    private static Photo PHOTO_DEMO = new Photo(PHOTO_ID,PROPERTY_ID, "url//picture", "Description photo");
-
-    private static long POI_ID = 999949799;
-    private static NearbyPOI POI_DEMO = new NearbyPOI(POI_ID, "Ecole");
-
-    private static long POIJOIN_ID = 999939799;
-    private static PropertyNearbyPoiJoin POIJOIN_DEMO = new PropertyNearbyPoiJoin(PROPERTY_ID, POI_ID);
-
+    private static final long AGENT_ID = 999989799;
+    private static final Agent AGENT_DEMO = new Agent(AGENT_ID, "Thomas", "Deschombeck", "url//picture");
+    private static final long PROPERTY_ID = 999979799;
+    private static final Property PROPERTY_DEMO = new Property(PROPERTY_ID, 1, 100000.0, 1000.0, 100, 7, 2, "description", 1f, "Lyon", "url//mainPicture", 2, AGENT_ID, new Date(), new Date(), new Date());
+    private static final long PROPERTY_ID2 = 999979798;
+    private static final Property PROPERTY_DEMO2 = new Property(PROPERTY_ID2, 1, 200000.0, 1000.0, 100, 7, 2, "description", 1f, "Lyon", "url//mainPicture", 2, AGENT_ID, new Date(), new Date(), new Date());
+    private static final long ADDRESS_ID = 999969799;
+    private static final Address ADDRESS_DEMO = new Address(ADDRESS_ID, PROPERTY_ID, "2", "Rue de la Rouette", "Massieux", "01600", "France", 10.0, 10.0);
+    private static final long PHOTO_ID = 999959799;
+    private static final Photo PHOTO_DEMO = new Photo(PHOTO_ID,PROPERTY_ID, "url//picture", "Description photo");
+    private static final long POI_ID = 999949799;
+    private static final NearbyPOI POI_DEMO = new NearbyPOI(POI_ID, "Ecole");
+    private static final PropertyNearbyPoiJoin POIJOIN_DEMO = new PropertyNearbyPoiJoin(PROPERTY_ID, POI_ID);
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     @Before
-    public void initDb() throws Exception {
+    public void initDb() {
         this.database = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
                 RealEstateManagerDatabase.class)
                 .allowMainThreadQueries()
@@ -66,26 +62,29 @@ public class CRUDInstrumentedTest {
     }
 
     @After
-    public void closeDb() throws Exception {
+    public void closeDb() {
         database.close();
     }
 
     @Test
-    public void crudTest() throws InterruptedException {
-        // test Agent / Property / Address / Photo / NearbyPOI / NearbyPOIJoin
+    public void filterTest() throws InterruptedException {
         insertAndGetAgent();
-        insertAndGetProperty();
-        insertAndGetAddress();
-        insertAndGetPhoto();
-        insertAndGetNearbyPoi();
-        insertAndGetNearbyPoiJoin();
 
-        insertAndUpdateProperty();
-        insertAndUpdateAddress();
+        this.database.propertyDao().createProperty(PROPERTY_DEMO);
+        this.database.propertyDao().createProperty(PROPERTY_DEMO2);
 
-        insertAndDeleteProperty();
+        Parameter parameter = new Parameter();
+        parameter.setPriceMax(120000);
+
+        List<Property> propertiesBefore = this.database.propertyDao().getAllProperty();
+        List<Property> propertiesAfter = LiveDataTestUtil.getValue(this.database.propertyDao().searchProperties(parameter.getParamsFormatted()));
+
+        assertEquals(2, propertiesBefore.size());
+        assertEquals(1, propertiesAfter.size());
     }
 
+    // Create
+    @Test
     public void insertAndGetAgent() throws InterruptedException {
         // BEFORE : Adding a new Property
         this.database.AgentDao().createAgent(AGENT_DEMO);
@@ -95,8 +94,10 @@ public class CRUDInstrumentedTest {
         assertTrue(agent.getFirstname().equals(AGENT_DEMO.getFirstname()) && agent.getLastname().equals(AGENT_DEMO.getLastname()) && agent.getId() == AGENT_ID);
     }
 
+    @Test
     public void insertAndGetProperty() throws InterruptedException {
         // BEFORE : Adding a new Property
+        insertAndGetAgent();
         this.database.propertyDao().createProperty(PROPERTY_DEMO);
 
         // TEST
@@ -104,8 +105,10 @@ public class CRUDInstrumentedTest {
         assertTrue(user.getCity().equals(PROPERTY_DEMO.getCity()) && user.getPrice().equals(PROPERTY_DEMO.getPrice()) && user.getId() == PROPERTY_ID);
     }
 
+    @Test
     public void insertAndGetAddress() throws InterruptedException {
         // BEFORE : Adding a new address
+        insertAndGetProperty();
         this.database.addressDao().createAddress(ADDRESS_DEMO);
 
         // TEST
@@ -113,8 +116,10 @@ public class CRUDInstrumentedTest {
         assertTrue(address.getCompleteAddress().equals(ADDRESS_DEMO.getCompleteAddress()) && address.getId() == ADDRESS_ID);
     }
 
+    @Test
     public void insertAndGetPhoto() throws InterruptedException {
         // BEFORE : Adding a new Photo
+        insertAndGetProperty();
         this.database.PhotoDao().createPhoto(PHOTO_DEMO);
 
         // TEST
@@ -122,6 +127,7 @@ public class CRUDInstrumentedTest {
         assertTrue(photo.getUrlPicture().equals(PHOTO_DEMO.getUrlPicture()) && photo.getId() == PHOTO_ID);
     }
 
+    @Test
     public void insertAndGetNearbyPoi() throws InterruptedException {
         // BEFORE : Adding a new NearbyPOI
         this.database.NearbyPoiDao().createNearbyPOI(POI_DEMO);
@@ -131,8 +137,11 @@ public class CRUDInstrumentedTest {
         assertTrue(nearbyPOI.getName().equals(POI_DEMO.getName()) && nearbyPOI.getId() == POI_ID);
     }
 
+    @Test
     public void insertAndGetNearbyPoiJoin() throws InterruptedException {
         // BEFORE : Adding a new NearbyPOI
+        insertAndGetProperty();
+        insertAndGetNearbyPoi();
         this.database.PropertyNearbyPoiJoinDao().createPropertyNearbyPoiJoin(POIJOIN_DEMO);
 
         // TEST
@@ -145,10 +154,11 @@ public class CRUDInstrumentedTest {
     }
 
     // Update
-
+    @Test
     public void insertAndUpdateProperty() throws InterruptedException {
         // BEFORE : Adding demo Property
 
+        insertAndGetProperty();
         // Update the property
         Property propertyUpdated = PROPERTY_DEMO;
         propertyUpdated.setCity("cityUpdated");
@@ -160,10 +170,10 @@ public class CRUDInstrumentedTest {
         // TEST
         assertTrue(propertyGet.getCity().equals("cityUpdated") && propertyGet.getId() == PROPERTY_ID);
     }
-
+    @Test
     public void insertAndUpdateAddress() throws InterruptedException {
         // BEFORE : Adding demo Property
-
+        insertAndGetAddress();
         // Update the property
         Address addressUpdated = ADDRESS_DEMO;
         addressUpdated.setCity("cityUpdated");
@@ -177,9 +187,10 @@ public class CRUDInstrumentedTest {
     }
 
     // Delete
-
+    @Test
     public void insertAndDeleteProperty() throws InterruptedException {
         // BEFORE : Adding demo Property
+        insertAndGetProperty();
         List<Property> propertiesBeforeDeleting = this.database.propertyDao().getAllProperty();
 
         Property propertyAdded = LiveDataTestUtil.getValue(this.database.propertyDao().getProperty(PROPERTY_ID));
@@ -187,7 +198,7 @@ public class CRUDInstrumentedTest {
 
         //TEST
         List<Property> propertiesAfterDeleting = this.database.propertyDao().getAllProperty();
-        assertEquals(propertiesBeforeDeleting.size() - 1, propertiesAfterDeleting.size());
+        assertTrue(propertiesAfterDeleting.isEmpty());
     }
 
 }

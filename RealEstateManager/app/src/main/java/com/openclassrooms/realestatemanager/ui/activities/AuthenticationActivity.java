@@ -54,7 +54,7 @@ public class AuthenticationActivity extends AppCompatActivity {
         binding.activityAuthenticationSpinnerAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mSharedPreferences.edit().putLong(Constants.PREF_AGENT_ID_LOGGED_KEY , mListAgent.get((int) binding.activityAuthenticationSpinnerAgent.getSelectedItemId()).getId()).apply();
+                mSharedPreferences.edit().putLong(Constants.PREF_AGENT_ID_LOGGED_KEY , i).apply();
             }
 
             @Override
@@ -65,8 +65,6 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         configureSpinnerAgent();
         initSharedPreferences();
-
-        getRealEstateAgentSaved();
 
     }
 
@@ -88,6 +86,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     }
 
     private void updateUIWithAgent(List<Agent> agentList){
+
         if (agentList.size() == 0){
             startActivity(new Intent(this, EditAgentActivity.class));
             Toast.makeText(mContext, "Aucun Agent trouver veuillez en créer un !", Toast.LENGTH_SHORT).show();
@@ -105,6 +104,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         mListAgent.addAll(agentList);
 
         configureSpinnerAgent();
+        getRealEstateAgentSaved();
+
     }
 
     private void initSharedPreferences(){
@@ -113,12 +114,15 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     private void getRealEstateAgentSaved(){
 
-        //todo
-//        long agentId = mSharedPreferences.getLong(Constants.PREF_AGENT_ID_LOGGED_KEY, -1);
-//
-//        if (agentId != -1){
-//            binding.activityAuthenticationSpinnerAgent.setSelection(mListSpinner.ge); setText(realEstateAgentName);
-//        }
+        long agentId = mSharedPreferences.getLong(Constants.PREF_AGENT_ID_LOGGED_KEY, -1);
+
+        if (agentId != -1){
+            for (int i = 0; i < mListAgent.size(); i++){
+                if (mListAgent.get(i).getId() == agentId){
+                    binding.activityAuthenticationSpinnerAgent.setSelection(i);
+                }
+            }
+        }
     }
 
     private void onClickButtonLogin(){

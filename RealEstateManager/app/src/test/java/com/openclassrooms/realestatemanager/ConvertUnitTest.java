@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 public class ConvertUnitTest {
 
     @Test
-    public void convertDollarToEuroTest() throws Exception {
+    public void convertDollarToEuroTest() {
         int expected = 82238;
         int actual = (int) Constants.eur.convertDollarToDevise(100000);
 
@@ -17,7 +17,7 @@ public class ConvertUnitTest {
     }
 
     @Test
-    public void convertEuroToDollarTest() throws Exception {
+    public void convertEuroToDollarTest() {
         int expected = 121597;
         int actual = (int) Constants.eur.convertDeviseToDollar(100000);
 

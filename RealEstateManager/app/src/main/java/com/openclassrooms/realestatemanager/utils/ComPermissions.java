@@ -26,7 +26,7 @@ public class ComPermissions {
     }
 
     public static void checkPermissionStorage(Context context){
-        checkPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        checkPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     private static void checkPermission(Context context, String permission){

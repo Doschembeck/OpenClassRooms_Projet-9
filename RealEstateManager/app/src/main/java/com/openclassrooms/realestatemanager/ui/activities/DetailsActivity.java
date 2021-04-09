@@ -46,9 +46,7 @@ public class DetailsActivity extends AppCompatActivity {
     DetailFragment detailFragment;
 
     private ActivityDetailsBinding binding;
-    private ContentDetailsBinding includeBinding;
     private PropertyViewModel mViewModel;
-    private Devise mDevise;
     private Property mCurrentProperty;
     private long mCurrentPropertyId;
 
@@ -65,7 +63,6 @@ public class DetailsActivity extends AppCompatActivity {
         configureAndShowDetailsFragment();
 
         configureToolBar();
-
     }
 
     private void updateCurrentproperty(Property property) {

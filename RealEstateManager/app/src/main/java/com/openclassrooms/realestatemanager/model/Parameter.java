@@ -326,37 +326,6 @@ public class Parameter implements Parcelable {
         return params;
     }
 
-    private String generateCharacterWithInt(int number){
-        //todo bloqué a 26 NearbyPOI
-//        String result = "";
-        String[] alphabet = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
-                "r","s","t","u","v","w","x","y","z"};
-
-//        int multipleOfAlphabet = number / alphabet.length;
-//
-//        // 0 < number < 26 = un caractere de a à z | ex: 5 = e
-//        // 27 < number < 52 = 2 caractere le premier a et le deuxieme entre a et z | ex: 38 = al | a + number modulo 26
-//        // 52 < number < 78 = 2 caractere le pemier b et le deuxieme entre a et z | ex: 60 = bh (2 et 8) | b + number modulo 26
-//
-//        for (int nbOfLetter = 0; nbOfLetter <= multipleOfAlphabet; nbOfLetter++){
-//            result += alphabet[number % alphabet.length];
-//        }
-//
-//        // 1
-//        int counter = 0;
-//        int puissanceMax = 1;
-//        while(puissanceMax < number){
-//            puissanceMax *= 26;
-//            counter++;
-//        }
-
-        // 1- nombre de lettre = nombre de puissance max possible
-        // 2- index de chaque lettre = number / 26
-        // 3- index de la derniere lettre = number modulo 26
-
-        return alphabet[number];
-    }
-
     public SimpleSQLiteQuery getParamsFormatted(){
 
         boolean isFirstParam = true;
@@ -364,10 +333,9 @@ public class Parameter implements Parcelable {
 
         // ===== JOINTURES =====
 
-        //todo: je pense qu'il y a mieu a faire
         if (getListNearbyPOI() != null){
             for (int i = 0; i < getListNearbyPOI().length; i++){
-                String asName = generateCharacterWithInt(i);
+                String asName = "a" + getListNearbyPOI()[i];
                 params += " INNER JOIN property_nearbypoi_join AS " + asName + " ON " + asName + ".propertyId = Property.id AND " + asName + ".nearbyPoiId = " + getListNearbyPOI()[i];
             }
         }

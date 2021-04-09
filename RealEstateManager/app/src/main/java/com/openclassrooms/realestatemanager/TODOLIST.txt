@@ -1,8 +1,9 @@
 
+//todo remettre les bugs dans le code
+
 //todo: ajout de la photo de l'agent via une photo de l'appareil
 //todo: mettre un message quand aucune property n'est a affiché
 //todo: changer la image slider dans detailProperty (utiliser Glide)
-//todo: parameterActivity mettre un spinner pour les agents
 
 //todo: actualiser list et maps apres ajout en favoris dans detail
 //todo BONUS : activer le mode de comparaison

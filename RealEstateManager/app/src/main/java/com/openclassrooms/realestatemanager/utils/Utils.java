@@ -70,7 +70,6 @@ public class Utils {
 
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
-            //You can replace it with your name
             return !ipAddr.equals("");
 
         } catch (Exception e) {
@@ -85,12 +84,12 @@ public class Utils {
         return activeNetworkInfo != null;
     }
 
-    public static Double convertStringToDouble(String str){
+    public static Double convertToDouble(String str){
         if (str.equals("")) return 0.0;
         return Double.parseDouble(str);
     }
 
-    public static int convertStringToInt(String str){
+    public static int convertToInt(String str){
         if (str.equals("")) return 0;
         return Integer.parseInt(str);
     }

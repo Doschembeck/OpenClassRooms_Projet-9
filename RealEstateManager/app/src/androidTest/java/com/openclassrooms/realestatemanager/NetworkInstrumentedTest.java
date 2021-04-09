@@ -23,6 +23,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class NetworkInstrumentedTest {
 
+    //todo: depuis l'API 28 il n'est plus possible de bouchonné la connection pour faire les tests
+    // https://stackoverflow.com/questions/58006340/enable-disable-wifi-on-android-29
+
     @Test
     public void testInternet(){
         assertTrue(Utils.isInternetAvailable());

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -124,6 +125,8 @@ public class MapsFragment extends Fragment {
 
             mViewModel.getAddressWithPropertyId(property.getId()).observe(this, address -> {
 
+                if (address == null) return;
+
                 // Si c'est le premier
                 if (currentIndexProperty == 0){
                     minLat = address.getLatitude();
@@ -168,7 +171,7 @@ public class MapsFragment extends Fragment {
                 //Si c'est le dernier
                 if (properties.size() - 1 == currentIndexProperty){
                     //todo: voir quelle niveau de zoom lui mettre et/ou voir pour faire des clusters
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getCenter(), mZoom));
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(getCenter(), getZoom()));
                 }
 
                 currentIndexProperty++;
@@ -188,6 +191,63 @@ public class MapsFragment extends Fragment {
 
     private LatLng getCenter(){
         return new LatLng(maxLat - (maxLat - minLat) / 2, maxLon - (maxLon - minLon) / 2) ;
+    }
+
+    private int getZoom(){
+        int zoom = 0;
+        double distanceLat = maxLat - minLat;
+        double distanceLong = maxLon - minLon;
+        double maxDistance =  Math.max(distanceLat, distanceLong);
+
+        if (maxDistance < 0.00015625){
+            // inutile max 19
+            zoom = 19;
+        }else if (maxDistance < 0.0003125){
+            // inutile max 19
+            zoom = 19;
+        }else if (maxDistance < 0.000625){
+            zoom = 19;
+        }else if (maxDistance < 0.00125){
+            zoom = 18;
+        }else if (maxDistance < 0.0025){
+            zoom = 17;
+        }else if (maxDistance < 0.005){
+            zoom = 16;
+        }else if (maxDistance < 0.01){
+            zoom = 15;
+        } else if (maxDistance < 0.0275){
+            zoom = 14;
+        }else if (maxDistance < 0.055){
+            zoom = 13;
+        }else if (maxDistance < 0.112){
+            zoom = 12;
+        }else if (maxDistance < 0.225){
+            zoom = 11;
+        }else if (maxDistance < 0.45){
+            zoom = 10;
+        }else if (maxDistance < 0.9){
+            zoom = 9;
+        }else if (maxDistance < 1.8){
+            zoom = 8;
+        }else if (maxDistance < 3.6){
+            zoom = 7;
+        }else if (maxDistance < 7.2){
+            zoom = 6;
+        }else if (maxDistance < 14.4){
+            zoom = 5;
+        }else if (maxDistance < 28.8){
+            zoom = 4;
+        }else if (maxDistance < 57.6){
+            zoom = 3;
+        }else if (maxDistance < 115.2){
+            // inutile 3 est le min
+            zoom = 2;
+        } else if (maxDistance < 230.4){
+            // inutile 3 est le min
+            zoom = 1;
+        }
+
+        return zoom;
     }
 
 }

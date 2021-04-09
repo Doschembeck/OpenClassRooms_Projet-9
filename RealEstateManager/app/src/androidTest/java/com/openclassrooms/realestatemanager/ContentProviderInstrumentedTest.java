@@ -43,15 +43,14 @@ public class ContentProviderInstrumentedTest {
     }
 
     @Test
-    public void insertAndGetItem() {
-        // BEFORE : Adding demo item
-        final Uri userUri = mContentResolver.insert(PropertyContentProvider.URI_PROPERTY, generateProperty());
+    public void insertAndGetProperty() {
+        // BEFORE : Adding demo property
+        mContentResolver.insert(PropertyContentProvider.URI_PROPERTY, generateProperty());
         // TEST
         final Cursor cursor = mContentResolver.query(ContentUris.withAppendedId(PropertyContentProvider.URI_PROPERTY, PROPERTY_ID), null, null, null, null);
         assertThat(cursor, notNullValue());
         assertThat(cursor.getCount(), is(1));
         assertThat(cursor.moveToFirst(), is(true));
-        //assertThat(cursor.moveToNext(), is(true));
         assertThat(cursor.getString(cursor.getColumnIndexOrThrow("description")), is("Visite cet endroit de rêve !!"));
     }
 

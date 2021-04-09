@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -114,7 +115,11 @@ public class EditPropertyActivity extends BaseActivity {
     }
 
     private void onClickButtonAddPhotos(View view) {
-        startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), RESULT_LOAD_IMG);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT).setType("image/*"), RESULT_LOAD_IMG);
+        } else {
+            startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), RESULT_LOAD_IMG);
+        }
     }
 
     private void onClickSwitchIsSold(CompoundButton compoundButton, boolean isChecked) {

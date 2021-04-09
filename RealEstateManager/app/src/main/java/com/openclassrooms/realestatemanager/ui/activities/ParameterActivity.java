@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.ui.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +30,12 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.slider.RangeSlider;
 import com.openclassrooms.realestatemanager.databinding.ActivityParameterBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.model.Address;
+import com.openclassrooms.realestatemanager.model.Agent;
 import com.openclassrooms.realestatemanager.model.NearbyPOI;
 import com.openclassrooms.realestatemanager.model.Parameter;
 import com.openclassrooms.realestatemanager.utils.ActivityUtils;
@@ -39,19 +44,23 @@ import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 public class ParameterActivity extends AppCompatActivity {
 
     private ActivityParameterBinding mBinding;
     private PropertyViewModel mViewModel;
-    private List<NearbyPOI> selectedNearbyPOI = new ArrayList<>();
+    private List<Long> selectedNearbyPOI = new ArrayList<>();
     private Geocoder mGeocoder;
     private Address mAddress;
     private FusedLocationProviderClient fusedLocationClient;
+    private List<Agent> agents = new ArrayList<>();
+    private Parameter mCurrentParameter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +99,14 @@ public class ParameterActivity extends AppCompatActivity {
         mBinding.activityParameterImageviewCreatedatmax.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextCreatedatmax));
         mBinding.activityParameterImageviewDateofsalemin.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextDateofsalemin));
         mBinding.activityParameterImageviewDateofsalemax.setOnClickListener(v -> ActivityUtils.createDatePickerDialog(this, mBinding.activityParameterEdittextDateofsalemax));
+        mBinding.activityParameterSwitchAgent.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b){
+                mBinding.activityParameterSpinnerAgents.setEnabled(true);
+            } else {
+                mBinding.activityParameterSpinnerAgents.setEnabled(false);
+            }
+        });
+
         mBinding.activityParameterButtonRemovedate.setOnClickListener(view -> {
             mBinding.activityParameterEdittextCreatedatmin.setText("");
             mBinding.activityParameterEdittextCreatedatmax.setText("");
@@ -109,7 +126,8 @@ public class ParameterActivity extends AppCompatActivity {
         initRangeSlider(mBinding.activityParameterRangeSeekBarPrice, mBinding.activityParameterTextviewPricemin, mBinding.activityParameterTextviewPricemax);
         initRangeSlider(mBinding.activityParameterRangeSeekBarDistance, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
 
-        mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPoi);
+        mViewModel.getAllAgent().observe(this, this::configureSpinnerAgent);
+
     }
 
     private void initRangeSlider(RangeSlider rangeSlider, TextView textViewMin, TextView textViewMax){
@@ -170,6 +188,44 @@ public class ParameterActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Constants.arrayOrderBy);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBinding.activityParameterSpinnerFilter.setAdapter(adapter);
+    }
+
+    private void configureSpinnerAgent(List<Agent> agents){
+        //todo get list des agents
+
+        this.agents = agents;
+
+        List<String> agentsName = new ArrayList<>();
+        for (Agent agent : agents){
+            agentsName.add(agent.getLastname() + " " + agent.getFirstname());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, agentsName);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBinding.activityParameterSpinnerAgents.setAdapter(adapter);
+
+        if(mCurrentParameter.getRealEstateAgent() != null) {
+            mBinding.activityParameterSpinnerAgents.setEnabled(true);
+            mBinding.activityParameterSwitchAgent.setChecked(true);
+
+            // todo agents is empty
+            long agentId = Long.parseLong(mCurrentParameter.getRealEstateAgent());
+            int agentIdList = 0;
+
+            for (int i = 0; i < agents.size(); i++) {
+                if (agents.get(i).getId() == agentId) {
+                    agentIdList = i;
+                }
+            }
+
+            mBinding.activityParameterSpinnerAgents.setEnabled(true);
+            mBinding.activityParameterSpinnerAgents.setSelection(agentIdList);
+
+        } else {
+            mBinding.activityParameterSpinnerAgents.setEnabled(false);
+            mBinding.activityParameterSwitchAgent.setChecked(false);
+        }
+
     }
 
     private void startAutoComplete(View view) {
@@ -244,13 +300,13 @@ public class ParameterActivity extends AppCompatActivity {
 
     private void updateUIWithAllNearbyPoi(List<NearbyPOI> nearbyPOIList){
 
-        mBinding.activityParameterLinearlayoutNearbypoi.removeAllViewsInLayout();
+        //mBinding.activityParameterLinearlayoutNearbypoi.removeAllViewsInLayout();
         for (NearbyPOI nearbyPOI : nearbyPOIList){
             CheckBox checkBox = new CheckBox(this);
 
             // Si le nearby est selectionné alors on le check
             for (int i = 0; i < selectedNearbyPOI.size(); i++){
-                if (selectedNearbyPOI.get(i).getId() == nearbyPOI.getId()){
+                if (selectedNearbyPOI.get(i) == nearbyPOI.getId()){
                     checkBox.setChecked(true);
                 }
             }
@@ -258,10 +314,10 @@ public class ParameterActivity extends AppCompatActivity {
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
                 if (isChecked){
-                    selectedNearbyPOI.add(nearbyPOI);
+                    selectedNearbyPOI.add(nearbyPOI.getId());
                 }else {
                     for (int i = 0; i < selectedNearbyPOI.size(); i++){
-                        if (selectedNearbyPOI.get(i).getId() == nearbyPOI.getId()){
+                        if (selectedNearbyPOI.get(i) == nearbyPOI.getId()){
                             selectedNearbyPOI.remove(i);
                         }
                     }
@@ -285,9 +341,11 @@ public class ParameterActivity extends AppCompatActivity {
 
     private void updateUI(Parameter parameter) {
 
+        mCurrentParameter = parameter;
+
         if (parameter.getListNearbyPOI() != null){
-            for (long id : parameter.getListNearbyPOI()){
-                mViewModel.getNearbyPOI(id).observe(this, nearbyPOI -> selectedNearbyPOI.add(nearbyPOI));
+            for (long l : parameter.getListNearbyPOI()){
+                selectedNearbyPOI.add(l);
             }
         }
 
@@ -306,7 +364,6 @@ public class ParameterActivity extends AppCompatActivity {
         updateRangeSlider(parameter.getPriceMin(), parameter.getPriceMax(), mBinding.activityParameterRangeSeekBarPrice, mBinding.activityParameterTextviewPricemin, mBinding.activityParameterTextviewPricemax);
         updateRangeSlider(parameter.getDistanceAddressMin() / 1000, parameter.getDistanceAddressMax() / 1000, mBinding.activityParameterRangeSeekBarDistance, mBinding.activityParameterTextviewDistanceaddressMin, mBinding.activityParameterTextviewDistanceaddressMax);
 
-        mBinding.activityParameterEdittextRealEstateAgent.setText(parameter.getRealEstateAgent());
         mBinding.activityParameterEdittextCreatedatmin.setText(!(parameter.getCreatedAtMin() == 0) ? FormatUtils.formatDate(new Date(parameter.getCreatedAtMin())) : "");
         mBinding.activityParameterEdittextCreatedatmax.setText(!(parameter.getCreatedAtMax() == 0) ? FormatUtils.formatDate(new Date(parameter.getCreatedAtMax())) : "");
         mBinding.activityParameterEdittextDateofsalemin.setText(!(parameter.getDateOfSaleMin() == 0) ? FormatUtils.formatDate(new Date(parameter.getDateOfSaleMin())) : "");
@@ -346,6 +403,8 @@ public class ParameterActivity extends AppCompatActivity {
                 break;
         }
 
+        mViewModel.getAllNearbyPOI().observe(this, this::updateUIWithAllNearbyPoi);
+
     }
 
     private void configureViewModel(){
@@ -355,7 +414,6 @@ public class ParameterActivity extends AppCompatActivity {
     private void onClickFilterProperty(View view){
 
         Parameter parameter = new Parameter();
-
 
         int propertyType = (int) mBinding.activityParameterSpinnerPropertytype.getSelectedItemId();
         if (propertyType != 0){
@@ -387,7 +445,10 @@ public class ParameterActivity extends AppCompatActivity {
         parameter.setPriceMax(Math.round(priceMax == priceProgressMax ? 999999999 : priceMax));
         parameter.setPriceMin(Math.round(mBinding.activityParameterRangeSeekBarPrice.getValues().get(0)));
 
-        parameter.setRealEstateAgent(!mBinding.activityParameterEdittextRealEstateAgent.getText().toString().equals("") ? mBinding.activityParameterEdittextRealEstateAgent.getText().toString() : null);
+        if (mBinding.activityParameterSpinnerAgents.isEnabled()){
+            parameter.setRealEstateAgent(String.valueOf(agents.get((int) mBinding.activityParameterSpinnerAgents.getSelectedItemId()).getId()));
+        }
+
         parameter.setCreatedAtMin(!mBinding.activityParameterEdittextCreatedatmin.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextCreatedatmin.getText().toString()).getTime() : 0);
         parameter.setCreatedAtMax(!mBinding.activityParameterEdittextCreatedatmax.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextCreatedatmax.getText().toString()).getTime() : 0);
         parameter.setDateOfSaleMin(!mBinding.activityParameterEdittextDateofsalemin.getText().toString().equals("") ? FormatUtils.formatStringFormattedToDate(mBinding.activityParameterEdittextDateofsalemin.getText().toString()).getTime() : 0);
@@ -404,7 +465,7 @@ public class ParameterActivity extends AppCompatActivity {
         if (selectedNearbyPOI.size() != 0){
             long[] listIdNearbyPOI = new long[selectedNearbyPOI.size()];
             for (int i = 0; i < selectedNearbyPOI.size(); i++){
-                listIdNearbyPOI[i] = selectedNearbyPOI.get(i).getId();
+                listIdNearbyPOI[i] = selectedNearbyPOI.get(i);
             }
             parameter.setListNearbyPOI(listIdNearbyPOI);
         }

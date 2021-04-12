@@ -1,7 +1,8 @@
 
-//todo remettre les bugs dans le code
 
-//todo: ajout de la photo de l'agent via une photo de l'appareil
+//todo remettre les bugs dans le code
+//todo regler bug permision sur emulateur
+
 //todo: mettre un message quand aucune property n'est a affiché
 //todo: changer la image slider dans detailProperty (utiliser Glide)
 
@@ -9,3 +10,4 @@
 //todo BONUS : activer le mode de comparaison
 //todo BONUS : automatisé la recherche de points d'interets
 //todo BONUS : gerer local ou online
+

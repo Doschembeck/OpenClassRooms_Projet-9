@@ -12,14 +12,7 @@
         android:id="@+id/activity_edit_agent_imageview_profilpicture"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="#ff564f"/>
-
-    <EditText
-        android:id="@+id/activity_edit_agent_editext_urlpicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Url Picture"
-        android:textSize="18sp"/>
+        android:src="@drawable/ic_baseline_add_a_photo_24"/>
 
     <EditText
         android:id="@+id/activity_edit_agent_editext_firstname"

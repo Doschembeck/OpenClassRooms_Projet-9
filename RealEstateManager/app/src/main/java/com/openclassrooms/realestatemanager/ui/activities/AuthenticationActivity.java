@@ -2,21 +2,30 @@ package com.openclassrooms.realestatemanager.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.openclassrooms.realestatemanager.databinding.ActivityAuthenticationBinding;
 import com.openclassrooms.realestatemanager.injections.Injection;
 import com.openclassrooms.realestatemanager.injections.ViewModelFactory;
 import com.openclassrooms.realestatemanager.model.Agent;
+import com.openclassrooms.realestatemanager.model.Photo;
 import com.openclassrooms.realestatemanager.utils.ComPermissions;
 import com.openclassrooms.realestatemanager.utils.Constants;
+import com.openclassrooms.realestatemanager.utils.FormatUtils;
 import com.openclassrooms.realestatemanager.utils.ScriptsStats;
 import com.openclassrooms.realestatemanager.utils.Utils;
 import com.openclassrooms.realestatemanager.viewmodel.PropertyViewModel;
@@ -48,7 +57,6 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         ScriptsStats.scriptStatsAllRate(mViewModel);
 
-        // Listeners
         binding.activityAuthenticationButtonRegistration.setOnClickListener(v -> startActivity(new Intent(mContext, EditAgentActivity.class)));
         binding.activityAuthenticationButtonLogin.setOnClickListener(v -> onClickButtonLogin());
         binding.activityAuthenticationSpinnerAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -73,6 +81,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         super.onResume();
         mViewModel.getAllAgent().observe(this, this::updateUIWithAgent);
     }
+
+
 
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);

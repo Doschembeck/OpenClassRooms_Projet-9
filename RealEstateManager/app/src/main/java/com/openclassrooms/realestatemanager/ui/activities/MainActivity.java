@@ -1,21 +1,14 @@
 package com.openclassrooms.realestatemanager.ui.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -259,6 +252,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     for (Property property : properties){
                         mViewModel.getAddressWithPropertyId(property.getId()).observe(this, address -> {
+
+                            if(address == null) return;
+
                             Location propertyLocation = new Location("Property");
                             propertyLocation.setLatitude(address.getLatitude());
                             propertyLocation.setLongitude(address.getLongitude());

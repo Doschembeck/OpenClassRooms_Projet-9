@@ -84,14 +84,4 @@ public class Utils {
         return activeNetworkInfo != null;
     }
 
-    public static Double convertToDouble(String str){
-        if (str.equals("")) return 0.0;
-        return Double.parseDouble(str);
-    }
-
-    public static int convertToInt(String str){
-        if (str.equals("")) return 0;
-        return Integer.parseInt(str);
-    }
-
 }

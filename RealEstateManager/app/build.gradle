@@ -30,6 +30,12 @@ android {
         sourceCompatibility 1.8
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     buildFeatures {
         viewBinding true
 //        dataBinding true
@@ -79,4 +85,8 @@ dependencies {
 
     // TESTING
     androidTestCompile "android.arch.core:core-testing:1.1.0"
+
+    // ROBOLECTRIC
+    androidTestImplementation "org.robolectric:robolectric:4.5.1"
+
 }

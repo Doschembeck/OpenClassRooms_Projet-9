@@ -78,10 +78,10 @@ public class Utils {
 
     }
 
-    private static boolean isNetworkAvailable(Context context) {
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
+        return activeNetworkInfo.isConnected();
     }
 
 }

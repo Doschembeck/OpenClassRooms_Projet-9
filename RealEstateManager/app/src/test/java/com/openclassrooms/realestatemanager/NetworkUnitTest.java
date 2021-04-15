@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -11,6 +12,8 @@ import com.openclassrooms.realestatemanager.utils.Utils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowNetworkInfo;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
@@ -19,13 +22,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-@RunWith(AndroidJUnit4.class)
-public class NetworkInstrumentedTest {
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = {Build.VERSION_CODES.P})
+public class NetworkUnitTest {
     private ConnectivityManager connectivityManager;
     private ShadowNetworkInfo shadowOfActiveNetworkInfo;
 
@@ -36,31 +35,20 @@ public class NetworkInstrumentedTest {
     }
 
     @Test
-    public void getActiveNetworkInfo_shouldInitializeItself() {
-        assertNotNull(connectivityManager.getActiveNetworkInfo());
-    }
-
-    @Test
     public void getActiveNetworkInfo_shouldReturnTrueCorrectly() {
+        Context context = getApplicationContext();
+
         shadowOfActiveNetworkInfo.setConnectionStatus(NetworkInfo.State.CONNECTED);
         assertTrue(connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting());
-        assertTrue(connectivityManager.getActiveNetworkInfo().isConnected());
+        assertTrue(Utils.isNetworkAvailable(context));
 
         shadowOfActiveNetworkInfo.setConnectionStatus(NetworkInfo.State.CONNECTING);
         assertTrue(connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting());
-        assertFalse(connectivityManager.getActiveNetworkInfo().isConnected());
+        assertFalse(Utils.isNetworkAvailable(context));
 
         shadowOfActiveNetworkInfo.setConnectionStatus(NetworkInfo.State.DISCONNECTED);
         assertFalse(connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting());
-        assertFalse(connectivityManager.getActiveNetworkInfo().isConnected());
-    }
-
-    //todo: depuis l'API 28 il n'est plus possible de bouchonné la connection pour faire les tests
-    // https://stackoverflow.com/questions/58006340/enable-disable-wifi-on-android-29
-
-    @Test
-    public void testInternet(){
-        assertTrue(Utils.isInternetAvailable());
+        assertFalse(Utils.isNetworkAvailable(context));
     }
 
 }
